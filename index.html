@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The Institute of Islamic Education is a non-profit institute in Beerwah dedicated to authentic Islamic knowledge, research, and community service based on the Qur'an and Sunnah.">
+    <meta name="keywords" content="Islamic education, Beerwah, Salafi, Quran, Sunnah, Dawrah, Islamic institute">
+    <title>Institute of Islamic Education | معهد التربية الاسلامية</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome for social icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" xintegrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Google Fonts: Inter for English and Amiri for Arabic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="IMG-20230327-WA0002.jpg">
+    <style>
+        /* Use Inter font as the default for English text */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f8ff; /* Fallback color (AliceBlue) */
+            background-image: linear-gradient(to bottom, #f0f8ff, #ffffff);
+            background-attachment: fixed; /* Ensures the gradient stays fixed during scroll */
+        }
+        [lang="ar"] {
+            font-family: 'Tajawal';
+            color: 000000; 
+        }
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: .7;
+            }
+        }
+        .btn-pulse {
+          animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        .title-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+
+        /* Keyframes for the gentle shake animation */
+        @keyframes gentle-shake {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            25% {
+                transform: translateY(-5px);
+            }
+            75% {
+                transform: translateY(5px);
+            }
+        }
+
+        /* Class to apply the shake animation */
+        .card-shake {
+        animation: gentle-shake 2.5s ease-in-out infinite;
+        }
+        
+        /* Keyframes for the nudge animation */
+        @keyframes nudge-right {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            50% {
+                transform: translateX(3px); /* Moves the icon to the right */
+            }
+        }
+
+        /* Class to apply the animation to the icon */
+        
+        .gallery-container {
+            overflow: hidden;
+            border-radius: 0.5rem; /* rounded-lg */
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); /* shadow-lg */
+        }
+
+        .gallery-wrapper-css {
+            display: flex;
+            /* 4 images (3 original + 1 duplicate) = 400% width */
+            width: 400%; 
+            animation: pan-left 16s linear infinite;
+        }
+
+        .gallery-slide {
+            /* Each image takes 1/4 of the wrapper's width */
+            width: 25%; 
+            height: 384px; /* h-96 */
+            object-fit: contain;
+            background-color: #ffffff;
+        }
+
+
+        /* Keyframes for the horizontal shake animation */
+        @keyframes shake-horizontal {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            25% {
+                transform: translateX(-2px); /* Moves left */
+            }
+            75% {
+                transform: translateX(2px);  /* Moves right */
+            }
+        }
+
+        /* Class to apply the shake animation to the icon */
+        .icon-shake {
+            display: inline-block;
+            animation: shake-horizontal 1.2s ease-in-out infinite;
+        }
+
+        /* The new, seamless panning animation */
+        @keyframes pan-left {
+            0% {
+                transform: translateX(0%);
+            }
+            100% {
+                /* This moves exactly 3 slides to the left, landing on the duplicate of the first slide */
+                transform: translateX(-75%); 
+            }
+        }
+
+        /* back to top button */
+        .bg-brand-blue {
+            background-color: #1e3a8a; /* This color is defined nowhere else in your code and is causing the issue. */
+        }
+
+        /* Custom colors inspired by the logo */
+        
+        .text-logo-blue { color: #1e3a8a; }
+        .bg-logo-green { background-color: #ff03f7; } 
+        .text-logo-green { color: #16a34a; }
+        .border-logo-green { border-color: #2b00ff; }
+        .bg-logo-blue { background-color: #16a34a;}
+        .bg-gradient-footer {
+            background-color: #16a34a; /* Fallback for old browsers */
+            background-image: linear-gradient(to bottom right, #16a34a, #319a28);
+        } 
+
+        /* Notice Blink */
+
+        @keyframes blink-alternative {
+            50% {
+                color: #ff4400; /* Example: Amber color */
+                opacity: 0.8;
+            }
+        }
+
+        .blinking-dawrah {
+            animation: blink-alternative 1.5s infinite alternate;
+        }
+        
+        /* Smooth scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+    <!-- preloader -->
+    <div id="preloader" class="fixed inset-0 z-[9999] flex items-center justify-center bg-white transition-opacity duration-500">
+        <div class="h-16 w-16 animate-spin rounded-full border-4 border-solid border-logo-blue border-t-transparent"></div>
+    </div>
+
+    <!-- Header Section -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <img src="IMG-20230327-WA0002.jpg" alt="Institute Logo" class="h-12 w-12" onerror="this.onerror=null;this.src='IMG-20230327-WA0002';">
+
+                <div class="text-center">
+                    <h1 class="text-xl font-bold text-logo-blue">Institute of Islamic Education</h1>
+                    <p class="text-xl font-bold text-logo-green" lang="ar" dir="rtl">معهد التربية الاسلامية</p>
+                </div>
+            </div>
+            <div class="hidden lg:flex items-center space-x-6">
+                <a href="#about" class="text-gray-600 hover:text-logo-green">About Us</a>
+                <a href="#notices" class="text-gray-600 hover:text-logo-green">Notices</a>
+                <a href="#events" class="text-gray-600 hover:text-logo-green">Events</a>
+                <a href="#gallery" class="text-gray-600 hover:text-logo-green">Gallery</a>
+                <a href="#library" class="text-gray-600 hover:text-logo-green">Library</a>
+                <a href="#admissions" class="text-gray-600 hover:text-logo-green">Admissions</a>
+                <a href="#social" class="text-gray-600 hover:text-logo-green">Contact</a>
+                <a href="#admin-notice" class="text-gray-600 hover:text-logo-green">Admin</a>
+                <a href="#feedback" class="bg-logo-green text-white px-4 py-2 rounded-full">Give Feedback</a>
+            </div>
+            <div class="lg:hidden">
+                <button id="mobile-menu-button" class="text-gray-600 hover:text-logo-green focus:outline-none">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                </button>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="lg:hidden hidden px-6 pt-2 pb-4">
+            <a href="#about" class="block py-2 text-gray-600 hover:text-logo-green">About Us</a>
+            <a href="#notices" class="block py-2 text-gray-600 hover:text-logo-green">Notices</a>
+            <a href="#events" class="block py-2 text-gray-600 hover:text-logo-green">Events</a>
+            <a href="#gallery" class="block py-2 text-gray-600 hover:text-logo-green">Gallery</a>
+            <a href="#library" class="block py-2 text-gray-600 hover:text-logo-green">Library</a>
+            <a href="#admissions" class="block py-2 text-gray-600 hover:text-logo-green">Admissions</a>
+            <a href="#social" class="block py-2 text-gray-600 hover:text-logo-green">Contact</a>
+            <a href="#admin-notice" class="block py-2 text-gray-600 hover:text-logo-green">Admin</a>
+            <a href="#feedback" class="block mt-2 bg-logo-green text-white text-center px-4 py-2 rounded-full">Give Feedback</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="bg-white py-20">
+            <div class="container mx-auto px-6 text-center">
+                <img src="IMG-20230327-WA0002.jpg" alt="Institute Logo" class="h-48 w-48 mx-auto mb-6" onerror="this.onerror=null;this.src='https://placehold.co/200x200/1e3a8a/ffffff?text=IIE';">
+                <h2 class="text-4xl font-extrabold mb-2 text-logo-blue">Institute of Islamic Education</h2>
+                <p class="text-2xl text-logo-green mb-8 font-bold" lang="ar" dir="rtl"> معهد التربية الاسلامية</p>
+                <p class="max-w-3xl mx-auto text-gray-500">
+                    Dedicated to fostering a rich learning environment rooted in Islamic principles. We strive for excellence in education, character development, and community service.
+                </p>
+            </div>
+        </section>
+
+        <!-- Notice Booard -->
+
+        <section id="notices" class="py-16">
+            <div class="container mx-auto px-6">
+                <h3 class="text-3xl font-bold text-center mb-8 text-logo-blue">Notice Board</h3>
+                
+                <div class="bg-white p-6 rounded-lg shadow-lg border-l-4 border-logo-green mb-6">
+                    <h4 class="text-xl font-bold text-logo-green mb-2">Important Announcement: <span class="blinking-dawrah">Dawrah Registrations</span></h4>
+                    <p class="text-gray-600">
+                        Registrations for our upcoming One Day Dawrah on August 16, 2025, are now open. Secure your spot by visiting the <a href="#events" class="text-logo-blue hover:underline font-semibold">Events section</a> below.
+                    </p>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-lg border-l-4 border-yellow-400">
+                    <h4 class="text-xl font-bold text-yellow-500 mb-2">Website Updates</h4>
+                    <p class="text-gray-600">
+                        We are performing routine maintenance on our website. You may experience some intermittent issues. We apologize for any inconvenience this may cause.
+                    </p>
+                </div>
+                
+            </div>
+        </section>
+
+        <!-- About Us Section -->
+        <section id="about" class="py-16">
+            <div class="container mx-auto px-6">
+                <h3 class="text-3xl font-bold text-center mb-8 text-logo-blue">About Our Institute</h3>
+                <div class="bg-white p-8 rounded-lg shadow-lg">
+                    <p class="text-gray-600 leading-relaxed">
+                        "IIE is Islamic research, training, and solution-providing non-profit Institute, established with the objective to help people in acquiring knowledge of the Quran and Sunnah upon the Understanding of Salaf-Us-Saalih. Our goal and mission is to call to the path of Allah in worshiping him alone (Tawheed) and following the guidance of the Prophet Muhammad ﷺ.Our institution is established on the principles of Ahlus Sunnah Wa Al Jamaah. These guiding principles are derived from the correct understanding of the Quran and the Sunnah upon the understanding of the pious predecessors (Salaf as Salih). The foundation of this true methodology sprinkles from the statement of Allah in the Quran in Surah At-Tawbah, Ayah 100" 
+                    </p>
+                </div>
+            </div>
+        </section>
+        <!-- Events Section -->
+        <section id="events" class="bg-white py-16">
+            <div class="container mx-auto px-6">
+                <h3 class="text-3xl font-bold text-center mb-12 text-gradient title-pulse">Upcoming Events</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                    <div class="relative bg-gray-50 p-6 rounded-lg shadow-lg border-2 bg-logo-green transform hover:scale-105 transition duration-300 flex flex-col card-shake">
+                        <div class="absolute top-0 right-0 bg-logo-green text-white text-xs font-bold px-3 py-1 rounded-tr-lg rounded-bl-lg">Featured</div>
+                        <div class="flex-grow">
+                            <p class="text-sm font-semibold text-logo-green">August 16, 2025 | 9:30 AM - 6:30 PM</p>
+                            <h4 class="text-xl font-bold text-logo-blue my-2">One Day Dawrah</h4>
+                            <p class="text-gray-600 mb-4">Join us for our One Day Dawrah Series. We will cover, تائية الإلبيري في الزهد والحكم</p>
+                            <p class="text-gray-700 font-medium">
+                                <a href="https://maps.app.goo.gl/bjNf4ijovbUrQGQP6" target="_blank" class="inline-flex items-center bg-gray-100 rounded-full p-1 pr-3 text-logo-green font-semibold mt-auto">
+                                    <i class="fa-solid fa-location-dot mr-2 icon-bob"></i>
+                                    <span>Jamia Masjid Salafiyah Utterpora,Beerwah</span>
+                                    <span class="ml-2 h-6 w-6 rounded-full bg-logo-blue text-white flex items-center justify-center">
+                                        <i class="fa-solid fa-arrow-left icon-shake text-xs"></i>
+                                    </span>
+                                </a>
+                            </p>
+                        </div>
+                        <div class="mt-4">
+                            <a href="https://forms.gle/Au9D2d38MAf362Nw5" target="_blank" class="btn-pulse bg-logo-green text-white font-bold py-2 px-4 rounded-full w-full text-center inline-block">Register Now</a>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-center">
+                        <i class="fa-solid fa-calendar-days fa-2x text-gray-400 mb-3"></i>
+                        <h4 class="text-xl font-bold text-logo-blue mb-1">More September Events</h4>
+                        <p class="text-gray-500 font-semibold">Details Coming Soon!</p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-center">
+                        <i class="fa-solid fa-calendar-days fa-2x text-gray-400 mb-3"></i>
+                        <h4 class="text-xl font-bold text-logo-blue mb-1">October Events</h4>
+                        <p class="text-gray-500 font-semibold">Details Coming Soon!</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+        <!-- gallary -->
+
+        <section id="gallery" class="py-16">
+            <div class="container mx-auto px-6">
+                <h3 class="text-3xl font-bold text-center mb-8 text-logo-blue">Our Gallery</h3>
+                
+                <div class="gallery-container max-w-2xl mx-auto shadow-lg rounded-lg">
+                    <div class="gallery-wrapper-css">
+                        
+                        <img src="5ffdc721ccc294163dd69384bed3362c.jpg" alt="Gallery Image 1" class="gallery-slide">
+                        <img src="images.jpg" alt="Gallery Image 2" class="gallery-slide">
+                        <img src="pexels-sayed-abdullah-tafhim-2147792704-29865666.jpg" alt="Gallery Image 3" class="gallery-slide">
+                        
+                        <img src="IMG-20230327-WA0002.jpg" alt="Gallery Image 1" class="gallery-slide"> 
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Library -->
+
+        <section id="library" class="py-16">
+            <div class="container mx-auto px-6 text-center">
+                <h3 class="text-3xl font-bold mb-8 text-logo-blue">Explore Our Library</h3>
+                
+                <div class="max-w-3xl mx-auto bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded-lg shadow-md">
+                    <div class="flex items-center">
+                        <div class="text-yellow-500 pr-4">
+                            <i class="fa-solid fa-person-digging fa-2x"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-bold text-gray-800 text-left">Section Under Maintenance</h4>
+                            <p class="text-gray-600 mt-1 text-left">
+                                Our online library is currently being updated with new resources. Please check back soon!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Borrow a Book -->
+        <section id="borrow" class="pb-16">
+            <div class="container mx-auto px-6">
+                <h3 class="text-3xl font-bold text-center mb-12 text-logo-blue">How to Borrow a Book</h3>
+
+                <div class="max-w-3xl mx-auto bg-yellow-50 border-l-4 border-yellow-400 p-8 rounded-lg shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <div class="text-yellow-500 pr-4">
+                            <i class="fa-solid fa-person-digging fa-2x"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-bold text-gray-800 text-left">System Under Maintenance</h4>
+                            <p class="text-gray-600 mt-1 text-left">Our new online borrowing system is coming soon! The process is outlined below, but is not yet active.<br/>Until then, you are welcome to visit our library in person to borrow a book.</p>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-yellow-200 pt-6 space-y-4">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 bg-yellow-400 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center mr-4">1</div>
+                            <p class="text-gray-700">
+                                <strong>Register Online:</strong> Submit your application, official ID, and the name of the book you wish to borrow via our upcoming online form.
+                            </p>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 bg-yellow-400 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center mr-4">2</div>
+                            <p class="text-gray-700">
+                                <strong>Await Confirmation:</strong> We will check for the book's availability and send you a confirmation.
+                            </p>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 bg-yellow-400 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center mr-4">3</div>
+                            <p class="text-gray-700">
+                                <strong>Collect from Office:</strong> Once confirmed, visit our office to collect your book.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admission Section -->
+        <section id="admissions" class="py-16">
+            <div class="container mx-auto px-6 text-center">
+                <h3 class="text-3xl font-bold mb-8 text-logo-blue">Admissions & Applications</h3>
+                
+                <div class="max-w-3xl mx-auto bg-blue-50 border-l-4 border-logo-blue p-6 rounded-lg shadow-md">
+                    <div class="flex items-center">
+                        <div class="text-logo-blue pr-4">
+                            <i class="fa-solid fa-circle-info fa-2x"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-bold text-gray-800 text-left">Applications Are Currently Closed</h4>
+                            <p class="text-gray-600 mt-1 text-left">
+                                We are not accepting applications at this time. Please check back later for future announcements.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- </Open> 
+
+        <section id="admissions" class="py-16">
+            <div class="container mx-auto px-6">
+                <h3 class="text-3xl font-bold text-center mb-8 text-logo-blue">Apply for Admission</h3>
+                <div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+                    <form id="application-form">
+                        <div class="mb-4">
+                            <label for="applicant-name" class="block text-gray-700 font-medium mb-2">Full Name</label>
+                            <input type="text" id="applicant-name" name="applicant-name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-logo-green" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="applicant-email" class="block text-gray-700 font-medium mb-2">Email Address</label>
+                            <input type="email" id="applicant-email" name="applicant-email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-logo-green" required>
+                        </div>
+                        <div class="mb-6">
+                            <label for="statement" class="block text-gray-700 font-medium mb-2">Why do you want to join?</label>
+                            <textarea id="statement" name="statement" rows="5" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-logo-green" required></textarea>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="bg-logo-blue text-white font-bold px-8 py-3 rounded-full hover:bg-blue-800 transition duration-300">Submit Application</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section> -->
+
+        <!-- Social Media Section -->
+        <section id="social" class="bg-gray-100 py-16">
+            <div class="container mx-auto px-6 text-center">
+                <h3 class="text-3xl font-bold mb-8 text-logo-blue">Connect With Us</h3>
+                <p class="text-gray-600 mb-8">Follow our journey and stay updated on our social media channels.</p>
+                <div class="flex justify-center space-x-6">
+                    <a href="tel:+919419737927" class="text-gray-600 hover:text-logo-green transform hover:scale-125 transition duration-300">
+                        <i class="fa-solid fa-phone fa-3x"></i>
+                    </a>
+                    <a href="https://wa.me/+919419737927" target="_blank" class="text-gray-600 hover:text-logo-green transform hover:scale-125 transition duration-300">
+                        <i class="fab fa-whatsapp fa-3x"></i>
+                    </a>
+                    <a href="mailto:iiecheckpora@gmail.com" class="text-gray-600 hover:text-logo-green transform hover:scale-125 transition duration-300">
+                        <i class="fa-solid fa-envelope fa-3x"></i>
+                    </a>
+                    <a href="https://youtube.com/@instituteofislamiceducation?feature=shared" class="text-gray-600 hover:text-logo-green transform hover:scale-125 transition duration-300">
+                        <i class="fab fa-youtube fa-3x"></i>
+                    </a>
+                    <a href="https://m.facebook.com/501487530283263/" class="text-gray-600 hover:text-logo-green transform hover:scale-125 transition duration-300">
+                        <i class="fab fa-facebook-f fa-3x"></i>
+                    </a>               
+                </div>
+            </div>
+        </section>
+
+        <!-- Feedback Form Section -->
+        <section id="feedback" class="py-16">
+            <div class="container mx-auto px-6">
+                <h3 class="text-3xl font-bold text-center mb-8 text-logo-blue">We Value Your Feedback</h3>
+                <div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+                    <form id="feedback-form">
+                        <div class="mb-4">
+                            <label for="name" class="block text-gray-700 font-medium mb-2">Full Name</label>
+                            <input type="text" id="name" name="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-logo-green" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="email" class="block text-gray-700 font-medium mb-2">Email Address</label>
+                            <input type="email" id="email" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-logo-green" required>
+                        </div>
+                        <div class="mb-6">
+                            <label for="message" class="block text-gray-700 font-medium mb-2">Message or Feedback</label>
+                            <textarea id="message" name="message" rows="5" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-logo-green" required></textarea>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="bg-logo-blue text-white font-bold px-8 py-3 rounded-full hover:bg-blue-700 transition duration-300 disabled:opacity-50">Submit Feedback</button>
+                            <p id="form-status" class="mt-4 text-sm"></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section id="admin-notice" class="py-16">
+            <div class="container mx-auto px-6 text-center">
+                <h3 class="text-3xl font-bold mb-8 text-logo-blue">Admin Section</h3>
+                
+                <div class="max-w-3xl mx-auto bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded-lg shadow-md">
+                    <div class="flex items-center">
+                        <div class="text-yellow-500 pr-4">
+                            <i class="fa-solid fa-person-digging fa-2x"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-bold text-gray-800 text-left">Admin Panel Coming Soon!</h4>
+                            <p class="text-gray-600 mt-1 text-left">
+                                We are currently working on a dedicated admin panel to manage our events, gallery, and other content. Please check back later for updates.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer Section -->
+
+    <footer class="bg-gradient-footer text-white py-8">
+        <div class="container mx-auto px-6 text-center">
+            
+            <div class="mb-6">
+                <h4 class="text-lg font-bold mb-2">Head Office</h4>
+                <div class="bg-logo-blue p-1.5 rounded-full shadow-2xl inline-block">
+                    <a href="https://maps.app.goo.gl/yaZa531xtGu3nXMn9" target="_blank" class="inline-flex items-center bg-gray-100 rounded-full py-1 pl-2 pr-3 text-logo-green font-semibold">
+                        <i class="fa-solid fa-location-dot text-2xl mr-2 icon-bob"></i>
+                        <span>Chanthan Chak Pora, Beerwah</span>
+                        <span class="ml-2 h-7 w-7 rounded-full bg-logo-blue text-white flex items-center justify-center">
+                            <i class="fa-solid fa-arrow-left icon-shake text-sm"></i>
+                        </span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="border-t border-green-300 pt-6">
+                <p>&copy; 2025 Institute of Islamic Education. All Rights Reserved.</p>
+                <p class="text-sm text-gray-300 mt-2">Designed with care.</p>
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- popup -->
+
+    <div id="welcome-popup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white p-8 rounded-lg shadow-2xl max-w-sm w-full text-center">
+            <h3 class="text-2xl font-bold text-logo-blue mb-4">A Quick Note</h3>
+            <p class="text-gray-600 mb-6">
+                For the best viewing experience, Please 
+                <strong class="text-logo-green">Refresh</strong> 
+                the page and ensure your browser is 
+                <strong class="text-logo-green">Up to Date</strong>.
+            </p>
+            <div class="flex justify-center space-x-4">
+                <button id="refresh-btn" class="bg-logo-blue text-white font-bold py-2 px-6 rounded-full hover:bg-blue-800 transition">
+                    Refresh
+                </button>
+                <button id="close-popup-btn" class="bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded-full hover:bg-gray-400 transition">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- back on top button -->
+
+    <button id="back-to-top-btn" class="fixed bottom-5 right-5 z-50 p-3 bg-logo-blue text-white rounded-full shadow-lg hover:bg-blue-800 transition-all duration-300 opacity-0 pointer-events-none">
+        <i class="fa-solid fa-arrow-up h-6 w-6"></i>
+    </button>
+
+    <!-- script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // --- Mobile Menu Logic ---
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+
+            // --- Mobile Menu Auto-Close Logic ---
+            // The 'mobileMenu' variable is already declared above, so we don't need to redeclare it.
+            const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+
+            // --- Popup Logic ---
+            const welcomePopup = document.getElementById('welcome-popup');
+            const closePopupButton = document.getElementById('close-popup-btn');
+            const refreshButton = document.getElementById('refresh-btn');
+
+            if (welcomePopup && closePopupButton && refreshButton) {
+                
+                // Makes the "Close" button work
+                closePopupButton.addEventListener('click', () => {
+                    welcomePopup.classList.add('hidden');
+                });
+
+                // Makes the "Refresh" button work
+                refreshButton.addEventListener('click', () => {
+                    location.reload(); // This is the command to refresh the page
+                });
+
+                // Shows the popup only once per browser session
+                if (!sessionStorage.getItem('popupShown')) {
+                    setTimeout(() => {
+                        welcomePopup.classList.remove('hidden');
+                    }, 1000);
+                    sessionStorage.setItem('popupShown', 'true');
+                }
+            }
+
+            // --- Feedback Form Logic ---
+            const feedbackForm = document.getElementById('feedback-form');
+            
+            if (feedbackForm) {
+                const formStatus = document.getElementById('form-status');
+                const submitButton = feedbackForm.querySelector('button[type="submit"]');
+                
+                const googleScriptURL = 'https://script.google.com/macros/s/AKfycbxy1lYXfab6w0iZc214l5-YWD1QIAQa9Skd4GfEHnMAGa11_QzHso4IpClKT4DqjxQbPQ/exec';
+
+                feedbackForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    submitButton.disabled = true;
+                    formStatus.textContent = 'Submitting...';
+                    formStatus.classList.remove('text-red-500', 'text-green-500');
+
+                    const formData = new FormData(feedbackForm);
+                    const data = Object.fromEntries(formData.entries());
+
+                    fetch(googleScriptURL, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data),
+                    })
+                    .then(() => {
+                        formStatus.textContent = 'Thank you for your feedback!';
+                        formStatus.classList.add('text-green-500');
+                        feedbackForm.reset();
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                        formStatus.textContent = 'Something went wrong. Please try again.';
+                        formStatus.classList.add('text-red-500');
+                    })
+                    .finally(() => {
+                        submitButton.disabled = false;
+                    });
+                });
+            }
+
+            // --- Back to Top Button Logic ---
+            const backToTopButton = document.getElementById('back-to-top-btn');
+
+            if (backToTopButton) {
+                // Show or hide the button based on scroll position
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 300) { // Show button after scrolling 300px
+                        backToTopButton.classList.remove('opacity-0', 'pointer-events-none');
+                        backToTopButton.classList.add('opacity-100', 'pointer-events-auto');
+                    } else {
+                        backToTopButton.classList.remove('opacity-100', 'pointer-events-auto');
+                        backToTopButton.classList.add('opacity-0', 'pointer-events-none');
+                    }
+                });
+
+                // Scroll smoothly to the top when the button is clicked
+                backToTopButton.addEventListener('click', () => {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            }
+            // --- End of Back to Top Button Logic ---
+
+            // --- Preloader Logic ---
+            const preloader = document.getElementById('preloader');
+
+            // Wait for the entire page to load (including images, etc.)
+            window.addEventListener('load', () => {
+                if (preloader) {
+                    // Add a class to make it invisible
+                    preloader.classList.add('opacity-0', 'invisible');
+
+                    // Optional: Remove the element from the DOM after the transition ends
+                    // This is good for accessibility and performance
+                    setTimeout(() => {
+                        preloader.remove();
+                    }, 500); // This should match the duration-500 class on the preloader div
+                }
+            });
+            // --- End of Preloader Logic ---
+
+        });
+    </script>
+</body>
+</html>
