@@ -1,188 +1,169 @@
 <!DOCTYPE html>
+<!-- The `lang="en"` attribute declares the primary language of the document as English for accessibility and search engines. -->
 <html lang="en">
 <head>
+    <!-- Specifies the character encoding for the document. UTF-8 is standard and supports all international characters. -->
     <meta charset="UTF-8">
+    <!-- This meta tag is crucial for responsive design. It sets the width of the page to the device's width and the initial zoom level to 1.0. -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- A brief description of the page's content, used by search engines in search results. -->
     <meta name="description" content="The Institute of Islamic Education is a non-profit institute in Beerwah dedicated to authentic Islamic knowledge, research, and community service based on the Qur'an and Sunnah.">
-    <meta name="keywords" content="Islamic education, Beerwah, Salafi, Quran, Sunnah, Dawrah, Islamic institute">
+    <!-- Keywords for search engines to help them understand the page's topic. -->
+    <meta name="keywords" content="Islamic education, Beerwah, Salafi, Quran, Sunnah, Dawrah, Islamic institute, Newsletter, Mirza font">
+    <!-- The title of the webpage, which appears in the browser tab or window title bar. -->
     <title>Institute of Islamic Education | معهد التربية الاسلامية</title>
     
-    <!-- Tailwind CSS -->
+    <!-- This script tag loads the Tailwind CSS utility-first framework from a CDN (Content Delivery Network). -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Font Awesome for social icons -->
+    <!-- This link tag loads the Font Awesome icon library's stylesheet for using icons like those for social media. -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" xintegrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <!-- Google Fonts: Inter for English and Amiri for Arabic -->
+    <!-- These lines connect to the Google Fonts service to load custom web fonts. -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- This specific link imports the 'Inter' font for English text and the 'Mirza' font for Arabic text. -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Mirza:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- This sets the small icon (favicon) that appears in the browser tab. -->
     <link rel="icon" type="image/png" href="IMG-20230327-WA0002.jpg">
+    
+    <!-- This style block contains all the custom CSS rules that are not covered by Tailwind CSS. -->
     <style>
-        /* Use Inter font as the default for English text */
+        /* --- Default Styles --- */
+        /* Sets the default font for the entire page to 'Inter'. If Inter isn't available, it falls back to a generic sans-serif font. */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f0f8ff; /* Fallback color (AliceBlue) */
-            background-image: linear-gradient(to bottom, #f0f8ff, #ffffff);
-            background-attachment: fixed; /* Ensures the gradient stays fixed during scroll */
+            background-color: #f0f8ff; /* A fallback background color in case the gradient doesn't load. */
+            background-image: linear-gradient(to bottom, #f0f8ff, #ffffff); /* Creates a vertical gradient from light blue to white. */
+            background-attachment: fixed; /* The background image stays in place when the user scrolls. */
         }
+        /* This is an attribute selector. It targets any HTML element with `lang="ar"` and applies the 'Mirza' font. */
         [lang="ar"] {
-            font-family: 'Tajawal';
-            color: 000000; 
+            font-family: 'Mirza', serif; /* Sets the font for Arabic text. Falls back to a generic serif font. */
+            color: #000000; /* Sets the text color to black. */
         }
+
+        /* --- Animation Keyframes --- */
+        /* Defines the 'pulse' animation. The element's opacity changes from 1 to 0.7 and back to 1. */
         @keyframes pulse {
-            0%, 100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: .7;
-            }
-        }
-        .btn-pulse {
-          animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            0%, 100% { opacity: 1; }
+            50% { opacity: .7; }
         }
 
-        .title-pulse {
-            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-
-
-        /* Keyframes for the gentle shake animation */
+        /* Defines the 'gentle-shake' animation. The element moves up and down slightly. */
         @keyframes gentle-shake {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            25% {
-                transform: translateY(-5px);
-            }
-            75% {
-                transform: translateY(5px);
-            }
+            0%, 100% { transform: translateY(0); } /* Start and end position */
+            25% { transform: translateY(-5px); } /* Moves 5px up */
+            75% { transform: translateY(5px); } /* Moves 5px down */
         }
 
-        /* Class to apply the shake animation */
-        .card-shake {
-        animation: gentle-shake 2.5s ease-in-out infinite;
-        }
-        
-        /* Keyframes for the nudge animation */
+        /* Defines the 'nudge-right' animation. The element moves slightly to the right and back. */
         @keyframes nudge-right {
-            0%, 100% {
-                transform: translateX(0);
-            }
-            50% {
-                transform: translateX(3px); /* Moves the icon to the right */
-            }
+            0%, 100% { transform: translateX(0); } /* Start and end position */
+            50% { transform: translateX(3px); } /* Moves 3px to the right */
         }
-
-        /* Class to apply the animation to the icon */
         
-        .gallery-container {
-            overflow: hidden;
-            border-radius: 0.5rem; /* rounded-lg */
-            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); /* shadow-lg */
-        }
-
-        .gallery-wrapper-css {
-            display: flex;
-            /* 4 images (3 original + 1 duplicate) = 400% width */
-            width: 400%; 
-            animation: pan-left 16s linear infinite;
-        }
-
-        .gallery-slide {
-            /* Each image takes 1/4 of the wrapper's width */
-            width: 25%; 
-            height: 384px; /* h-96 */
-            object-fit: contain;
-            background-color: #ffffff;
-        }
-
-
-        /* Keyframes for the horizontal shake animation */
+        /* Defines the 'shake-horizontal' animation. The element moves slightly left and right. */
         @keyframes shake-horizontal {
-            0%, 100% {
-                transform: translateX(0);
-            }
-            25% {
-                transform: translateX(-2px); /* Moves left */
-            }
-            75% {
-                transform: translateX(2px);  /* Moves right */
-            }
+            0%, 100% { transform: translateX(0); } /* Start and end position */
+            25% { transform: translateX(-2px); } /* Moves 2px left */
+            75% { transform: translateX(2px); } /* Moves 2px right */
         }
 
-        /* Class to apply the shake animation to the icon */
-        .icon-shake {
-            display: inline-block;
-            animation: shake-horizontal 1.2s ease-in-out infinite;
-        }
-
-        /* The new, seamless panning animation */
+        /* Defines the 'pan-left' animation for the image gallery. */
         @keyframes pan-left {
-            0% {
-                transform: translateX(0%);
-            }
-            100% {
-                /* This moves exactly 3 slides to the left, landing on the duplicate of the first slide */
-                transform: translateX(-75%); 
-            }
+            0% { transform: translateX(0%); } /* Starts at the beginning */
+            100% { transform: translateX(-75%); } /* Moves left by the width of 3 images (since there are 4 total). */
         }
 
-        /* back to top button */
-        .bg-brand-blue {
-            background-color: #1e3a8a; /* This color is defined nowhere else in your code and is causing the issue. */
-        }
-
-        /* Custom colors inspired by the logo */
-        
-        .text-logo-blue { color: #1e3a8a; }
-        .bg-logo-green { background-color: #ff03f7; } 
-        .text-logo-green { color: #16a34a; }
-        .border-logo-green { border-color: #2b00ff; }
-        .bg-logo-blue { background-color: #16a34a;}
-        .bg-gradient-footer {
-            background-color: #16a34a; /* Fallback for old browsers */
-            background-image: linear-gradient(to bottom right, #16a34a, #319a28);
-        } 
-
-        /* Notice Blink */
-
+        /* Defines the 'blink-alternative' animation for important notices. */
         @keyframes blink-alternative {
             50% {
-                color: #ff4400; /* Example: Amber color */
-                opacity: 0.8;
+                color: #ff4400; /* Changes color to orange at the midpoint. */
+                opacity: 0.8; /* Becomes slightly transparent. */
             }
         }
-
-        .blinking-dawrah {
-            animation: blink-alternative 1.5s infinite alternate;
-        }
         
-        /* Smooth scroll behavior */
+        /* --- Animation Application Classes --- */
+        /* This class applies the 'pulse' animation to an element. */
+        .btn-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        /* This class applies the 'pulse' animation to a title. */
+        .title-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        /* This class applies the 'gentle-shake' animation. */
+        .card-shake { animation: gentle-shake 2.5s ease-in-out infinite; }
+        /* This class applies the 'shake-horizontal' animation. */
+        .icon-shake { display: inline-block; animation: shake-horizontal 1.2s ease-in-out infinite; }
+        /* This class applies the 'blink-alternative' animation. */
+        .blinking-dawrah { animation: blink-alternative 1.5s infinite alternate; }
+
+        /* --- Component-Specific Styles --- */
+        /* Styles for the gallery container. */
+        .gallery-container {
+            overflow: hidden; /* Hides the parts of the images that are outside the container's bounds. */
+            border-radius: 0.5rem; /* Applies rounded corners. */
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); /* Adds a shadow. */
+        }
+        /* Styles for the wrapper that holds the gallery images. */
+        .gallery-wrapper-css {
+            display: flex; /* Aligns the images in a row. */
+            width: 400%; /* Makes the wrapper 4 times the width of the container to hold 4 images. */
+            animation: pan-left 16s linear infinite; /* Applies the panning animation. */
+        }
+        /* Styles for each individual image slide in the gallery. */
+        .gallery-slide {
+            width: 25%; /* Each image takes up one-quarter of the wrapper's width. */
+            height: 384px; /* Sets a fixed height. */
+            object-fit: contain; /* Ensures the entire image fits within the dimensions without being cropped or stretched. */
+            background-color: #ffffff; /* Sets a white background for the image area. */
+        }
+
+        /* --- Custom Color Classes --- */
+        /* These classes provide consistent branding colors throughout the site. */
+        .text-logo-blue { color: #1e3a8a; }
+        .bg-logo-blue { background-color: #1e3a8a;}
+        .text-logo-green { color: #16a34a; }
+        .bg-logo-green { background-color: #16a34a; } 
+        .border-logo-green { border-color: #16a34a; }
+        .bg-gradient-footer {
+            background-color: #16a34a; /* Fallback color. */
+            background-image: linear-gradient(to bottom right, #16a34a, #319a28); /* Green gradient for the footer. */
+        } 
+        
+        /* --- Global Behavior --- */
+        /* This rule enables smooth scrolling when a user clicks on an anchor link (e.g., <a href="#about">). */
         html {
             scroll-behavior: smooth;
         }
     </style>
 </head>
+<!-- The `body` tag contains all the visible content of the webpage. `text-gray-800` is a Tailwind class for default text color. -->
 <body class="text-gray-800">
-    <!-- preloader -->
+
+    <!-- Preloader Element: This div covers the screen and shows a loading spinner. It's hidden by JavaScript once the page loads. -->
     <div id="preloader" class="fixed inset-0 z-[9999] flex items-center justify-center bg-white transition-opacity duration-500">
         <div class="h-16 w-16 animate-spin rounded-full border-4 border-solid border-logo-blue border-t-transparent"></div>
     </div>
 
-    <!-- Header Section -->
+    <!-- Header Section: It's 'sticky' so it stays at the top of the viewport when the user scrolls. -->
     <header class="bg-white shadow-md sticky top-0 z-50">
+        <!-- Navigation Bar -->
         <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <!-- Left side of the navbar: Logo and Institute Name -->
             <div class="flex items-center space-x-3">
-                <img src="IMG-20230327-WA0002.jpg" alt="Institute Logo" class="h-12 w-12" onerror="this.onerror=null;this.src='IMG-20230327-WA0002';">
-
+                <!-- The institute's logo. `onerror` provides a fallback image if the original fails to load. -->
+                <img src="IMG-20230327-WA0002.jpg" alt="Institute Logo" class="h-12 w-12" onerror="this.onerror=null;this.src='IMG-20230327-WA0002.jpg';">
+                <!-- Container for the English and Arabic names. -->
                 <div class="text-center">
+                    <!-- English name. `h1` is for the main heading. -->
                     <h1 class="text-xl font-bold text-logo-blue">Institute of Islamic Education</h1>
+                    <!-- Arabic name. `lang="ar"` and `dir="rtl"` are for correct Arabic rendering (right-to-left). -->
                     <p class="text-xl font-bold text-logo-green" lang="ar" dir="rtl">معهد التربية الاسلامية</p>
                 </div>
             </div>
+            <!-- Desktop Navigation Links: This block is hidden on small screens (`lg:flex` means it's a flex container on large screens and up). -->
             <div class="hidden lg:flex items-center space-x-6">
+                <!-- Each `<a>` tag is a hyperlink to a different section of the page. -->
                 <a href="#about" class="text-gray-600 hover:text-logo-green">About Us</a>
                 <a href="#notices" class="text-gray-600 hover:text-logo-green">Notices</a>
                 <a href="#events" class="text-gray-600 hover:text-logo-green">Events</a>
@@ -191,17 +172,22 @@
                 <a href="#admissions" class="text-gray-600 hover:text-logo-green">Admissions</a>
                 <a href="#social" class="text-gray-600 hover:text-logo-green">Contact</a>
                 <a href="#admin-notice" class="text-gray-600 hover:text-logo-green">Admin</a>
+                <!-- This link is styled as a button for emphasis. -->
                 <a href="#feedback" class="bg-logo-green text-white px-4 py-2 rounded-full">Give Feedback</a>
             </div>
+            <!-- Mobile Menu Button (Hamburger Icon): This is only visible on small screens (`lg:hidden`). -->
             <div class="lg:hidden">
                 <button id="mobile-menu-button" class="text-gray-600 hover:text-logo-green focus:outline-none">
+                    <!-- The SVG (Scalable Vector Graphic) for the hamburger icon. -->
                     <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
                     </svg>
                 </button>
             </div>
         </nav>
+        <!-- Mobile Menu Panel: This is hidden by default and shown when the hamburger icon is clicked. -->
         <div id="mobile-menu" class="lg:hidden hidden px-6 pt-2 pb-4">
+            <!-- The navigation links are stacked vertically for mobile view. -->
             <a href="#about" class="block py-2 text-gray-600 hover:text-logo-green">About Us</a>
             <a href="#notices" class="block py-2 text-gray-600 hover:text-logo-green">Notices</a>
             <a href="#events" class="block py-2 text-gray-600 hover:text-logo-green">Events</a>
@@ -214,40 +200,47 @@
         </div>
     </header>
 
-    <!-- Main Content -->
+    <!-- The `<main>` tag represents the primary content of the page. -->
     <main>
-        <!-- Hero Section -->
+        <!-- Hero Section: The main introductory block at the top of the page. -->
         <section class="bg-white py-20">
             <div class="container mx-auto px-6 text-center">
+                <!-- A larger version of the logo. `onerror` provides a placeholder from placehold.co if the image is missing. -->
                 <img src="IMG-20230327-WA0002.jpg" alt="Institute Logo" class="h-48 w-48 mx-auto mb-6" onerror="this.onerror=null;this.src='https://placehold.co/200x200/1e3a8a/ffffff?text=IIE';">
+                <!-- The main heading of the page. -->
                 <h2 class="text-4xl font-extrabold mb-2 text-logo-blue">Institute of Islamic Education</h2>
+                <!-- The Arabic name, styled to match the header. -->
                 <p class="text-2xl text-logo-green mb-8 font-bold" lang="ar" dir="rtl"> معهد التربية الاسلامية</p>
+                <!-- A short introductory paragraph. -->
                 <p class="max-w-3xl mx-auto text-gray-500">
                     Dedicated to fostering a rich learning environment rooted in Islamic principles. We strive for excellence in education, character development, and community service.
                 </p>
             </div>
         </section>
 
-        <!-- Notice Booard -->
-
+        <!-- Notice Board Section: `id="notices"` allows it to be targeted by anchor links. -->
         <section id="notices" class="py-16">
             <div class="container mx-auto px-6">
+                <!-- Section heading. -->
                 <h3 class="text-3xl font-bold text-center mb-8 text-logo-blue">Notice Board</h3>
                 
+                <!-- First notice card with a green left border. -->
                 <div class="bg-white p-6 rounded-lg shadow-lg border-l-4 border-logo-green mb-6">
+                    <!-- Notice title. The `<span>` with the `blinking-dawrah` class applies the blinking animation. -->
                     <h4 class="text-xl font-bold text-logo-green mb-2">Important Announcement: <span class="blinking-dawrah">Dawrah Registrations</span></h4>
+                    <!-- Notice content. -->
                     <p class="text-gray-600">
                         Registrations for our upcoming One Day Dawrah on August 16, 2025, are now open. Secure your spot by visiting the <a href="#events" class="text-logo-blue hover:underline font-semibold">Events section</a> below.
                     </p>
                 </div>
 
+                <!-- Second notice card with a yellow left border. -->
                 <div class="bg-white p-6 rounded-lg shadow-lg border-l-4 border-yellow-400">
                     <h4 class="text-xl font-bold text-yellow-500 mb-2">Website Updates</h4>
                     <p class="text-gray-600">
                         We are performing routine maintenance on our website. You may experience some intermittent issues. We apologize for any inconvenience this may cause.
                     </p>
                 </div>
-                
             </div>
         </section>
 
@@ -255,89 +248,122 @@
         <section id="about" class="py-16">
             <div class="container mx-auto px-6">
                 <h3 class="text-3xl font-bold text-center mb-8 text-logo-blue">About Our Institute</h3>
+                <!-- A styled container for the about text. -->
                 <div class="bg-white p-8 rounded-lg shadow-lg">
                     <p class="text-gray-600 leading-relaxed">
-                        "IIE is Islamic research, training, and solution-providing non-profit Institute, established with the objective to help people in acquiring knowledge of the Quran and Sunnah upon the Understanding of Salaf-Us-Saalih. Our goal and mission is to call to the path of Allah in worshiping him alone (Tawheed) and following the guidance of the Prophet Muhammad ﷺ.Our institution is established on the principles of Ahlus Sunnah Wa Al Jamaah. These guiding principles are derived from the correct understanding of the Quran and the Sunnah upon the understanding of the pious predecessors (Salaf as Salih). The foundation of this true methodology sprinkles from the statement of Allah in the Quran in Surah At-Tawbah, Ayah 100" 
+                        "IIE is Islamic research, training, and solution-providing non-profit Institute, established with the objective to help people in acquiring knowledge of the Quran and Sunnah upon the Understanding of Salaf-Us-Saalih. Our goal and mission is to call to the path of Allah in worshiping him alone (Tawheed) and following the guidance of the Prophet Muhammad ﷺ.Our institution is established on the principles of Ahlus Sunnah Wa Al Jamaah. These guiding principles are derived from the correct understanding of the Quran and the Sunnah upon the understanding of the pious predecessors (Salaf as Salih). The foundation of this true methodology sprinkles from the statement of Allah in the Quran in Surah At-Tawbah, Ayah 100" 
                     </p>
                 </div>
             </div>
         </section>
+
         <!-- Events Section -->
         <section id="events" class="bg-white py-16">
             <div class="container mx-auto px-6">
+                <!-- Section title with the pulsing animation. -->
                 <h3 class="text-3xl font-bold text-center mb-12 text-gradient title-pulse">Upcoming Events</h3>
                 
+                <!-- A responsive grid that shows 1 column on small screens, 2 on medium, and 3 on large screens. -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 
-                    <div class="relative bg-gray-50 p-6 rounded-lg shadow-lg border-2 bg-logo-green transform hover:scale-105 transition duration-300 flex flex-col card-shake">
+                    <!-- Featured Event Card: Has the floating animation (`card-shake`). -->
+                    <div class="relative bg-gray-50 p-6 rounded-lg shadow-lg border-2 transform hover:scale-105 transition duration-300 flex flex-col card-shake">
+                        <!-- A "Featured" banner positioned at the top-right corner. -->
                         <div class="absolute top-0 right-0 bg-logo-green text-white text-xs font-bold px-3 py-1 rounded-tr-lg rounded-bl-lg">Featured</div>
+                        <!-- `flex-grow` allows this div to take up available space, pushing the button to the bottom. -->
                         <div class="flex-grow">
                             <p class="text-sm font-semibold text-logo-green">August 16, 2025 | 9:30 AM - 6:30 PM</p>
                             <h4 class="text-xl font-bold text-logo-blue my-2">One Day Dawrah</h4>
                             <p class="text-gray-600 mb-4">Join us for our One Day Dawrah Series. We will cover, تائية الإلبيري في الزهد والحكم</p>
+                            <!-- Link to Google Maps for the event location. `target="_blank"` opens it in a new tab. -->
                             <p class="text-gray-700 font-medium">
-                                <a href="https://maps.app.goo.gl/Rh7wQF8qznLFbzx4A" target="_blank" class="inline-flex items-center bg-gray-100 rounded-full p-1 pr-3 text-logo-green font-semibold mt-auto">
+                                <!--Background changed from bg-gray-100 to bg-gray-200 for a "heavier" look. -->
+                                <a href="https://maps.app.goo.gl/Rh7wQF8qznLFbzx4A" target="_blank" class="inline-flex items-center bg-gray-200 rounded-full p-1 pr-3 text-logo-green font-semibold mt-auto">
+                                    <!-- Location pin icon from Font Awesome. -->
                                     <i class="fa-solid fa-location-dot mr-2 icon-bob"></i>
                                     <span>Jamia Masjid Salafiyah Utterpora,Beerwah</span>
+                                    <!-- A small circle with a shaking arrow icon for visual flair. -->
                                     <span class="ml-2 h-6 w-6 rounded-full bg-logo-blue text-white flex items-center justify-center">
                                         <i class="fa-solid fa-arrow-left icon-shake text-xs"></i>
                                     </span>
                                 </a>
                             </p>
+                            <!-- New Route Information Link (Add this part) -->
+                            <p class="text-gray-700 font-medium mt-2">
+                                <a href="https://www.google.com/maps/dir/Srinagar/Jamia+Masjid+Salafiyah+Utterpora,Beerwah" target="_blank" class="inline-flex items-center bg-gray-200 rounded-full p-1 pr-3 text-logo-green font-semibold mt-auto">
+                                    <!-- Route icon from Font Awesome -->
+                                    <i class="fa-solid fa-route mr-2 icon-bob"></i>
+                                    <span>Route from Sonapah</span>
+                                    <!-- A small circle with a shaking arrow icon for visual flair. -->
+                                    <span class="ml-2 h-6 w-6 rounded-full bg-logo-blue text-white flex items-center justify-center">
+                                        <i class="fa-solid fa-arrow-left icon-shake text-xs"></i>
+                                    </span>
+                                </a>
+                            </p>
+                            
                         </div>
+                        <!-- Container for the registration button. -->
                         <div class="mt-4">
-                            <a href="https://forms.gle/Au9D2d38MAf362Nw5" target="_blank" class="btn-pulse bg-logo-green text-white font-bold py-2 px-4 rounded-full w-full text-center inline-block">Register Now</a>
+                            <!-- Closed Registration -->
+                            <!-- <a href="https://forms.gle/Au9D2d38MAf362Nw5" target="_blank" class="btn-pulse bg-logo-green text-white font-bold py-2 px-4 rounded-full w-full text-center inline-block">Register Now</a> -->
+                            <!-- Container for the registration status button. -->
+                            <span class="bg-gray-500 text-white font-bold py-2 px-4 rounded-full w-full text-center inline-flex items-center justify-center cursor-not-allowed">
+                                <!-- Icon indicating that registrations are closed. -->
+                                <i class="fa-solid fa-calendar-xmark mr-2"></i>
+                                <span>Registrations Closed</span>
+                            </span>
                         </div>
                     </div>
 
+                    <!-- Placeholder Card for future events. -->
                     <div class="bg-white p-6 rounded-lg shadow-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-center">
                         <i class="fa-solid fa-calendar-days fa-2x text-gray-400 mb-3"></i>
-                        <h4 class="text-xl font-bold text-logo-blue mb-1">More September Events</h4>
+                        <h4 class="text-xl font-bold text-logo-blue mb-1">September Events</h4>
                         <p class="text-gray-500 font-semibold">Details Coming Soon!</p>
                     </div>
 
+                    <!-- Another Placeholder Card. -->
                     <div class="bg-white p-6 rounded-lg shadow-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-center">
                         <i class="fa-solid fa-calendar-days fa-2x text-gray-400 mb-3"></i>
                         <h4 class="text-xl font-bold text-logo-blue mb-1">October Events</h4>
                         <p class="text-gray-500 font-semibold">Details Coming Soon!</p>
                     </div>
-
                 </div>
             </div>
         </section>
 
-
-        <!-- gallary -->
-
+        <!-- Gallery Section -->
         <section id="gallery" class="py-16">
             <div class="container mx-auto px-6">
                 <h3 class="text-3xl font-bold text-center mb-8 text-logo-blue">Our Gallery</h3>
                 
+                <!-- The main container for the gallery, styled with CSS class `.gallery-container`. -->
                 <div class="gallery-container max-w-2xl mx-auto shadow-lg rounded-lg">
+                    <!-- The wrapper that moves, styled with `.gallery-wrapper-css`. -->
                     <div class="gallery-wrapper-css">
-                        
+                        <!-- Each `<img>` is a slide. The last image is a duplicate of the first to create a seamless loop. -->
                         <img src="5ffdc721ccc294163dd69384bed3362c.jpg" alt="Gallery Image 1" class="gallery-slide">
                         <img src="images.jpg" alt="Gallery Image 2" class="gallery-slide">
                         <img src="pexels-sayed-abdullah-tafhim-2147792704-29865666.jpg" alt="Gallery Image 3" class="gallery-slide">
-                        
-                        <img src="IMG-20230327-WA0002.jpg" alt="Gallery Image 1" class="gallery-slide"> 
-
+                        <img src="5ffdc721ccc294163dd69384bed3362c.jpg" alt="Gallery Image 1 (Duplicate for loop)" class="gallery-slide"> 
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Library -->
-
+        <!-- Library Section -->
         <section id="library" class="py-16">
             <div class="container mx-auto px-6 text-center">
                 <h3 class="text-3xl font-bold mb-8 text-logo-blue">Explore Our Library</h3>
                 
+                <!-- A notification box indicating the section is under maintenance. -->
                 <div class="max-w-3xl mx-auto bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded-lg shadow-md">
                     <div class="flex items-center">
+                        <!-- Icon for visual context. -->
                         <div class="text-yellow-500 pr-4">
                             <i class="fa-solid fa-person-digging fa-2x"></i>
                         </div>
+                        <!-- Text content of the notification. -->
                         <div>
                             <h4 class="text-xl font-bold text-gray-800 text-left">Section Under Maintenance</h4>
                             <p class="text-gray-600 mt-1 text-left">
@@ -349,12 +375,14 @@
             </div>
         </section>
 
-        <!-- Borrow a Book -->
+        <!-- Borrow a Book Section -->
         <section id="borrow" class="pb-16">
             <div class="container mx-auto px-6">
                 <h3 class="text-3xl font-bold text-center mb-12 text-logo-blue">How to Borrow a Book</h3>
 
+                <!-- A styled box explaining the borrowing process. -->
                 <div class="max-w-3xl mx-auto bg-yellow-50 border-l-4 border-yellow-400 p-8 rounded-lg shadow-lg">
+                    <!-- Maintenance notice within the box. -->
                     <div class="flex items-center mb-4">
                         <div class="text-yellow-500 pr-4">
                             <i class="fa-solid fa-person-digging fa-2x"></i>
@@ -365,24 +393,22 @@
                         </div>
                     </div>
 
+                    <!-- A horizontal line to separate the notice from the steps. -->
                     <div class="border-t border-yellow-200 pt-6 space-y-4">
+                        <!-- Step 1 -->
                         <div class="flex items-start">
                             <div class="flex-shrink-0 bg-yellow-400 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center mr-4">1</div>
-                            <p class="text-gray-700">
-                                <strong>Register Online:</strong> Submit your application, official ID, and the name of the book you wish to borrow via our upcoming online form.
-                            </p>
+                            <p class="text-gray-700"><strong>Register Online:</strong> Submit your application, official ID, and the name of the book you wish to borrow via our upcoming online form.</p>
                         </div>
+                        <!-- Step 2 -->
                         <div class="flex items-start">
                             <div class="flex-shrink-0 bg-yellow-400 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center mr-4">2</div>
-                            <p class="text-gray-700">
-                                <strong>Await Confirmation:</strong> We will check for the book's availability and send you a confirmation.
-                            </p>
+                            <p class="text-gray-700"><strong>Await Confirmation:</strong> We will check for the book's availability and send you a confirmation.</p>
                         </div>
+                        <!-- Step 3 -->
                         <div class="flex items-start">
                             <div class="flex-shrink-0 bg-yellow-400 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center mr-4">3</div>
-                            <p class="text-gray-700">
-                                <strong>Collect from Office:</strong> Once confirmed, visit our office to collect your book.
-                            </p>
+                            <p class="text-gray-700"><strong>Collect from Office:</strong> Once confirmed, visit our office to collect your book.</p>
                         </div>
                     </div>
                 </div>
@@ -394,6 +420,7 @@
             <div class="container mx-auto px-6 text-center">
                 <h3 class="text-3xl font-bold mb-8 text-logo-blue">Admissions & Applications</h3>
                 
+                <!-- A notification box indicating that applications are closed. -->
                 <div class="max-w-3xl mx-auto bg-blue-50 border-l-4 border-logo-blue p-6 rounded-lg shadow-md">
                     <div class="flex items-center">
                         <div class="text-logo-blue pr-4">
@@ -407,58 +434,266 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </section>
 
-        <!-- </Open> 
+        <!-- Newsletter Section -->
+        <section id="newsletter" class="py-16 bg-gray-50">
+            <div class="container mx-auto px-6 text-center">
+                <div class="max-w-2xl mx-auto">
+                    <h3 class="text-3xl font-bold mb-4 text-logo-blue">Subscribe to Our Al-Tarbiya</h3>
+                    <p class="text-gray-600 mb-8">
+                        Updates, Events, and Insights for Your Islamic Journey. This focuses on the practical benefits (updates, events) and also ties into the idea of a continuous journey of learning and self-improvement in Islam.
+                    </p>
+                    <!-- The form for newsletter subscription. -->
+                    <form id="newsletter-form" class="w-full">
+                        <!-- THIS HIDDEN INPUT IDENTIFIES THE FORM -->
+                        <input type="hidden" name="formType" value="newsletter">
+                        <!-- A container to stack the form fields vertically -->
+                        <div class="space-y-4">
+                            <!-- Name Input Field -->
+                            <div>
+                                <input type="text" id="newsletter-name" name="newsletter-name" class="w-full max-w-lg mx-auto px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-logo-green" placeholder="Enter your full name" required>
+                            </div>
 
-        <section id="admissions" class="py-16">
-            <div class="container mx-auto px-6">
-                <h3 class="text-3xl font-bold text-center mb-8 text-logo-blue">Apply for Admission</h3>
-                <div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg">
-                    <form id="application-form">
-                        <div class="mb-4">
-                            <label for="applicant-name" class="block text-gray-700 font-medium mb-2">Full Name</label>
-                            <input type="text" id="applicant-name" name="applicant-name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-logo-green" required>
+                            <!-- Phone Number Input Group -->
+                            <div>
+                                <div class="flex items-center w-full max-w-lg mx-auto">
+                                    <!-- Country Code Dropdown -->
+                                    <select id="country-code" name="country-code" class="px-4 py-3 border border-r-0 border-gray-300 rounded-l-full focus:outline-none focus:ring-2 focus:ring-logo-green bg-white">
+                                        <!-- Common countries are listed first for convenience -->
+                                        <option value="+91">India (+91)</option>
+                                        <option value="+1">USA (+1)</option>
+                                        <option value="+44">UK (+44)</option>
+                                        <option value="+61">Australia (+61)</option>
+                                        <option value="+971">UAE (+971)</option>
+                                        <option value="+966">Saudi Arabia (+966)</option>
+                                        <option disabled>──────────</option>
+                                        <!-- The rest of the countries are listed alphabetically -->
+                                        <option value="+93">Afghanistan (+93)</option>
+                                        <option value="+355">Albania (+355)</option>
+                                        <option value="+213">Algeria (+213)</option>
+                                        <option value="+376">Andorra (+376)</option>
+                                        <option value="+244">Angola (+244)</option>
+                                        <option value="+1-268">Antigua and Barbuda (+1-268)</option>
+                                        <option value="+54">Argentina (+54)</option>
+                                        <option value="+374">Armenia (+374)</option>
+                                        <option value="+297">Aruba (+297)</option>
+                                        <option value="+43">Austria (+43)</option>
+                                        <option value="+994">Azerbaijan (+994)</option>
+                                        <option value="+1-242">Bahamas (+1-242)</option>
+                                        <option value="+973">Bahrain (+973)</option>
+                                        <option value="+880">Bangladesh (+880)</option>
+                                        <option value="+1-246">Barbados (+1-246)</option>
+                                        <option value="+375">Belarus (+375)</option>
+                                        <option value="+32">Belgium (+32)</option>
+                                        <option value="+501">Belize (+501)</option>
+                                        <option value="+229">Benin (+229)</option>
+                                        <option value="+975">Bhutan (+975)</option>
+                                        <option value="+591">Bolivia (+591)</option>
+                                        <option value="+387">Bosnia and Herzegovina (+387)</option>
+                                        <option value="+267">Botswana (+267)</option>
+                                        <option value="+55">Brazil (+55)</option>
+                                        <option value="+673">Brunei (+673)</option>
+                                        <option value="+359">Bulgaria (+359)</option>
+                                        <option value="+226">Burkina Faso (+226)</option>
+                                        <option value="+257">Burundi (+257)</option>
+                                        <option value="+238">Cabo Verde (+238)</option>
+                                        <option value="+855">Cambodia (+855)</option>
+                                        <option value="+237">Cameroon (+237)</option>
+                                        <option value="+1">Canada (+1)</option>
+                                        <option value="+236">Central African Republic (+236)</option>
+                                        <option value="+235">Chad (+235)</option>
+                                        <option value="+56">Chile (+56)</option>
+                                        <option value="+86">China (+86)</option>
+                                        <option value="+57">Colombia (+57)</option>
+                                        <option value="+269">Comoros (+269)</option>
+                                        <option value="+243">Congo, Dem. Rep. of the (+243)</option>
+                                        <option value="+242">Congo, Republic of the (+242)</option>
+                                        <option value="+506">Costa Rica (+506)</option>
+                                        <option value="+225">Côte d'Ivoire (+225)</option>
+                                        <option value="+385">Croatia (+385)</option>
+                                        <option value="+53">Cuba (+53)</option>
+                                        <option value="+357">Cyprus (+357)</option>
+                                        <option value="+420">Czech Republic (+420)</option>
+                                        <option value="+45">Denmark (+45)</option>
+                                        <option value="+253">Djibouti (+253)</option>
+                                        <option value="+1-767">Dominica (+1-767)</option>
+                                        <option value="+1-809">Dominican Republic (+1-809)</option>
+                                        <option value="+593">Ecuador (+593)</option>
+                                        <option value="+20">Egypt (+20)</option>
+                                        <option value="+503">El Salvador (+503)</option>
+                                        <option value="+240">Equatorial Guinea (+240)</option>
+                                        <option value="+291">Eritrea (+291)</option>
+                                        <option value="+372">Estonia (+372)</option>
+                                        <option value="+268">Eswatini (+268)</option>
+                                        <option value="+251">Ethiopia (+251)</option>
+                                        <option value="+679">Fiji (+679)</option>
+                                        <option value="+358">Finland (+358)</option>
+                                        <option value="+33">France (+33)</option>
+                                        <option value="+241">Gabon (+241)</option>
+                                        <option value="+220">Gambia (+220)</option>
+                                        <option value="+995">Georgia (+995)</option>
+                                        <option value="+49">Germany (+49)</option>
+                                        <option value="+233">Ghana (+233)</option>
+                                        <option value="+30">Greece (+30)</option>
+                                        <option value="+1-473">Grenada (+1-473)</option>
+                                        <option value="+502">Guatemala (+502)</option>
+                                        <option value="+224">Guinea (+224)</option>
+                                        <option value="+245">Guinea-Bissau (+245)</option>
+                                        <option value="+592">Guyana (+592)</option>
+                                        <option value="+509">Haiti (+509)</option>
+                                        <option value="+504">Honduras (+504)</option>
+                                        <option value="+36">Hungary (+36)</option>
+                                        <option value="+354">Iceland (+354)</option>
+                                        <option value="+62">Indonesia (+62)</option>
+                                        <option value="+98">Iran (+98)</option>
+                                        <option value="+964">Iraq (+964)</option>
+                                        <option value="+353">Ireland (+353)</option>
+                                        <option value="+972">Israel (+972)</option>
+                                        <option value="+39">Italy (+39)</option>
+                                        <option value="+1-876">Jamaica (+1-876)</option>
+                                        <option value="+81">Japan (+81)</option>
+                                        <option value="+962">Jordan (+962)</option>
+                                        <option value="+7">Kazakhstan (+7)</option>
+                                        <option value="+254">Kenya (+254)</option>
+                                        <option value="+686">Kiribati (+686)</option>
+                                        <option value="+383">Kosovo (+383)</option>
+                                        <option value="+965">Kuwait (+965)</option>
+                                        <option value="+996">Kyrgyzstan (+996)</option>
+                                        <option value="+856">Laos (+856)</option>
+                                        <option value="+371">Latvia (+371)</option>
+                                        <option value="+961">Lebanon (+961)</option>
+                                        <option value="+266">Lesotho (+266)</option>
+                                        <option value="+231">Liberia (+231)</option>
+                                        <option value="+218">Libya (+218)</option>
+                                        <option value="+423">Liechtenstein (+423)</option>
+                                        <option value="+370">Lithuania (+370)</option>
+                                        <option value="+352">Luxembourg (+352)</option>
+                                        <option value="+261">Madagascar (+261)</option>
+                                        <option value="+265">Malawi (+265)</option>
+                                        <option value="+60">Malaysia (+60)</option>
+                                        <option value="+960">Maldives (+960)</option>
+                                        <option value="+223">Mali (+223)</option>
+                                        <option value="+356">Malta (+356)</option>
+                                        <option value="+692">Marshall Islands (+692)</option>
+                                        <option value="+222">Mauritania (+222)</option>
+                                        <option value="+230">Mauritius (+230)</option>
+                                        <option value="+52">Mexico (+52)</option>
+                                        <option value="+691">Micronesia (+691)</option>
+                                        <option value="+373">Moldova (+373)</option>
+                                        <option value="+377">Monaco (+377)</option>
+                                        <option value="+976">Mongolia (+976)</option>
+                                        <option value="+382">Montenegro (+382)</option>
+                                        <option value="+212">Morocco (+212)</option>
+                                        <option value="+258">Mozambique (+258)</option>
+                                        <option value="+95">Myanmar (+95)</option>
+                                        <option value="+264">Namibia (+264)</option>
+                                        <option value="+674">Nauru (+674)</option>
+                                        <option value="+977">Nepal (+977)</option>
+                                        <option value="+31">Netherlands (+31)</option>
+                                        <option value="+64">New Zealand (+64)</option>
+                                        <option value="+505">Nicaragua (+505)</option>
+                                        <option value="+227">Niger (+227)</option>
+                                        <option value="+234">Nigeria (+234)</option>
+                                        <option value="+850">North Korea (+850)</option>
+                                        <option value="+389">North Macedonia (+389)</option>
+                                        <option value="+47">Norway (+47)</option>
+                                        <option value="+968">Oman (+968)</option>
+                                        <option value="+680">Palau (+680)</option>
+                                        <option value="+970">Palestine (+970)</option>
+                                        <option value="+507">Panama (+507)</option>
+                                        <option value="+675">Papua New Guinea (+675)</option>
+                                        <option value="+595">Paraguay (+595)</option>
+                                        <option value="+51">Peru (+51)</option>
+                                        <option value="+63">Philippines (+63)</option>
+                                        <option value="+48">Poland (+48)</option>
+                                        <option value="+351">Portugal (+351)</option>
+                                        <option value="+974">Qatar (+974)</option>
+                                        <option value="+40">Romania (+40)</option>
+                                        <option value="+250">Rwanda (+250)</option>
+                                        <option value="+685">Samoa (+685)</option>
+                                        <option value="+378">San Marino (+378)</option>
+                                        <option value="+239">Sao Tome and Principe (+239)</option>
+                                        <option value="+221">Senegal (+221)</option>
+                                        <option value="+381">Serbia (+381)</option>
+                                        <option value="+248">Seychelles (+248)</option>
+                                        <option value="+232">Sierra Leone (+232)</option>
+                                        <option value="+65">Singapore (+65)</option>
+                                        <option value="+421">Slovakia (+421)</option>
+                                        <option value="+386">Slovenia (+386)</option>
+                                        <option value="+677">Solomon Islands (+677)</option>
+                                        <option value="+252">Somalia (+252)</option>
+                                        <option value="+27">South Africa (+27)</option>
+                                        <option value="+82">South Korea (+82)</option>
+                                        <option value="+211">South Sudan (+211)</option>
+                                        <option value="+34">Spain (+34)</option>
+                                        <option value="+249">Sudan (+249)</option>
+                                        <option value="+597">Suriname (+597)</option>
+                                        <option value="+46">Sweden (+46)</option>
+                                        <option value="+41">Switzerland (+41)</option>
+                                        <option value="+963">Syria (+963)</option>
+                                        <option value="+886">Taiwan (+886)</option>
+                                        <option value="+992">Tajikistan (+992)</option>
+                                        <option value="+255">Tanzania (+255)</option>
+                                        <option value="+66">Thailand (+66)</option>
+                                        <option value="+670">Timor-Leste (+670)</option>
+                                        <option value="+228">Togo (+228)</option>
+                                        <option value="+676">Tonga (+676)</option>
+                                        <option value="+1-868">Trinidad and Tobago (+1-868)</option>
+                                        <option value="+216">Tunisia (+216)</option>
+                                        <option value="+90">Turkey (+90)</option>
+                                        <option value="+993">Turkmenistan (+993)</option>
+                                        <option value="+688">Tuvalu (+688)</option>
+                                        <option value="+256">Uganda (+256)</option>
+                                        <option value="+380">Ukraine (+380)</option>
+                                        <option value="+44">United Kingdom (+44)</option>
+                                        <option value="+598">Uruguay (+598)</option>
+                                        <option value="+998">Uzbekistan (+998)</option>
+                                        <option value="+678">Vanuatu (+678)</option>
+                                        <option value="+379">Vatican City (+379)</option>
+                                        <option value="+58">Venezuela (+58)</option>
+                                        <option value="+84">Vietnam (+84)</option>
+                                        <option value="+967">Yemen (+967)</option>
+                                        <option value="+260">Zambia (+260)</option>
+                                        <option value="+263">Zimbabwe (+263)</option>
+                                    </select>
+                                    <!-- Phone Number Input Field -->
+                                    <input type="tel" id="newsletter-phone" name="newsletter-phone" class="w-full px-4 py-3 border border-gray-300 rounded-r-full focus:outline-none focus:ring-2 focus:ring-logo-green" placeholder="Phone number" required pattern="[1-9][0-9]{9}" title="Please enter a 10-digit phone number that does not start with 0.">
+                                </div>
+                            </div>
+
+                            <!-- Email Input Field -->
+                            <div>
+                                <input type="email" id="newsletter-email" name="newsletter-email" class="w-full max-w-lg mx-auto px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-logo-green" placeholder="Enter your email address" required>
+                            </div>
                         </div>
-                        <div class="mb-4">
-                            <label for="applicant-email" class="block text-gray-700 font-medium mb-2">Email Address</label>
-                            <input type="email" id="applicant-email" name="applicant-email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-logo-green" required>
+                        <!-- Submit Button -->
+                        <div class="mt-6">
+                            <button type="submit" class="bg-logo-green text-white font-bold px-8 py-3 rounded-full hover:bg-green-700 transition duration-300 w-full sm:w-auto">
+                                Subscribe
+                            </button>
                         </div>
-                        <div class="mb-6">
-                            <label for="statement" class="block text-gray-700 font-medium mb-2">Why do you want to join?</label>
-                            <textarea id="statement" name="statement" rows="5" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-logo-green" required></textarea>
-                        </div>
-                        <div class="text-center">
-                            <button type="submit" class="bg-logo-blue text-white font-bold px-8 py-3 rounded-full hover:bg-blue-800 transition duration-300">Submit Application</button>
-                        </div>
+                        <!-- This paragraph will display status messages (e.g., "Subscribing...", "Thank you!"). -->
+                        <p id="newsletter-form-status" class="mt-4 text-sm"></p>
                     </form>
                 </div>
             </div>
-        </section> -->
+        </section>
 
         <!-- Social Media Section -->
         <section id="social" class="bg-gray-100 py-16">
             <div class="container mx-auto px-6 text-center">
                 <h3 class="text-3xl font-bold mb-8 text-logo-blue">Connect With Us</h3>
                 <p class="text-gray-600 mb-8">Follow our journey and stay updated on our social media channels.</p>
+                <!-- A flex container to hold the social media icons. -->
                 <div class="flex justify-center space-x-6">
-                    <a href="tel:+919419737927" class="text-gray-600 hover:text-logo-green transform hover:scale-125 transition duration-300">
-                        <i class="fa-solid fa-phone fa-3x"></i>
-                    </a>
-                    <a href="https://wa.me/+919419737927" target="_blank" class="text-gray-600 hover:text-logo-green transform hover:scale-125 transition duration-300">
-                        <i class="fab fa-whatsapp fa-3x"></i>
-                    </a>
-                    <a href="mailto:iiecheckpora@gmail.com" class="text-gray-600 hover:text-logo-green transform hover:scale-125 transition duration-300">
-                        <i class="fa-solid fa-envelope fa-3x"></i>
-                    </a>
-                    <a href="https://youtube.com/@instituteofislamiceducation?feature=shared" class="text-gray-600 hover:text-logo-green transform hover:scale-125 transition duration-300">
-                        <i class="fab fa-youtube fa-3x"></i>
-                    </a>
-                    <a href="https://m.facebook.com/501487530283263/" class="text-gray-600 hover:text-logo-green transform hover:scale-125 transition duration-300">
-                        <i class="fab fa-facebook-f fa-3x"></i>
-                    </a>               
+                    <!-- Each `<a>` tag links to a social profile. The `<i>` tag displays the Font Awesome icon. -->
+                    <a href="tel:+919419737927" class="text-gray-600 hover:text-logo-green transform hover:scale-125 transition duration-300"><i class="fa-solid fa-phone fa-3x"></i></a>
+                    <a href="https://wa.me/+919419737927" target="_blank" class="text-gray-600 hover:text-logo-green transform hover:scale-125 transition duration-300"><i class="fab fa-whatsapp fa-3x"></i></a>
+                    <a href="mailto:iiecheckpora@gmail.com" class="text-gray-600 hover:text-logo-green transform hover:scale-125 transition duration-300"><i class="fa-solid fa-envelope fa-3x"></i></a>
+                    <a href="https://youtube.com/@instituteofislamiceducation?feature=shared" target="_blank" class="text-gray-600 hover:text-logo-green transform hover:scale-125 transition duration-300"><i class="fab fa-youtube fa-3x"></i></a>
+                    <a href="https://m.facebook.com/501487530283263/" target="_blank" class="text-gray-600 hover:text-logo-green transform hover:scale-125 transition duration-300"><i class="fab fa-facebook-f fa-3x"></i></a>              
                 </div>
             </div>
         </section>
@@ -467,20 +702,27 @@
         <section id="feedback" class="py-16">
             <div class="container mx-auto px-6">
                 <h3 class="text-3xl font-bold text-center mb-8 text-logo-blue">We Value Your Feedback</h3>
+                <!-- A styled card containing the feedback form. -->
                 <div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg">
                     <form id="feedback-form">
+                        <!-- THIS HIDDEN INPUT IDENTIFIES THE FORM -->
+                        <input type="hidden" name="formType" value="feedback">
+                        <!-- Full Name Field -->
                         <div class="mb-4">
                             <label for="name" class="block text-gray-700 font-medium mb-2">Full Name</label>
                             <input type="text" id="name" name="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-logo-green" required>
                         </div>
+                        <!-- Email Address Field -->
                         <div class="mb-4">
                             <label for="email" class="block text-gray-700 font-medium mb-2">Email Address</label>
                             <input type="email" id="email" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-logo-green" required>
                         </div>
+                        <!-- Message/Feedback Field -->
                         <div class="mb-6">
                             <label for="message" class="block text-gray-700 font-medium mb-2">Message or Feedback</label>
                             <textarea id="message" name="message" rows="5" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-logo-green" required></textarea>
                         </div>
+                        <!-- Submit Button and Status Message -->
                         <div class="text-center">
                             <button type="submit" class="bg-logo-blue text-white font-bold px-8 py-3 rounded-full hover:bg-blue-700 transition duration-300 disabled:opacity-50">Submit Feedback</button>
                             <p id="form-status" class="mt-4 text-sm"></p>
@@ -490,20 +732,17 @@
             </div>
         </section>
 
+        <!-- Admin Section Placeholder -->
         <section id="admin-notice" class="py-16">
             <div class="container mx-auto px-6 text-center">
                 <h3 class="text-3xl font-bold mb-8 text-logo-blue">Admin Section</h3>
-                
+                <!-- Maintenance notice for the admin panel. -->
                 <div class="max-w-3xl mx-auto bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded-lg shadow-md">
                     <div class="flex items-center">
-                        <div class="text-yellow-500 pr-4">
-                            <i class="fa-solid fa-person-digging fa-2x"></i>
-                        </div>
+                        <div class="text-yellow-500 pr-4"><i class="fa-solid fa-person-digging fa-2x"></i></div>
                         <div>
                             <h4 class="text-xl font-bold text-gray-800 text-left">Admin Panel Coming Soon!</h4>
-                            <p class="text-gray-600 mt-1 text-left">
-                                We are currently working on a dedicated admin panel to manage our events, gallery, and other content. Please check back later for updates.
-                            </p>
+                            <p class="text-gray-600 mt-1 text-left">We are currently working on a dedicated admin panel to manage our events, gallery, and other content. Please check back later for updates.</p>
                         </div>
                     </div>
                 </div>
@@ -513,10 +752,9 @@
     </main>
 
     <!-- Footer Section -->
-
     <footer class="bg-gradient-footer text-white py-8">
         <div class="container mx-auto px-6 text-center">
-            
+            <!-- Head Office Location -->
             <div class="mb-6">
                 <h4 class="text-lg font-bold mb-2">Head Office</h4>
                 <div class="bg-logo-blue p-1.5 rounded-full shadow-2xl inline-block">
@@ -529,17 +767,14 @@
                     </a>
                 </div>
             </div>
-
+            <!-- Copyright and credits -->
             <div class="border-t border-green-300 pt-6">
-                <p>&copy; 2025 Institute of Islamic Education. All Rights Reserved.</p>
-                <p class="text-sm text-gray-300 mt-2">Designed with care.</p>
+                <p>© 2025 Institute of Islamic Education. All Rights Reserved.</p>
             </div>
-
         </div>
     </footer>
 
-    <!-- popup -->
-
+    <!-- Welcome Popup Modal: Hidden by default, shown by JavaScript. -->
     <div id="welcome-popup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-white p-8 rounded-lg shadow-2xl max-w-sm w-full text-center">
             <h3 class="text-2xl font-bold text-logo-blue mb-4">A Quick Note</h3>
@@ -549,82 +784,145 @@
                 the page and ensure your browser is 
                 <strong class="text-logo-green">Up to Date</strong>.
             </p>
+            <!-- Buttons to control the popup. -->
             <div class="flex justify-center space-x-4">
-                <button id="refresh-btn" class="bg-logo-blue text-white font-bold py-2 px-6 rounded-full hover:bg-blue-800 transition">
-                    Refresh
-                </button>
-                <button id="close-popup-btn" class="bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded-full hover:bg-gray-400 transition">
-                    Close
-                </button>
+                <button id="refresh-btn" class="bg-logo-blue text-white font-bold py-2 px-6 rounded-full hover:bg-blue-800 transition">Refresh</button>
+                <button id="close-popup-btn" class="bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded-full hover:bg-gray-400 transition">Close</button>
             </div>
         </div>
     </div>
 
 
-    <!-- back on top button -->
-
+    <!-- Back to Top Button: Fixed position at the bottom-right of the screen. -->
     <button id="back-to-top-btn" class="fixed bottom-5 right-5 z-50 p-3 bg-logo-blue text-white rounded-full shadow-lg hover:bg-blue-800 transition-all duration-300 opacity-0 pointer-events-none">
         <i class="fa-solid fa-arrow-up h-6 w-6"></i>
     </button>
 
-    <!-- script -->
+    <!-- This script tag contains all the JavaScript for the page's interactive features. -->
     <script>
+        // This event listener ensures that the JavaScript code runs only after the entire HTML document has been loaded and parsed by the browser.
         document.addEventListener('DOMContentLoaded', function() {
 
             // --- Mobile Menu Logic ---
+            // Get references to the mobile menu button and the menu panel itself.
             const mobileMenuButton = document.getElementById('mobile-menu-button');
             const mobileMenu = document.getElementById('mobile-menu');
 
+            // Check if both elements exist to avoid errors.
             if (mobileMenuButton && mobileMenu) {
+                // Add a 'click' event listener to the button.
                 mobileMenuButton.addEventListener('click', () => {
+                    // `toggle` adds the 'hidden' class if it's not there, and removes it if it is. This shows/hides the menu.
                     mobileMenu.classList.toggle('hidden');
                 });
             }
 
             // --- Mobile Menu Auto-Close Logic ---
-            // The 'mobileMenu' variable is already declared above, so we don't need to redeclare it.
+            // Get all the links inside the mobile menu.
             const mobileMenuLinks = mobileMenu.querySelectorAll('a');
-
+            // Loop through each link.
             mobileMenuLinks.forEach(link => {
+                // Add a 'click' event listener to each link.
                 link.addEventListener('click', () => {
+                    // When a link is clicked, hide the menu. This is good UX for single-page sites.
                     mobileMenu.classList.add('hidden');
                 });
             });
 
             // --- Popup Logic ---
+            // Get references to the popup and its buttons.
             const welcomePopup = document.getElementById('welcome-popup');
             const closePopupButton = document.getElementById('close-popup-btn');
             const refreshButton = document.getElementById('refresh-btn');
 
+            // Check if all popup-related elements exist.
             if (welcomePopup && closePopupButton && refreshButton) {
-                
-                // Makes the "Close" button work
+                // Add a 'click' event listener to the 'Close' button.
                 closePopupButton.addEventListener('click', () => {
+                    // Hide the popup by adding the 'hidden' class.
                     welcomePopup.classList.add('hidden');
                 });
 
-                // Makes the "Refresh" button work
+                // Add a 'click' event listener to the 'Refresh' button.
                 refreshButton.addEventListener('click', () => {
-                    location.reload(); // This is the command to refresh the page
+                    // `location.reload()` reloads the current page.
+                    location.reload();
                 });
 
-                // Shows the popup only once per browser session
+                // This logic ensures the popup is shown only once per browser session.
+                // `sessionStorage` clears when the browser tab is closed.
                 if (!sessionStorage.getItem('popupShown')) {
+                    // `setTimeout` waits for a specified time (1000ms = 1 second) before executing the code.
                     setTimeout(() => {
+                        // Show the popup by removing the 'hidden' class.
                         welcomePopup.classList.remove('hidden');
-                    }, 1000);
+                    }, 1000); 
+                    // Set a flag in sessionStorage to remember that the popup has been shown.
                     sessionStorage.setItem('popupShown', 'true');
                 }
             }
-
-            // --- Feedback Form Logic ---
-            const feedbackForm = document.getElementById('feedback-form');
             
+            // --- Shared Google Script URL for Forms ---
+            // This URL is the endpoint for the Google Apps Script that will receive the form data.
+            const googleScriptURL = 'https://script.google.com/macros/s/AKfycbwGHTFy2bxhJBBFBKodr8fpZDwXre0FU9TmPI5G-sSbJkIkyg5wQV-ragvwOKo8KzCE/exec';
+
+            // --- Newsletter Form Submission Logic ---
+            // Get references to the newsletter form and its elements.
+            const newsletterForm = document.getElementById('newsletter-form');
+            if (newsletterForm) {
+                const formStatus = document.getElementById('newsletter-form-status');
+                const submitButton = newsletterForm.querySelector('button[type="submit"]');
+                const phoneInput = document.getElementById('newsletter-phone'); // Get phone input
+
+                // Add a 'submit' event listener to the form.
+                newsletterForm.addEventListener('submit', (e) => {
+                    // `preventDefault()` stops the browser's default action for a form submission, which is to reload the page.
+                    e.preventDefault();
+
+                    const phoneValue = phoneInput.value;
+                    // Disable the button to prevent multiple submissions.
+                    submitButton.disabled = true;
+                    // Provide visual feedback to the user.
+                    formStatus.textContent = 'Subscribing...';
+                    formStatus.classList.remove('text-red-500', 'text-green-500');
+                    
+                    // Create a FormData object from the form to easily access its data.
+                    const formData = new FormData(newsletterForm);
+                    // Convert the FormData object to a plain JavaScript object.
+                    const data = Object.fromEntries(formData.entries());
+
+                    // Use the `fetch` API to send the data to the Google Script.
+                    fetch(googleScriptURL, {
+                        method: 'POST', // Specifies the request method.
+                        mode: 'no-cors', // `no-cors` is a simple way to send data to a Google Script without complex CORS configuration.
+                        headers: { 'Content-Type': 'application/json' }, // Tells the server that we are sending JSON data.
+                        body: JSON.stringify(data), // Converts the JavaScript object to a JSON string.
+                    })
+                    .then(() => {
+                        // This block runs if the request is successfully sent.
+                        formStatus.textContent = 'Thank you for subscribing!';
+                        formStatus.classList.add('text-green-500');
+                        newsletterForm.reset(); // Clears the form fields.
+                    })
+                    .catch((error) => {
+                        // This block runs if there's a network error.
+                        console.error('Error:', error);
+                        formStatus.textContent = 'Something went wrong. Please try again.';
+                        formStatus.classList.add('text-red-500');
+                    })
+                    .finally(() => {
+                        // This block runs regardless of success or failure.
+                        submitButton.disabled = false; // Re-enable the button.
+                    });
+                });
+}
+
+            // --- Feedback Form Submission Logic ---
+            // This logic is identical to the newsletter form logic but targets the feedback form.
+            const feedbackForm = document.getElementById('feedback-form');
             if (feedbackForm) {
                 const formStatus = document.getElementById('form-status');
                 const submitButton = feedbackForm.querySelector('button[type="submit"]');
-                
-                const googleScriptURL = 'https://script.google.com/macros/s/AKfycbxy1lYXfab6w0iZc214l5-YWD1QIAQa9Skd4GfEHnMAGa11_QzHso4IpClKT4DqjxQbPQ/exec';
 
                 feedbackForm.addEventListener('submit', (e) => {
                     e.preventDefault();
@@ -658,49 +956,49 @@
             }
 
             // --- Back to Top Button Logic ---
+            // Get a reference to the button.
             const backToTopButton = document.getElementById('back-to-top-btn');
-
             if (backToTopButton) {
-                // Show or hide the button based on scroll position
+                // Add a 'scroll' event listener to the window.
                 window.addEventListener('scroll', () => {
-                    if (window.scrollY > 300) { // Show button after scrolling 300px
+                    // Check how far the user has scrolled down.
+                    if (window.scrollY > 300) { // If scrolled more than 300 pixels...
+                        // ...make the button visible and clickable.
                         backToTopButton.classList.remove('opacity-0', 'pointer-events-none');
                         backToTopButton.classList.add('opacity-100', 'pointer-events-auto');
                     } else {
+                        // ...otherwise, hide the button.
                         backToTopButton.classList.remove('opacity-100', 'pointer-events-auto');
                         backToTopButton.classList.add('opacity-0', 'pointer-events-none');
                     }
                 });
 
-                // Scroll smoothly to the top when the button is clicked
+                // Add a 'click' event listener to the button.
                 backToTopButton.addEventListener('click', () => {
+                    // `window.scrollTo` scrolls the page to a specific position.
                     window.scrollTo({
-                        top: 0,
-                        behavior: 'smooth'
+                        top: 0, // Scroll to the very top of the page.
+                        behavior: 'smooth' // Animate the scroll smoothly instead of jumping instantly.
                     });
                 });
             }
-            // --- End of Back to Top Button Logic ---
 
             // --- Preloader Logic ---
+            // Get a reference to the preloader element.
             const preloader = document.getElementById('preloader');
-
-            // Wait for the entire page to load (including images, etc.)
+            // Add a 'load' event listener to the window. This event fires when the entire page, including all dependent resources like images, has finished loading.
             window.addEventListener('load', () => {
                 if (preloader) {
-                    // Add a class to make it invisible
+                    // Add classes to fade the preloader out.
                     preloader.classList.add('opacity-0', 'invisible');
-
-                    // Optional: Remove the element from the DOM after the transition ends
-                    // This is good for accessibility and performance
+                    // After the fade-out animation completes (500ms), remove the preloader element from the HTML entirely.
                     setTimeout(() => {
                         preloader.remove();
-                    }, 500); // This should match the duration-500 class on the preloader div
+                    }, 500); // This duration should match the transition duration in the CSS.
                 }
             });
-            // --- End of Preloader Logic ---
 
-        });
+        }); // End of DOMContentLoaded listener
     </script>
 </body>
 </html>
