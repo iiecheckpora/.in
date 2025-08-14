@@ -304,14 +304,20 @@
                         </div>
                         <!-- Container for the registration button. -->
                         <div class="mt-4">
-                            <!-- Closed Registration -->
-                            <!-- <a href="https://forms.gle/Au9D2d38MAf362Nw5" target="_blank" class="btn-pulse bg-logo-green text-white font-bold py-2 px-4 rounded-full w-full text-center inline-block">Register Now</a> -->
-                            <!-- Container for the registration status button. -->
+                            <a href="https://forms.gle/Au9D2d38MAf362Nw5" target="_blank" class="btn-pulse bg-logo-green text-white font-bold py-2 px-4 rounded-full w-full text-center inline-flex items-center justify-center">
+                                <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
+                                    <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" />
+                                </svg>
+                                Register Now
+                            </a>
+                            
+                            <!-- Container for the registration status button.
                             <span class="bg-gray-500 text-white font-bold py-2 px-4 rounded-full w-full text-center inline-flex items-center justify-center cursor-not-allowed">
-                                <!-- Icon indicating that registrations are closed. -->
-                                <i class="fa-solid fa-calendar-xmark mr-2"></i>
+                                Icon indicating that registrations are closed. -->
+                                <!-- <i class="fa-solid fa-calendar-xmark mr-2"></i>
                                 <span>Registrations Closed</span>
-                            </span>
+                            </span> -->
                         </div>
                     </div>
 
@@ -457,10 +463,12 @@
                             </div>
 
                             <!-- Phone Number Input Group -->
-                            <div>
-                                <div class="flex items-center w-full max-w-lg mx-auto">
+                            <div class="w-full max-w-lg mx-auto">
+                                <!-- On small screens (sm and up), this will be a flex-row. On extra-small screens, it will stack. -->
+                                <div class="flex flex-col sm:flex-row items-center w-full">
                                     <!-- Country Code Dropdown -->
-                                    <select id="country-code" name="country-code" class="px-4 py-3 border border-r-0 border-gray-300 rounded-l-full focus:outline-none focus:ring-2 focus:ring-logo-green bg-white">
+                                    <!-- Adjusts rounded corners for mobile vs. desktop -->
+                                    <select id="country-code" name="country-code" class="w-full sm:w-auto px-4 py-3 border border-gray-300 rounded-full sm:rounded-l-full sm:rounded-r-none focus:outline-none focus:ring-2 focus:ring-logo-green bg-white mb-2 sm:mb-0 sm:border-r-0">
                                         <!-- Common countries are listed first for convenience -->
                                         <option value="+91">India (+91)</option>
                                         <option value="+1">USA (+1)</option>
@@ -469,7 +477,7 @@
                                         <option value="+971">UAE (+971)</option>
                                         <option value="+966">Saudi Arabia (+966)</option>
                                         <option disabled>──────────</option>
-                                        <!-- The rest of the countries are listed alphabetically -->
+                                        <!-- Alphabetical list of all countries -->
                                         <option value="+93">Afghanistan (+93)</option>
                                         <option value="+355">Albania (+355)</option>
                                         <option value="+213">Algeria (+213)</option>
@@ -659,7 +667,8 @@
                                         <option value="+263">Zimbabwe (+263)</option>
                                     </select>
                                     <!-- Phone Number Input Field -->
-                                    <input type="tel" id="newsletter-phone" name="newsletter-phone" class="w-full px-4 py-3 border border-gray-300 rounded-r-full focus:outline-none focus:ring-2 focus:ring-logo-green" placeholder="Phone number" required pattern="[1-9][0-9]{9}" title="Please enter a 10-digit phone number that does not start with 0.">
+                                    <!-- Adjusts rounded corners for mobile vs. desktop -->
+                                    <input type="tel" id="newsletter-phone" name="newsletter-phone" class="w-full px-4 py-3 border border-gray-300 rounded-full sm:rounded-r-full sm:rounded-l-none focus:outline-none focus:ring-2 focus:ring-logo-green" placeholder="Phone number" required pattern="[1-9][0-9]{9}" title="Please enter a 10-digit phone number that does not start with 0.">
                                 </div>
                             </div>
 
@@ -864,7 +873,7 @@
             
             // --- Shared Google Script URL for Forms ---
             // This URL is the endpoint for the Google Apps Script that will receive the form data.
-            const googleScriptURL = 'https://script.google.com/macros/s/AKfycbwGHTFy2bxhJBBFBKodr8fpZDwXre0FU9TmPI5G-sSbJkIkyg5wQV-ragvwOKo8KzCE/exec';
+            const googleScriptURL = 'https://script.google.com/macros/s/AKfycbzpOLHQ7rOhOnhoVjbiBNcoWfPQ1xjTtVkgmgB9M0qtKtQyOy30pPer2nKHc13h1sqW/exec';
 
             // --- Newsletter Form Submission Logic ---
             // Get references to the newsletter form and its elements.
