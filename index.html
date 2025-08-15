@@ -182,10 +182,10 @@
                 <a href="#admissions" class="text-gray-600 hover:text-logo-green">Admissions</a>
                 <a href="#newsletter" class="text-gray-600 hover:text-logo-green">Al-Tarbiya</a>
                 <a href="#social" class="text-gray-600 hover:text-logo-green">Contact</a>
-                <a href="#donate" class="text-gray-600 hover:text-logo-green font-medium">Donate</a>
+                <a href="#feedback" class="text-gray-600 hover:text-logo-green font-medium">Give Feedback</a>
                 <a href="#admin-notice" class="text-gray-600 hover:text-logo-green">Admin</a>
                 <!-- This link is styled as a button for emphasis. -->
-                <a href="#feedback" class="bg-logo-green text-white px-4 py-2 rounded-full">Give Feedback</a>
+                <a href="#donate" class="bg-logo-green text-white px-4 py-2 rounded-full">Donate</a>
             </div>
             <!-- Mobile Menu Button (Hamburger Icon): This is only visible on small screens (`lg:hidden`). -->
             <div class="lg:hidden">
@@ -209,9 +209,9 @@
             <a href="#admissions" class="block py-2 text-gray-600 hover:text-logo-green">Admissions</a>
             <a href="#newsletter" class="block py-2 text-gray-600 hover:text-logo-green">Al-Tarbiya</a>
             <a href="#social" class="block py-2 text-gray-600 hover:text-logo-green">Contact</a>
-            <a href="#donate" class="block py-2 text-gray-600 hover:text-logo-green">Donate</a>
+            <a href="#feedback" class="block py-2 text-gray-600 hover:text-logo-green font-medium">Give Feedback</a>
             <a href="#admin-notice" class="block py-2 text-gray-600 hover:text-logo-green">Admin</a>
-            <a href="#feedback" class="block mt-2 bg-logo-green text-white text-center px-4 py-2 rounded-full">Give Feedback</a>
+            <a href="#donate" class="block mt-2 bg-logo-green text-white text-center px-4 py-2 rounded-full">Donate</a>
         </div>
     </header>
 
@@ -839,6 +839,7 @@
         <!-- =================================================================== -->
         <section id="donate" class="py-16 bg-white">
             <div class="container mx-auto px-6">
+                
                 <div class="text-center mb-12">
                     <h3 class="text-3xl font-bold text-logo-blue mb-4">Support Our Mission</h3>
                     <p class="max-w-3xl mx-auto text-gray-600">
@@ -849,27 +850,57 @@
                         <cite class="block not-italic mt-2 font-semibold text-gray-600">- Prophet Muhammad ﷺ (Sahih Muslim)</cite>
                     </blockquote>
                 </div>
+
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                    <!-- Card 1: Bank Transfer Details -->
-                    <div class="bg-gray-50 p-6 md:p-8 rounded-lg shadow-lg border-l-4 border-logo-blue">
+                    
+                    <div class="bg-gray-50 p-6 md:p-8 rounded-lg shadow-lg border-l-4 border-logo-blue flex flex-col">
                         <h4 class="text-2xl font-bold text-logo-blue mb-6 flex items-center"><i class="fa-solid fa-landmark mr-3"></i>Direct Bank Transfer</h4>
+                        
                         <div class="space-y-4 text-sm md:text-base">
                             <div class="flex justify-between items-center"><span class="text-gray-600">Account Name:</span><span class="font-semibold text-gray-800">Institute of Islamic Education</span></div><hr>
-                            <div class="flex justify-between items-center"><span class="text-gray-600">Account Number:</span><div class="flex items-center space-x-2"><span class="font-semibold text-gray-800">000111222333444</span><button data-copy="000111222333444" class="copy-btn text-gray-500 hover:text-logo-blue transition"><i class="fa-regular fa-copy"></i></button></div></div><hr>
-                            <div class="flex justify-between items-center"><span class="text-gray-600">IFSC Code:</span><div class="flex items-center space-x-2"><span class="font-semibold text-gray-800">JAKA0BEERWA</span><button data-copy="JAKA0BEERWA" class="copy-btn text-gray-500 hover:text-logo-blue transition"><i class="fa-regular fa-copy"></i></button></div></div><hr>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">Account Number:</span>
+                                <div class="flex items-center space-x-2">
+                                    <span class="font-semibold text-gray-800">000111222333444</span>
+                                    <button data-copy="000111222333444" class="copy-btn text-gray-500 hover:text-logo-blue transition"><i class="fa-regular fa-copy"></i></button>
+                                </div>
+                            </div><hr>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">IFSC Code:</span>
+                                <div class="flex items-center space-x-2">
+                                    <span class="font-semibold text-gray-800">JAKA0BEERWA</span>
+                                    <button data-copy="JAKA0BEERWA" class="copy-btn text-gray-500 hover:text-logo-blue transition"><i class="fa-regular fa-copy"></i></button>
+                                </div>
+                            </div><hr>
                             <div class="flex justify-between items-center"><span class="text-gray-600">Bank Name:</span><span class="font-semibold text-gray-800">J&K Bank</span></div><hr>
                             <div class="flex justify-between items-center"><span class="text-gray-600">Branch:</span><span class="font-semibold text-gray-800">Beerwah</span></div>
                         </div>
+                        
+                        <div class="mt-auto pt-6 border-t border-gray-200 text-center">
+                            <p class="text-sm text-gray-500 mb-3">Or use your favorite UPI app</p>
+                            <a href="upi://pay?pa=000111222333444&pn=Institute%20of%20Islamic%20Education&ifsc=JAKA0BEERWA&tn=Donation%20to%20IIE" class="inline-flex items-center justify-center bg-blue-600 text-white font-bold px-6 py-3 rounded-full hover:bg-blue-700 transition duration-300 w-full sm:w-auto shadow-lg transform hover:scale-105">
+                                <i class="fa-solid fa-mobile-screen-button text-2xl mr-3"></i>
+                                <span>Pay via Bank Transfer (UPI)</span>
+                            </a>
+                        </div>
+                        
+                        <div class="mt-4 pt-4 border-t border-gray-200 text-center">
+                            <p class="text-sm text-gray-600">
+                                <i class="fa-solid fa-headset mr-1 opacity-75"></i>
+                                For assistance, please 
+                                <a href="tel:+919419737927" class="font-semibold text-logo-blue hover:underline">
+                                    call us at +91 94197 37927
+                                </a>.
+                            </p>
+                        </div>
                     </div>
-                    <!-- Card 2: UPI & QR Code -->
+
                     <div class="bg-gray-50 p-6 md:p-8 rounded-lg shadow-lg border-l-4 border-logo-green flex flex-col items-center justify-center text-center">
-                        <!-- Card Title with a QR code icon. -->
                         <h4 class="text-2xl font-bold text-logo-green mb-4 flex items-center">
                             <i class="fa-solid fa-qrcode mr-3"></i>
                             UPI / QR Code
                         </h4>
                         
-                        <!-- "Coming Soon" Content -->
                         <div class="flex-grow flex flex-col items-center justify-center">
                             <i class="fa-solid fa-hourglass-half fa-3x text-gray-400 mb-4"></i>
                             <h5 class="text-xl font-bold text-gray-700">Coming Soon</h5>
@@ -881,6 +912,7 @@
                 </div>
             </div>
         </section>
+    
         <!-- ======================= DONATION SECTION END ======================== -->
 
         <!-- =================================================================== -->
