@@ -127,6 +127,21 @@
             background-color: #ffffff; /* Sets a white background for the image area. */
         }
 
+        /* --- Keyframe for Final Call Blink --- */
+        @keyframes final-call {
+            50% {
+                color: #dc2626; /* A strong red color */
+                opacity: 0.7;
+                transform: scale(1.02); /* Makes the text pop slightly */
+            }
+        }
+
+        /* --- Class to apply the new animation --- */
+        .final-call-blink {
+            animation: final-call 1s infinite alternate; /* Faster animation */
+            display: inline-block; /* Needed for transform to work properly */
+        }
+
         /* --- Custom Color Classes --- */
         /* These classes provide consistent branding colors throughout the site. */
         .text-logo-blue { color: #1e3a8a; }
@@ -137,7 +152,37 @@
         .bg-gradient-footer {
             background-color: #16a34a; /* Fallback color. */
             background-image: linear-gradient(to bottom right, #16a34a, #319a28); /* Green gradient for the footer. */
-        } 
+        }
+
+        /* --- Hamburger Icon Animation (Corrected) --- */
+        .hamburger-top,
+        .hamburger-middle,
+        .hamburger-bottom {
+            transition: all 0.3s ease-in-out;
+            /* This ensures the lines rotate from their center */
+            transform-origin: center;
+        }
+
+        .open .hamburger-top {
+            /* Moves the line down to the middle, then rotates */
+            transform: translateY(5px) rotate(45deg);
+        }
+
+        .open .hamburger-middle {
+            /* Fades the middle line out */
+            opacity: 0;
+        }
+
+        .open .hamburger-bottom {
+            /* Moves the line up to the middle, then rotates */
+            transform: translateY(-5px) rotate(-45deg);
+        }
+
+        /* --- Active Navigation Link Style --- */
+        .nav-active {
+            color: #16a34a; /* This is your logo-green color */
+            font-weight: 700; /* This makes the text bold */
+        }
         
         /* --- Global Behavior --- */
         /* This rule enables smooth scrolling when a user clicks on an anchor link (e.g., <a href="#about">). */
@@ -171,10 +216,11 @@
                 </div>
             </div>
             <!-- Desktop Navigation Links: This block is hidden on small screens (`lg:flex` means it's a flex container on large screens and up). -->
-            <div class="hidden lg:flex items-center space-x-6">
+            <div class="hidden xl:flex items-center space-x-4">
                 <!-- Each `<a>` tag is a hyperlink to a different section of the page. -->
                 <a href="#about" class="text-gray-600 hover:text-logo-green">About Us</a>
                 <a href="#notices" class="text-gray-600 hover:text-logo-green">Notices</a>
+                <a href="#instructors" class="text-gray-600 hover:text-logo-green">Instructors</a>
                 <a href="#events" class="text-gray-600 hover:text-logo-green">Events</a>
                 <a href="#calendar" class="text-gray-600 hover:text-logo-green">Calendar</a>
                 <a href="#gallery" class="text-gray-600 hover:text-logo-green">Gallery</a>
@@ -188,20 +234,22 @@
                 <a href="#donate" class="bg-logo-green text-white px-4 py-2 rounded-full">Donate</a>
             </div>
             <!-- Mobile Menu Button (Hamburger Icon): This is only visible on small screens (`lg:hidden`). -->
-            <div class="lg:hidden">
+            <div class="xl:hidden">
                 <button id="mobile-menu-button" class="text-gray-600 hover:text-logo-green focus:outline-none">
-                    <!-- The SVG (Scalable Vector Graphic) for the hamburger icon. -->
                     <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                        <path class="hamburger-top" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16"></path>
+                        <path class="hamburger-middle" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12h16"></path>
+                        <path class="hamburger-bottom" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 18h16"></path>
                     </svg>
                 </button>
             </div>
         </nav>
         <!-- Mobile Menu Panel: This is hidden by default and shown when the hamburger icon is clicked. -->
-        <div id="mobile-menu" class="lg:hidden hidden px-6 pt-2 pb-4">
+        <div id="mobile-menu" class="xl:hidden hidden px-6 pt-2 pb-4">
             <!-- The navigation links are stacked vertically for mobile view. -->
             <a href="#about" class="block py-2 text-gray-600 hover:text-logo-green">About Us</a>
             <a href="#notices" class="block py-2 text-gray-600 hover:text-logo-green">Notices</a>
+            <a href="#instructors" class="block py-2 text-gray-600 hover:text-logo-green">Instructors</a>
             <a href="#events" class="block py-2 text-gray-600 hover:text-logo-green">Events</a>
             <a href="#calendar" class="block py-2 text-gray-600 hover:text-logo-green">Calendar</a>
             <a href="#gallery" class="block py-2 text-gray-600 hover:text-logo-green">Gallery</a>
@@ -236,26 +284,31 @@
         <!-- Notice Board Section: `id="notices"` allows it to be targeted by anchor links. -->
         <section id="notices" class="py-16">
             <div class="container mx-auto px-6">
-                <!-- Section heading. -->
                 <h3 class="text-3xl font-bold text-center mb-8 text-logo-blue">Notice Board</h3>
                 
-                <!-- First notice card with a green left border. -->
-                <div class="bg-white p-6 rounded-lg shadow-lg border-l-4 border-logo-green mb-6">
-                    <!-- Notice title. The `<span>` with the `blinking-dawrah` class applies the blinking animation. -->
-                    <h4 class="text-xl font-bold text-logo-green mb-2">Important Announcement: <span class="blinking-dawrah">Dawrah Registrations</span></h4>
-                    <!-- Notice content. -->
+                <div class="bg-white p-6 rounded-lg shadow-lg border-l-4 border-red-500 mb-6">
+                    <h4 class="text-xl font-bold text-red-600 mb-2">
+                        Final Call: <span class="final-call-blink">One Day Dawrah is TOMORROW!</span>
+                    </h4>
                     <p class="text-gray-600">
-                        Registrations for our upcoming One Day Dawrah on August 16, 2025, are now open. Secure your spot by visiting the <a href="#events" class="text-logo-blue hover:underline font-semibold">Events section</a> below.
+                        Registrations are now officially closed. We are excited to welcome all registered brothers and sisters tomorrow, August 16th, at 9:15 AM sharp. Please consider bringing a notebook and pen for taking notes. For location details, see the <a href="#events" class="text-logo-blue hover:underline font-semibold">Events section</a> below.
                     </p>
                 </div>
 
-                <!-- Second notice card with a yellow left border. -->
+                <div class="bg-white p-6 rounded-lg shadow-lg border-l-4 border-logo-blue mb-6">
+                    <h4 class="text-xl font-bold text-logo-blue mb-2">Event Day Guidelines</h4>
+                    <p class="text-gray-600">
+                        To ensure a smooth experience for everyone, please plan to arrive a few minutes early to find seating. Limited parking is available on-site, so we encourage carpooling where possible. We look forward to a blessed day of learning together!
+                    </p>
+                </div>
+
                 <div class="bg-white p-6 rounded-lg shadow-lg border-l-4 border-yellow-400">
                     <h4 class="text-xl font-bold text-yellow-500 mb-2">Website Updates</h4>
                     <p class="text-gray-600">
                         We are performing routine maintenance on our website. You may experience some intermittent issues. We apologize for any inconvenience this may cause.
                     </p>
                 </div>
+                
             </div>
         </section>
 
@@ -266,9 +319,35 @@
                 <!-- A styled container for the about text. -->
                 <div class="bg-white p-8 rounded-lg shadow-lg">
                     <p class="text-gray-600 leading-relaxed">
-                        "IIE is Islamic research, training, and solution-providing non-profit Institute, established with the objective to help people in acquiring knowledge of the Quran and Sunnah upon the Understanding of Salaf-Us-Saalih. Our goal and mission is to call to the path of Allah in worshiping him alone (Tawheed) and following the guidance of the Prophet Muhammad ﷺ.Our institution is established on the principles of Ahlus Sunnah Wa Al Jamaah. These guiding principles are derived from the correct understanding of the Quran and the Sunnah upon the understanding of the pious predecessors (Salaf as Salih). The foundation of this true methodology sprinkles from the statement of Allah in the Quran in Surah At-Tawbah, Ayah 100" 
+                        "IIE is Islamic research, training, and solution-providing non-profit Institute, established with the objective to help people in acquiring knowledge of the Quran and Sunnah upon the Understanding of Salaf-Us-Saaliheen. Our goal and mission is to call to the path of Allah in worshiping him alone (Tawheed) and following the guidance of the Prophet Muhammad ﷺ.Our institution is established on the principles of Ahlus Sunnah Wa Al Jamaah. These guiding principles are derived from the correct understanding of the Quran and the Sunnah upon the understanding of the pious predecessors (Salaf as Saliheen). The foundation of this true methodology sprinkles from the statement of Allah in the Quran in Surah At-Tawbah, Ayah 100" 
                     </p>
                 </div>
+            </div>
+        </section>
+
+        <!-- Meet our instructors -->
+        <section id="instructors" class="py-16">
+            <div class="container mx-auto px-6">
+                
+                <h3 class="text-3xl font-bold text-center mb-12 text-logo-blue">Meet Our Instructors</h3>
+
+                <div class="max-w-3xl mx-auto bg-blue-50 border-l-4 border-logo-blue p-6 rounded-lg shadow-md">
+                    <div class="flex items-center">
+                        
+                        <div class="text-logo-blue pr-4">
+                            <i class="fa-solid fa-user-tie fa-3x"></i>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-xl font-bold text-gray-800 text-left">Profiles Coming Soon!</h4>
+                            <p class="text-gray-600 mt-1 text-left">
+                                We are currently preparing detailed profiles for our dedicated and knowledgeable instructors. Please check back soon to learn more about the instructors guiding our students.
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+
             </div>
         </section>
 
@@ -290,6 +369,31 @@
                             <p class="text-sm font-semibold text-logo-green">August 16, 2025 | 9:30 AM - 6:30 PM</p>
                             <h4 class="text-xl font-bold text-logo-blue my-2">One Day Dawrah</h4>
                             <p class="text-gray-600 mb-4">Join us for our One Day Dawrah Series. We will cover, تائية الإلبيري في الزهد والحكم</p>
+                            <div id="countdown-container" class="my-4">
+                                <p class="text-center text-md font-semibold text-gray-700 mb-2">Event Begins In:</p>
+                                
+                                <div id="countdown-timer" class="flex justify-center space-x-2 sm:space-x-4 text-center">
+                                    <div class="p-2 sm:p-3 bg-gray-100 rounded-lg shadow-inner w-1/4">
+                                        <span id="days" class="text-2xl sm:text-3xl font-bold text-logo-blue">00</span>
+                                        <span class="block text-xs sm:text-sm text-gray-500">Days</span>
+                                    </div>
+                                    <div class="p-2 sm:p-3 bg-gray-100 rounded-lg shadow-inner w-1/4">
+                                        <span id="hours" class="text-2xl sm:text-3xl font-bold text-logo-blue">00</span>
+                                        <span class="block text-xs sm:text-sm text-gray-500">Hours</span>
+                                    </div>
+                                    <div class="p-2 sm:p-3 bg-gray-100 rounded-lg shadow-inner w-1/4">
+                                        <span id="minutes" class="text-2xl sm:text-3xl font-bold text-logo-blue">00</span>
+                                        <span class="block text-xs sm:text-sm text-gray-500">Minutes</span>
+                                    </div>
+                                    <div class="p-2 sm:p-3 bg-gray-100 rounded-lg shadow-inner w-1/4">
+                                        <span id="seconds" class="text-2xl sm:text-3xl font-bold text-logo-blue">00</span>
+                                        <span class="block text-xs sm:text-sm text-gray-500">Seconds</span>
+                                    </div>
+                                </div>
+                                <div id="countdown-expired" class="hidden text-center text-lg font-bold text-logo-green p-3 bg-green-50 rounded-lg">
+                                    The Event is Live!
+                                </div>
+                            </div>
                             <!-- Link to Google Maps for the event location. `target="_blank"` opens it in a new tab. -->
                             <p class="text-gray-700 font-medium">
                                 <a href="https://maps.app.goo.gl/Rh7wQF8qznLFbzx4A" target="_blank" class="inline-flex items-center bg-gray-200 rounded-full p-1 pr-3 text-logo-green font-semibold mt-auto">
@@ -317,13 +421,19 @@
                         </div>
                         <!-- Container for the registration button. -->
                         <div class="mt-4">
-                            <a href="https://forms.gle/Au9D2d38MAf362Nw5" target="_blank" class="btn-pulse bg-logo-green text-white font-bold py-2 px-4 rounded-full w-full text-center inline-flex items-center justify-center">
+                            <!-- Registration open -->
+                            <!-- <a href="https://forms.gle/Au9D2d38MAf362Nw5" target="_blank" class="btn-pulse bg-logo-green text-white font-bold py-2 px-4 rounded-full w-full text-center inline-flex items-center justify-center">
                                 <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                     <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
                                     <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" />
                                 </svg>
                                 Register Now
-                            </a>
+                            </a> -->
+                            <!-- Registration closed -->
+                            <button type="button" disabled class="bg-gray-400 cursor-not-allowed text-white font-bold py-2 px-4 rounded-full w-full text-center inline-flex items-center justify-center">
+                                <i class="fa-solid fa-lock w-5 h-5 mr-2"></i>
+                                Registrations Closed
+                            </button>
                         </div>
                     </div>
 
@@ -488,7 +598,7 @@
                         </div>
                         <div>
                             <h4 class="text-xl font-bold text-gray-800 text-left">System Under Maintenance</h4>
-                            <p class="text-gray-600 mt-1 text-left">Our new online borrowing system is coming soon! The process is outlined below, but is not yet active.<br/>Until then, you are welcome to visit our library in person to borrow a book.</p>
+                            <p class="text-gray-600 mt-1 text-left">Our new borrowing system is coming soon! The process is outlined below, but is not yet active.<br/>Until then, you are welcome to visit our library in person to borrow a book.</p>
                         </div>
                     </div>
 
@@ -790,12 +900,11 @@
                 <p class="text-gray-600 mb-8">Follow our journey and stay updated on our social media channels.</p>
                 <!-- A flex container to hold the social media icons. -->
                 <div class="flex justify-center space-x-6">
-                    <!-- Each `<a>` tag links to a social profile. The `<i>` tag displays the Font Awesome icon. -->
-                    <a href="tel:+919419737927" class="text-gray-600 hover:text-logo-green transform hover:scale-125 transition duration-300"><i class="fa-solid fa-phone fa-3x"></i></a>
-                    <a href="https://wa.me/+919419737927" target="_blank" class="text-gray-600 hover:text-logo-green transform hover:scale-125 transition duration-300"><i class="fab fa-whatsapp fa-3x"></i></a>
-                    <a href="mailto:iiecheckpora@gmail.com" class="text-gray-600 hover:text-logo-green transform hover:scale-125 transition duration-300"><i class="fa-solid fa-envelope fa-3x"></i></a>
-                    <a href="https://youtube.com/@instituteofislamiceducation?feature=shared" target="_blank" class="text-gray-600 hover:text-logo-green transform hover:scale-125 transition duration-300"><i class="fab fa-youtube fa-3x"></i></a>
-                    <a href="https://m.facebook.com/501487530283263/" target="_blank" class="text-gray-600 hover:text-logo-green transform hover:scale-125 transition duration-300"><i class="fab fa-facebook-f fa-3x"></i></a>              
+                    <a href="tel:+919419737927" aria-label="Call us" class="text-gray-600 hover:text-logo-green transform hover:scale-125 transition duration-300"><i class="fa-solid fa-phone fa-3x"></i></a>
+                    <a href="https://wa.me/+919419737927" target="_blank" aria-label="Contact us on WhatsApp" class="text-gray-600 hover:text-logo-green transform hover:scale-125 transition duration-300"><i class="fab fa-whatsapp fa-3x"></i></a>
+                    <a href="mailto:iiecheckpora@gmail.com" aria-label="Email us" class="text-gray-600 hover:text-logo-green transform hover:scale-125 transition duration-300"><i class="fa-solid fa-envelope fa-3x"></i></a>
+                    <a href="https://youtube.com/@instituteofislamiceducation?feature=shared" target="_blank" aria-label="Visit our YouTube channel" class="text-gray-600 hover:text-logo-green transform hover:scale-125 transition duration-300"><i class="fab fa-youtube fa-3x"></i></a>
+                    <a href="https://m.facebook.com/501487530283263/" target="_blank" aria-label="Visit our Facebook page" class="text-gray-600 hover:text-logo-green transform hover:scale-125 transition duration-300"><i class="fab fa-facebook-f fa-3x"></i></a>              
                 </div>
             </div>
         </section>
@@ -876,14 +985,6 @@
                             <div class="flex justify-between items-center"><span class="text-gray-600">Branch:</span><span class="font-semibold text-gray-800">Beerwah</span></div>
                         </div>
                         
-                        <!-- rediect link -->
-                        <div class="mt-auto pt-6 border-t border-gray-200 text-center">
-                            <p class="text-sm text-gray-500 mb-3">Or use your favorite UPI app</p>
-                            <a href="#" class="inline-flex items-center justify-center bg-blue-600 text-white font-bold px-6 py-3 rounded-full hover:bg-blue-700 transition duration-300 w-full sm:w-auto shadow-lg transform hover:scale-105">
-                                <i class="fa-solid fa-mobile-screen-button text-2xl mr-3"></i>
-                                <span>Comming Soon...!</span>
-                            </a>
-                        </div>
                         
                         <div class="mt-4 pt-4 border-t border-gray-200 text-center">
                             <p class="text-sm text-gray-600">
@@ -1028,17 +1129,63 @@
         // This single event listener ensures all JavaScript runs only after the HTML document has been loaded.
         document.addEventListener('DOMContentLoaded', function() {
 
+
+            // --- Active Navigation State Logic ---
+            const navLinks = document.querySelectorAll('header nav a[href^="#"]');
+            const sections = [];
+
+            // Create a list of all sections linked from the nav
+            navLinks.forEach(link => {
+                const section = document.querySelector(link.getAttribute('href'));
+                if (section) {
+                    sections.push(section);
+                }
+            });
+
+            // This function will run every time the user scrolls
+            function onScroll() {
+                const scrollPosition = window.scrollY + 150; // Add an offset for better accuracy
+
+                let activeSectionFound = false;
+                for (let i = sections.length - 1; i >= 0; i--) {
+                    const section = sections[i];
+                    if (section.offsetTop <= scrollPosition) {
+                        // Remove the active class from all links first
+                        navLinks.forEach(link => link.classList.remove('nav-active'));
+
+                        // Find the matching link and add the active class
+                        const activeLink = document.querySelector(`header nav a[href="#${section.id}"]`);
+                        if (activeLink) {
+                            activeLink.classList.add('nav-active');
+                        }
+                        activeSectionFound = true;
+                        break; // Stop checking once the active section is found
+                    }
+                }
+                // If no section is active (i.e., at the very top of the page), remove all active classes
+                if (!activeSectionFound) {
+                    navLinks.forEach(link => link.classList.remove('nav-active'));
+                }
+            }
+
+            // Listen for scroll events to run the function
+            window.addEventListener('scroll', onScroll);
+
             // --- Mobile Menu Logic ---
             const mobileMenuButton = document.getElementById('mobile-menu-button');
             const mobileMenu = document.getElementById('mobile-menu');
             if (mobileMenuButton && mobileMenu) {
+                // Toggle the menu and the icon animation class on button click
                 mobileMenuButton.addEventListener('click', () => {
                     mobileMenu.classList.toggle('hidden');
+                    mobileMenuButton.classList.toggle('open');
                 });
+                // Close the menu when a link inside it is clicked
                 const mobileMenuLinks = mobileMenu.querySelectorAll('a');
                 mobileMenuLinks.forEach(link => {
                     link.addEventListener('click', () => {
                         mobileMenu.classList.add('hidden');
+                        mobileMenuButton.classList.remove('open');
                     });
                 });
             }
@@ -1153,6 +1300,49 @@
                         }).catch(err => console.error('Failed to copy text: ', err));
                     }
                 });
+            }
+
+            // --- Countdown Timer Logic ---
+            const countdownContainer = document.getElementById('countdown-container');
+            if (countdownContainer) {
+                // Set the date for the event: Year, Month (0-11), Day, Hour, Minute, Second
+                const countdownDate = new Date("August 16, 2025 09:30:00").getTime();
+
+                // Get elements
+                const daysEl = document.getElementById('days');
+                const hoursEl = document.getElementById('hours');
+                const minutesEl = document.getElementById('minutes');
+                const secondsEl = document.getElementById('seconds');
+                const timerEl = document.getElementById('countdown-timer');
+                const expiredEl = document.getElementById('countdown-expired');
+
+                // Update the countdown every 1 second
+                const countdownInterval = setInterval(function() {
+                    // Get today's date and time
+                    const now = new Date().getTime();
+
+                    // Find the distance between now and the countdown date
+                    const distance = countdownDate - now;
+
+                    // Time calculations for days, hours, minutes and seconds
+                    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                    // Display the result in the elements, adding a leading zero if needed
+                    daysEl.innerHTML = days < 10 ? '0' + days : days;
+                    hoursEl.innerHTML = hours < 10 ? '0' + hours : hours;
+                    minutesEl.innerHTML = minutes < 10 ? '0' + minutes : minutes;
+                    secondsEl.innerHTML = seconds < 10 ? '0' + seconds : seconds;
+
+                    // If the countdown is finished, show expired message
+                    if (distance < 0) {
+                        clearInterval(countdownInterval);
+                        timerEl.classList.add('hidden');
+                        expiredEl.classList.remove('hidden');
+                    }
+                }, 1000);
             }
 
             // --- Calendar Logic ---
