@@ -286,31 +286,14 @@
             <div class="container mx-auto px-6">
                 <h3 class="text-3xl font-bold text-center mb-8 text-logo-blue">Notice Board</h3>
                 
-                <div class="bg-white p-6 rounded-lg shadow-lg border-l-4 border-logo-blue mb-6">
-                    <h4 class="text-xl font-bold text-logo-blue mb-2">Welcome to the 13th Dawrah</h4>
+                <div class="bg-white p-6 rounded-lg shadow-lg border-l-4 border-logo-green mb-6">
+                    <h4 class="text-xl font-bold text-logo-green mb-2">Alhamdulillah! Our Dawrah Was a Success</h4>
                     <p class="text-gray-600">
-                        Registrations for the One Day Dawrah are now officially closed. We are excited to welcome all registered brothers and sisters today, August 16, 2025. Please arrive on time as the program will run from 9:30 AM to 6:30 PM. We recommend arriving a little early to find seating and settle in. For location details, please see the <a href="#events" class="text-logo-blue hover:underline font-semibold">Events section</a> below.
+                        The One Day Dawrah has successfully concluded. A heartfelt thank you to everyone who participated. We hope you found the session beneficial.
                     </p>
-                </div>
-
-                <div class="bg-white p-6 rounded-lg shadow-lg border-l-4 border-red-500 mb-6">
-                    <h4 class="text-xl font-bold text-red-600 mb-2">📌 Important Instructions 📌</h4>
-                    <p class="text-gray-600">
-                        To ensure a smooth and blessed day of learning, please adhere to the following guidelines:
-                    </p>
-                    <ul class="list-disc list-inside text-gray-600 ml-4 mt-2">
-                        <li>All students must follow the institution’s Rules and Regulations.</li>
-                        <li>Refrain from activities against constitutional, humanitarian, and institutional interests.</li>
-                        <li>Violation of any rule will result in immediate disqualification.</li>
-                        <li>The minimum age for attendance is 16 years.</li>
-                        <li>Withdrawal or incomplete participation is not permitted once you have logged in.</li>
-                        <li>All students must carry their identity card (Adhaar card) for verification.</li>
-                        <li>Bring a notebook, pen, etc.</li>
-                        <li>Females must adhere to the dress code: only a black Burqa or Jilbab with a face veil is allowed.</li>
-                        <li>No one is permitted to leave the premises without a coordinator's explicit permission. Violators will be blacklisted.</li>
-                    </ul>
                     <p class="text-gray-600 mt-4">
-                        Your cooperation ensures everyone’s safety and well-being.
+                        Your feedback is invaluable for our future programs. Please take a moment to share your experience with us in the 
+                        <a href="#feedback" class="text-logo-blue hover:underline font-semibold">Feedback Section</a>. Stay tuned for our next event!
                     </p>
                 </div>
 
@@ -367,103 +350,33 @@
 
         <!-- Events Section -->
         <section id="events" class="bg-white py-16">
-            <div class="container mx-auto px-6">
-                <!-- Section title with the pulsing animation. -->
-                <h3 class="text-3xl font-bold text-center mb-12 text-gradient title-pulse">Upcoming Events</h3>
-                
-                <!-- A responsive grid that shows 1 column on small screens, 2 on medium, and 3 on large screens. -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-
-                    <!-- Featured Event Card: Has the floating animation (`card-shake`). -->
-                    <div class="relative bg-gray-50 p-6 rounded-lg shadow-lg border-2 transform hover:scale-105 transition duration-300 flex flex-col card-shake">
-                        <!-- A "Featured" banner positioned at the top-right corner. -->
-                        <div class="absolute top-0 right-0 bg-logo-green text-white text-xs font-bold px-3 py-1 rounded-tr-lg rounded-bl-lg">Featured</div>
-                        <!-- `flex-grow` allows this div to take up available space, pushing the button to the bottom. -->
-                        <div class="flex-grow">
-                            <p class="text-sm font-semibold text-logo-green">August 16, 2025 | 9:30 AM - 6:30 PM</p>
-                            <h4 class="text-xl font-bold text-logo-blue my-2">One Day Dawrah</h4>
-                            <p class="text-gray-600 mb-4">Join us for our One Day Dawrah Series. We will cover, تائية الإلبيري في الزهد والحكم</p>
-                            <div id="countdown-container" class="my-4">
-                                <p class="text-center text-md font-semibold text-gray-700 mb-2">Event Begins In:</p>
-                                
-                                <div id="countdown-timer" class="flex justify-center space-x-2 sm:space-x-4 text-center">
-                                    <div class="p-2 sm:p-3 bg-gray-100 rounded-lg shadow-inner w-1/4">
-                                        <span id="days" class="text-2xl sm:text-3xl font-bold text-logo-blue">00</span>
-                                        <span class="block text-xs sm:text-sm text-gray-500">Days</span>
-                                    </div>
-                                    <div class="p-2 sm:p-3 bg-gray-100 rounded-lg shadow-inner w-1/4">
-                                        <span id="hours" class="text-2xl sm:text-3xl font-bold text-logo-blue">00</span>
-                                        <span class="block text-xs sm:text-sm text-gray-500">Hours</span>
-                                    </div>
-                                    <div class="p-2 sm:p-3 bg-gray-100 rounded-lg shadow-inner w-1/4">
-                                        <span id="minutes" class="text-2xl sm:text-3xl font-bold text-logo-blue">00</span>
-                                        <span class="block text-xs sm:text-sm text-gray-500">Minutes</span>
-                                    </div>
-                                    <div class="p-2 sm:p-3 bg-gray-100 rounded-lg shadow-inner w-1/4">
-                                        <span id="seconds" class="text-2xl sm:text-3xl font-bold text-logo-blue">00</span>
-                                        <span class="block text-xs sm:text-sm text-gray-500">Seconds</span>
-                                    </div>
-                                </div>
-                                <div id="countdown-expired" class="hidden text-center text-lg font-bold text-logo-green p-3 bg-green-50 rounded-lg">
-                                    The Event is Live!
-                                </div>
-                            </div>
-                            <!-- Link to Google Maps for the event location. `target="_blank"` opens it in a new tab. -->
-                            <p class="text-gray-700 font-medium">
-                                <a href="https://maps.app.goo.gl/Rh7wQF8qznLFbzx4A" target="_blank" class="inline-flex items-center bg-gray-200 rounded-full p-1 pr-3 text-logo-green font-semibold mt-auto">
-                                    <!-- Location pin icon from Font Awesome - Made larger -->
-                                    <i class="fa-solid fa-location-dot fa-lg mx-2 icon-bob"></i>
-                                    <span>Jamia Masjid Salafiyah Utterpora,Beerwah</span>
-                                    <!-- A small circle with a shaking arrow icon for visual flair - Stays a circle -->
-                                    <span class="ml-2 h-6 w-6 rounded-full bg-logo-blue text-white flex items-center justify-center flex-shrink-0">
-                                        <i class="fa-solid fa-arrow-left icon-shake text-xs"></i>
-                                    </span>
-                                </a>
-                            </p>
-                            <!-- New Route Information Link (Add this part) -->
-                            <p class="text-gray-700 font-medium mt-2">
-                                <a href="https://maps.app.goo.gl/jftvHkGGzwN7mGAh7" target="_blank" class="inline-flex items-center bg-gray-200 rounded-full p-1 pr-3 text-logo-green font-semibold mt-auto">
-                                    <!-- Route icon from Font Awesome - Made larger -->
-                                    <i class="fa-solid fa-route fa-lg mx-2 icon-bob"></i>
-                                    <span>Route from Sonapah</span>
-                                    <!-- A small circle with a shaking arrow icon for visual flair - Stays a circle -->
-                                    <span class="ml-2 h-6 w-6 rounded-full bg-logo-blue text-white flex items-center justify-center flex-shrink-0">
-                                        <i class="fa-solid fa-arrow-left icon-shake text-xs"></i>
-                                    </span>
-                                </a>
-                            </p>
-                        </div>
-                        <!-- Container for the registration button. -->
-                        <div class="mt-4">
-                            <!-- Registration open -->
-                            <!-- <a href="https://forms.gle/Au9D2d38MAf362Nw5" target="_blank" class="btn-pulse bg-logo-green text-white font-bold py-2 px-4 rounded-full w-full text-center inline-flex items-center justify-center">
-                                <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                    <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
-                                    <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" />
-                                </svg>
-                                Register Now
-                            </a> -->
-                            <!-- Registration closed -->
-                            <button type="button" disabled class="bg-gray-400 cursor-not-allowed text-white font-bold py-2 px-4 rounded-full w-full text-center inline-flex items-center justify-center">
-                                <i class="fa-solid fa-lock w-5 h-5 mr-2"></i>
-                                Registrations Closed
-                            </button>
-                        </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-lg border-l-4 border-logo-blue flex flex-col items-center justify-center text-center">
+                    <i class="fa-solid fa-calendar-star fa-3x text-logo-blue mb-4"></i>
+                    <h4 class="text-xl font-bold text-logo-blue mb-2">Our Next Event is in the Works!</h4>
+                    <div class="flex-grow">
+                        <p class="text-gray-600 mb-4">
+                            JazakumAllahu Khairan for making our last event a success. We are currently planning our next enriching program within this month. Stay tuned for announcements on the topic, date, and registration details.
+                        </p>
                     </div>
-
-                    <!-- Placeholder Card for future events. -->
-                    <div class="bg-white p-6 rounded-lg shadow-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-center">
-                        <i class="fa-solid fa-calendar-days fa-2x text-gray-400 mb-3"></i>
-                        <h4 class="text-xl font-bold text-logo-blue mb-1">September Events</h4>
-                        <p class="text-gray-500 font-semibold">Details Coming Soon!</p>
+                    <div class="mt-4 w-full">
+                        <a href="#newsletter" class="bg-logo-green text-white font-bold py-2 px-4 rounded-full w-full text-center inline-flex items-center justify-center hover:bg-green-700 transition">
+                            <i class="fa-solid fa-envelope w-5 h-5 mr-2"></i>
+                            <span>Subscribe for Updates</span>
+                        </a>
                     </div>
+                </div>
 
-                    <!-- Another Placeholder Card. -->
-                    <div class="bg-white p-6 rounded-lg shadow-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-center">
-                        <i class="fa-solid fa-calendar-days fa-2x text-gray-400 mb-3"></i>
-                        <h4 class="text-xl font-bold text-logo-blue mb-1">October Events</h4>
-                        <p class="text-gray-500 font-semibold">Details Coming Soon!</p>
-                    </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-center">
+                    <i class="fa-solid fa-calendar-days fa-2x text-gray-400 mb-3"></i>
+                    <h4 class="text-xl font-bold text-logo-blue mb-1">September Events</h4>
+                    <p class="text-gray-500 font-semibold">Details Coming Soon!</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-center">
+                    <i class="fa-solid fa-calendar-days fa-2x text-gray-400 mb-3"></i>
+                    <h4 class="text-xl font-bold text-logo-blue mb-1">October Events</h4>
+                    <p class="text-gray-500 font-semibold">Details Coming Soon!</p>
                 </div>
             </div>
         </section>
@@ -1316,48 +1229,6 @@
                 });
             }
 
-            // --- Countdown Timer Logic ---
-            const countdownContainer = document.getElementById('countdown-container');
-            if (countdownContainer) {
-                // Set the date for the event: Year, Month (0-11), Day, Hour, Minute, Second
-                const countdownDate = new Date("August 16, 2025 09:30:00").getTime();
-
-                // Get elements
-                const daysEl = document.getElementById('days');
-                const hoursEl = document.getElementById('hours');
-                const minutesEl = document.getElementById('minutes');
-                const secondsEl = document.getElementById('seconds');
-                const timerEl = document.getElementById('countdown-timer');
-                const expiredEl = document.getElementById('countdown-expired');
-
-                // Update the countdown every 1 second
-                const countdownInterval = setInterval(function() {
-                    // Get today's date and time
-                    const now = new Date().getTime();
-
-                    // Find the distance between now and the countdown date
-                    const distance = countdownDate - now;
-
-                    // Time calculations for days, hours, minutes and seconds
-                    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-                    // Display the result in the elements, adding a leading zero if needed
-                    daysEl.innerHTML = days < 10 ? '0' + days : days;
-                    hoursEl.innerHTML = hours < 10 ? '0' + hours : hours;
-                    minutesEl.innerHTML = minutes < 10 ? '0' + minutes : minutes;
-                    secondsEl.innerHTML = seconds < 10 ? '0' + seconds : seconds;
-
-                    // If the countdown is finished, show expired message
-                    if (distance < 0) {
-                        clearInterval(countdownInterval);
-                        timerEl.classList.add('hidden');
-                        expiredEl.classList.remove('hidden');
-                    }
-                }, 1000);
-            }
 
             // --- Calendar Logic ---
             const monthYearHeader = document.getElementById('month-year-header');
