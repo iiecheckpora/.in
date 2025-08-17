@@ -106,26 +106,6 @@
         /* This class applies the 'blink-alternative' animation. */
         .blinking-dawrah { animation: blink-alternative 1.5s infinite alternate; }
 
-        /* --- Component-Specific Styles --- */
-        /* Styles for the gallery container. */
-        .gallery-container {
-            overflow: hidden; /* Hides the parts of the images that are outside the container's bounds. */
-            border-radius: 0.5rem; /* Applies rounded corners. */
-            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); /* Adds a shadow. */
-        }
-        /* Styles for the wrapper that holds the gallery images. */
-        .gallery-wrapper-css {
-            display: flex; /* Aligns the images in a row. */
-            width: 400%; /* Makes the wrapper 4 times the width of the container to hold 4 images. */
-            animation: pan-left 16s linear infinite; /* Applies the panning animation. */
-        }
-        /* Styles for each individual image slide in the gallery. */
-        .gallery-slide {
-            width: 25%; /* Each image takes up one-quarter of the wrapper's width. */
-            height: 384px; /* Sets a fixed height. */
-            object-fit: contain; /* Ensures the entire image fits within the dimensions without being cropped or stretched. */
-            background-color: #ffffff; /* Sets a white background for the image area. */
-        }
 
         /* --- Keyframe for Final Call Blink --- */
         @keyframes final-call {
@@ -140,6 +120,47 @@
         .final-call-blink {
             animation: final-call 1s infinite alternate; /* Faster animation */
             display: inline-block; /* Needed for transform to work properly */
+        }
+
+        /* Add this to your <style> block */
+
+        /* --- Form Loader Styles --- */
+        #form-loader.visible {
+            display: flex; /* Use flex instead of toggling hidden to allow transitions */
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Keyframes for the flying animation */
+        @keyframes fly {
+            0% {
+                transform: translateX(-100px) translateY(40px) rotate(-15deg);
+                opacity: 0;
+            }
+            20% {
+                opacity: 1;
+            }
+            80% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(100px) translateY(-60px) rotate(15deg);
+                opacity: 0;
+            }
+        }
+
+        /* Apply animation to the SVG inside the loader when visible */
+        #form-loader.visible svg {
+            animation: fly 1.8s ease-in-out infinite;
+        }
+
+        /* Optional: Add a subtle pulse to the text */
+        @keyframes pulse-text {
+            50% { opacity: 0.6; }
+        }
+
+        #form-loader.visible #loader-text {
+            animation: pulse-text 1.8s ease-in-out infinite;
         }
 
         /* --- Custom Color Classes --- */
@@ -204,17 +225,13 @@
         <!-- Navigation Bar -->
         <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
             <!-- Left side of the navbar: Logo and Institute Name -->
-            <div class="flex items-center space-x-3">
-                <!-- The institute's logo. `onerror` provides a fallback image if the original fails to load. -->
-                <img src="IMG-20230327-WA0002.jpg" alt="Institute Logo" class="h-12 w-12" onerror="this.onerror=null;this.src='IMG-20230327-WA0002.jpg';">
-                <!-- Container for the English and Arabic names. -->
+            <a href="" class="flex items-center space-x-3">
+                <img src="IMG-20230327-WA0002.jpg" alt="Institute Logo" class="h-12 w-12">
                 <div class="text-center">
-                    <!-- English name. `h1` is for the main heading. -->
                     <h1 class="text-xl font-bold text-logo-blue">Institute of Islamic Education</h1>
-                    <!-- Arabic name. `lang="ar"` and `dir="rtl"` are for correct Arabic rendering (right-to-left). -->
                     <p class="text-xl font-bold text-logo-green" lang="ar" dir="rtl">معهد التربية الاسلامية</p>
                 </div>
-            </div>
+            </a>
             <!-- Desktop Navigation Links: This block is hidden on small screens (`lg:flex` means it's a flex container on large screens and up). -->
             <div class="hidden xl:flex items-center space-x-4">
                 <!-- Each `<a>` tag is a hyperlink to a different section of the page. -->
@@ -268,16 +285,24 @@
         <!-- Hero Section: The main introductory block at the top of the page. -->
         <section class="bg-white py-20">
             <div class="container mx-auto px-6 text-center">
-                <!-- A larger version of the logo. `onerror` provides a placeholder from placehold.co if the image is missing. -->
-                <img src="IMG-20230327-WA0002.jpg" alt="Institute Logo" class="h-48 w-48 mx-auto mb-6" onerror="this.onerror=null;this.src='https://placehold.co/200x200/1e3a8a/ffffff?text=IIE';">
-                <!-- The main heading of the page. -->
+
                 <h2 class="text-4xl font-extrabold mb-2 text-logo-blue">Institute of Islamic Education</h2>
-                <!-- The Arabic name, styled to match the header. -->
-                <p class="text-2xl text-logo-green mb-8 font-bold" lang="ar" dir="rtl"> معهد التربية الاسلامية</p>
-                <!-- A short introductory paragraph. -->
-                <p class="max-w-3xl mx-auto text-gray-500">
+                <p class="text-2xl text-logo-green mb-4 font-bold" lang="ar" dir="rtl">معهد التربية الاسلامية</p>
+                <p class="max-w-3xl mx-auto text-gray-500 mb-10">
                     Dedicated to fostering a rich learning environment rooted in Islamic principles. We strive for excellence in education, character development, and community service.
                 </p>
+                
+                <div class="w-full max-w-3xl mx-auto rounded-xl shadow-lg overflow-hidden aspect-video">
+                    <iframe
+                        class="w-full h-full"
+                        src="https://www.youtube.com/embed/tgZgRG6ZPu8?si=0v-uYpUGQ9ZvXruF"
+                        title="YouTube video player"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+
             </div>
         </section>
 
@@ -387,6 +412,32 @@
             </div>
         </section>
 
+        <!-- testimonials -->
+        <section id="testimonials" class="py-16 bg-gray-50">
+            <div class="container mx-auto px-6">
+                
+                <h3 class="text-3xl font-bold text-center mb-12 text-logo-blue">What Our Students Say</h3>
+
+                <div class="max-w-3xl mx-auto bg-blue-50 border-l-4 border-logo-blue p-6 rounded-lg shadow-md">
+                    <div class="flex items-center">
+                        
+                        <div class="text-logo-blue pr-4">
+                            <i class="fa-solid fa-comments fa-3x"></i>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-xl font-bold text-gray-800 text-left">Coming Soon!</h4>
+                            <p class="text-gray-600 mt-1 text-left">
+                                We are currently gathering feedback and experiences from our valued students and event attendees. Please check back soon to read what they have to say about their journey with us.
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
         <!-- Events Calendar Section -->
         <section id="calendar" class="py-16">
             <div class="container mx-auto px-6">
@@ -425,7 +476,7 @@
                     </div>
 
                     <!-- NEW: Calendar Legend -->
-                    <div class="flex justify-center items-center space-x-4 mt-4 pt-4 border-t">
+                    <div class="flex flex-wrap justify-center items-center gap-x-4 gap-y-2 mt-4 pt-4 border-t">
                         <div class="flex items-center">
                             <div class="w-4 h-4 rounded-full bg-logo-blue mr-2"></div>
                             <span class="text-sm text-gray-600">Current Day</span>
@@ -433,6 +484,10 @@
                         <div class="flex items-center">
                             <div class="w-4 h-4 rounded-full bg-logo-green mr-2"></div>
                             <span class="text-sm text-gray-600">Event Day</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-4 h-4 rounded-full bg-gray-400 mr-2"></div>
+                            <span class="text-sm text-gray-600">Past Event Day</span>
                         </div>
                     </div>
                     <!-- END: Calendar Legend -->
@@ -478,20 +533,33 @@
         <section id="gallery" class="py-16">
             <div class="container mx-auto px-6">
                 <h3 class="text-3xl font-bold text-center mb-8 text-logo-blue">Our Gallery</h3>
-                
-                <!-- The main container for the gallery, styled with CSS class `.gallery-container`. -->
-                <div class="gallery-container max-w-2xl mx-auto shadow-lg rounded-lg">
-                    <!-- The wrapper that moves, styled with `.gallery-wrapper-css`. -->
-                    <div class="gallery-wrapper-css">
-                        <!-- Each `<img>` is a slide. The last image is a duplicate of the first to create a seamless loop. -->
-                        <img src="5ffdc721ccc294163dd69384bed3362c.jpg" alt="Gallery Image 1" class="gallery-slide">
-                        <img src="images.jpg" alt="Gallery Image 2" class="gallery-slide">
-                        <img src="pexels-sayed-abdullah-tafhim-2147792704-29865666.jpg" alt="Gallery Image 3" class="gallery-slide">
-                        <img src="5ffdc721ccc294163dd69384bed3362c.jpg" alt="Gallery Image 1 (Duplicate for loop)" class="gallery-slide"> 
-                    </div>
+
+                <div id="gallery-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                    <img src="img1.jpg" alt="Students in a classroom session" class="gallery-thumbnail w-full h-48 object-cover rounded-lg shadow-md cursor-pointer hover:shadow-xl hover:scale-105 transition-transform duration-300">
+                    <img src="img2.jpg" alt="Instructor at the podium" class="gallery-thumbnail w-full h-48 object-cover rounded-lg shadow-md cursor-pointer hover:shadow-xl hover:scale-105 transition-transform duration-300">
+                    <img src="img3.jpg" alt="Close-up of Islamic calligraphy" class="gallery-thumbnail w-full h-48 object-cover rounded-lg shadow-md cursor-pointer hover:shadow-xl hover:scale-105 transition-transform duration-300">
+                    <img src="img4.jpg" alt="Group photo of event attendees" class="gallery-thumbnail w-full h-48 object-cover rounded-lg shadow-md cursor-pointer hover:shadow-xl hover:scale-105 transition-transform duration-300">
+                    <img src="img5.jpg" alt="Exterior view of the institute building" class="gallery-thumbnail w-full h-48 object-cover rounded-lg shadow-md cursor-pointer hover:shadow-xl hover:scale-105 transition-transform duration-300">
+                    <img src="img6.jpg" alt="Library with shelves full of books" class="gallery-thumbnail w-full h-48 object-cover rounded-lg shadow-md cursor-pointer hover:shadow-xl hover:scale-105 transition-transform duration-300">
+                    <img src="img7.jpg" alt="A community service event in progress" class="gallery-thumbnail w-full h-48 object-cover rounded-lg shadow-md cursor-pointer hover:shadow-xl hover:scale-105 transition-transform duration-300">
+                    <img src="img8.jpg" alt="Students receiving certificates" class="gallery-thumbnail w-full h-48 object-cover rounded-lg shadow-md cursor-pointer hover:shadow-xl hover:scale-105 transition-transform duration-300">
+                    <img src="img9.jpg" alt="Open Quran on a bookstand" class="gallery-thumbnail w-full h-48 object-cover rounded-lg shadow-md cursor-pointer hover:shadow-xl hover:scale-105 transition-transform duration-300">
+                    <img src="img10.jpg" alt="Guests enjoying refreshments" class="gallery-thumbnail w-full h-48 object-cover rounded-lg shadow-md cursor-pointer hover:shadow-xl hover:scale-105 transition-transform duration-300">
                 </div>
             </div>
         </section>
+
+        <div id="lightbox" class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center p-4 z-[1000] hidden">
+            <button id="lightbox-close" class="absolute top-4 right-4 text-white text-3xl hover:text-gray-300">&times;</button>
+            
+            <button id="lightbox-prev" class="absolute left-4 text-white text-4xl hover:text-gray-300">&#10094;</button>
+            
+            <div class="relative">
+                <img id="lightbox-image" src="" alt="Full-size gallery image" class="max-w-[90vw] max-h-[85vh] rounded-lg shadow-2xl">
+            </div>
+            
+            <button id="lightbox-next" class="absolute right-4 text-white text-4xl hover:text-gray-300">&#10095;</button>
+        </div>
 
         <!-- Library Section -->
         <section id="library" class="py-16">
@@ -1009,6 +1077,12 @@
         </section>
 
     </main>
+    <div id="form-loader" class="fixed inset-0 bg-white/80 backdrop-blur-sm flex-col items-center justify-center z-[9999] opacity-0 pointer-events-none transition-opacity duration-300 hidden">
+        <svg class="w-20 h-20 text-logo-blue" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="transform-origin: center;">
+            <path d="M21.5,11.1l-17.9-9C2.9,1.8,2.2,2.4,2.1,3.2c-0.1,0.8,0.3,1.6,1,2l5.1,5.1l-5.1,5.1c-0.7,0.4-1.1,1.2-1,2c0.1,0.8,0.8,1.4,1.5,1.1l17.9-9c0.8-0.4,1.2-1.2,1.2-2S22.3,11.5,21.5,11.1z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <p id="loader-text" class="mt-4 text-lg font-semibold text-logo-blue">Sending...</p>
+    </div>
 
     <!-- Footer Section -->
     <footer class="bg-gradient-footer text-white py-8">
@@ -1056,11 +1130,27 @@
     <button id="back-to-top-btn" class="fixed bottom-5 right-5 z-50 p-3 bg-logo-blue text-white rounded-full shadow-lg hover:bg-blue-800 transition-all duration-300 opacity-0 pointer-events-none">
         <i class="fa-solid fa-arrow-up h-6 w-6"></i>
     </button>
+ 
+    <!-- youtube ap -->
+    <script src="https://www.youtube.com/iframe_api"></script>
 
     <!-- This script tag contains all the JavaScript for the page's interactive features. -->
     <script>
         // This single event listener ensures all JavaScript runs only after the HTML document has been loaded.
         document.addEventListener('DOMContentLoaded', function() {
+
+            // loader function
+            const formLoader = document.getElementById('form-loader');
+
+            // Helper function to show the loader
+            const showLoader = () => {
+                formLoader.classList.add('visible');
+            };
+
+            // Helper function to hide the loader
+            const hideLoader = () => {
+                formLoader.classList.remove('visible');
+            };
 
 
             // --- Active Navigation State Logic ---
@@ -1146,24 +1236,101 @@
             if (newsletterForm) {
                 const formStatus = document.getElementById('newsletter-form-status');
                 const submitButton = newsletterForm.querySelector('button[type="submit"]');
+                
                 newsletterForm.addEventListener('submit', (e) => {
                     e.preventDefault();
+                    showLoader();
                     submitButton.disabled = true;
                     formStatus.textContent = 'Subscribing...';
+                    formStatus.className = 'mt-4 text-sm text-gray-600';
+
                     const formData = new FormData(newsletterForm);
+                    // Convert the form data to a plain JavaScript object
                     const data = Object.fromEntries(formData.entries());
-                    fetch(googleScriptURL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
-                        .then(() => {
-                            formStatus.textContent = 'Thank you for subscribing!';
-                            formStatus.classList.add('text-green-500');
-                            newsletterForm.reset();
+
+                    fetch(googleScriptURL, { 
+                        method: 'POST', 
+                        // **THE FIX IS HERE:** We now stringify the data object into JSON
+                        body: JSON.stringify(data) 
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.result === 'success') { 
+                                formStatus.textContent = 'Thank you for subscribing! Please check your email.';
+                                formStatus.className = 'mt-4 text-sm text-green-500 font-semibold';
+                                newsletterForm.reset();
+                            } else {
+                                throw new Error(data.error || 'An unknown error occurred.');
+                            }
                         }).catch(error => {
                             console.error('Error:', error);
-                            formStatus.textContent = 'Something went wrong. Please try again.';
-                            formStatus.classList.add('text-red-500');
+                            formStatus.textContent = 'Submission failed. Please try again.';
+                            formStatus.className = 'mt-4 text-sm text-red-500 font-semibold';
                         }).finally(() => {
                             submitButton.disabled = false;
+                            hideLoader();
                         });
+                });
+            }
+
+
+            // --- Gallery Lightbox Logic ---
+            const galleryGrid = document.getElementById('gallery-grid');
+            if (galleryGrid) {
+                const lightbox = document.getElementById('lightbox');
+                const lightboxImage = document.getElementById('lightbox-image');
+                const lightboxClose = document.getElementById('lightbox-close');
+                const lightboxNext = document.getElementById('lightbox-next');
+                const lightboxPrev = document.getElementById('lightbox-prev');
+                const thumbnails = document.querySelectorAll('.gallery-thumbnail');
+
+                let currentIndex = 0;
+
+                const showImage = (index) => {
+                    const thumb = thumbnails[index];
+                    if (thumb) {
+                        lightboxImage.src = thumb.src;
+                        currentIndex = index;
+                        lightbox.classList.remove('hidden');
+                    }
+                };
+
+                const hideLightbox = () => {
+                    lightbox.classList.add('hidden');
+                };
+
+                const showNextImage = () => {
+                    const nextIndex = (currentIndex + 1) % thumbnails.length;
+                    showImage(nextIndex);
+                };
+
+                const showPrevImage = () => {
+                    const prevIndex = (currentIndex - 1 + thumbnails.length) % thumbnails.length;
+                    showImage(prevIndex);
+                };
+
+                thumbnails.forEach((thumb, index) => {
+                    thumb.addEventListener('click', () => showImage(index));
+                });
+
+                lightboxClose.addEventListener('click', hideLightbox);
+                lightboxNext.addEventListener('click', showNextImage);
+                lightboxPrev.addEventListener('click', showPrevImage);
+                
+                // Also hide lightbox if user clicks on the background overlay
+                lightbox.addEventListener('click', (e) => {
+                    if (e.target === lightbox) {
+                        hideLightbox();
+                    }
+                });
+
+                // Add keyboard navigation
+                document.addEventListener('keydown', (e) => {
+                    if (!lightbox.classList.contains('hidden')) {
+                        if (e.key === 'ArrowRight') showNextImage();
+                        if (e.key === 'ArrowLeft') showPrevImage();
+                        if (e.key === 'Escape') hideLightbox();
+                    }
                 });
             }
 
@@ -1172,23 +1339,39 @@
             if (feedbackForm) {
                 const formStatus = document.getElementById('form-status');
                 const submitButton = feedbackForm.querySelector('button[type="submit"]');
+                
                 feedbackForm.addEventListener('submit', (e) => {
                     e.preventDefault();
+                    showLoader();
                     submitButton.disabled = true;
                     formStatus.textContent = 'Submitting...';
+                    formStatus.className = 'mt-4 text-sm text-gray-600';
+
                     const formData = new FormData(feedbackForm);
+                    // Convert the form data to a plain JavaScript object
                     const data = Object.fromEntries(formData.entries());
-                    fetch(googleScriptURL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
-                        .then(() => {
-                            formStatus.textContent = 'Thank you for your feedback!';
-                            formStatus.classList.add('text-green-500');
-                            feedbackForm.reset();
+
+                    fetch(googleScriptURL, { 
+                        method: 'POST', 
+                        // **THE FIX IS HERE:** We now stringify the data object into JSON
+                        body: JSON.stringify(data)
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.result === 'success') {
+                                formStatus.textContent = 'Thank you for your feedback!';
+                                formStatus.className = 'mt-4 text-sm text-green-500 font-semibold';
+                                feedbackForm.reset();
+                            } else {
+                                throw new Error(data.error || 'An unknown error occurred.');
+                            }
                         }).catch(error => {
                             console.error('Error:', error);
-                            formStatus.textContent = 'Something went wrong. Please try again.';
-                            formStatus.classList.add('text-red-500');
+                            formStatus.textContent = 'Submission failed. Please try again.';
+                            formStatus.className = 'mt-4 text-sm text-red-500 font-semibold';
                         }).finally(() => {
                             submitButton.disabled = false;
+                            hideLoader();
                         });
                 });
             }
@@ -1258,27 +1441,49 @@
                 function renderCalendar() {
                     const year = currentDate.getFullYear();
                     const month = currentDate.getMonth();
+
+                    // --- CHANGE 1: Get today's date without time for accurate comparison ---
                     const today = new Date();
+                    today.setHours(0, 0, 0, 0); // Set to midnight to compare dates only
+
                     monthYearHeader.textContent = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long' }).format(currentDate);
                     calendarDaysGrid.innerHTML = '';
+                    
                     const firstDayOfMonth = new Date(year, month, 1).getDay();
                     const daysInMonth = new Date(year, month + 1, 0).getDate();
+                    
                     for (let i = 0; i < firstDayOfMonth; i++) {
                         calendarDaysGrid.innerHTML += `<div></div>`;
                     }
+                    
                     for (let day = 1; day <= daysInMonth; day++) {
                         const dayCell = document.createElement('div');
                         dayCell.className = 'p-2 text-center rounded-full cursor-pointer hover:bg-gray-100 transition';
                         dayCell.textContent = day;
-                        const isToday = day === today.getDate() && month === today.getMonth() && year === today.getFullYear();
+
+                        // --- CHANGE 2: Create a date object for the current cell being rendered ---
+                        const cellDate = new Date(year, month, day);
+
+                        const isCurrentDay = day === new Date().getDate() && month === new Date().getMonth() && year === new Date().getFullYear();
                         const dateString = `${year}-${month + 1}-${day}`;
                         const event = eventDates[dateString];
+
                         if (event) {
-                            dayCell.classList.add('bg-logo-green', 'text-white', 'font-bold', 'event-day-blinking');
+                            // --- CHANGE 3: Check if the event's date is in the past ---
+                            if (cellDate < today) {
+                                // Style for past events (gray background, no blinking)
+                                dayCell.classList.add('bg-gray-400', 'text-white', 'font-bold', 'opacity-75');
+                            } else {
+                                // Style for upcoming/current events (original green, blinking style)
+                                dayCell.classList.add('bg-logo-green', 'text-white', 'font-bold', 'event-day-blinking');
+                            }
+                            // The modal will work for both past and future events
                             dayCell.addEventListener('click', () => showEventModal(event));
-                        } else if (isToday) {
+                        } else if (isCurrentDay) {
+                            // This styling for the current day remains the same
                             dayCell.classList.add('bg-logo-blue', 'text-white', 'font-bold');
                         }
+                        
                         calendarDaysGrid.appendChild(dayCell);
                     }
                 }
