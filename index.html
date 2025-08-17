@@ -1535,12 +1535,31 @@
                 const submitBtn = document.getElementById('submit-receipt-request');
                 const statusMsg = document.getElementById('receipt-form-status');
                 const fileInput = document.getElementById('screenshot');
+                const whatsappInput = document.getElementById('whatsappNumber');
 
                 receiptForm.addEventListener('submit', (e) => {
                     e.preventDefault();
+
+                    // =================== START MODIFICATION ===================
+                    // Clear previous error messages and styles
+                    statusMsg.textContent = '';
+                    whatsappInput.classList.remove('border-red-500'); // Use Tailwind class for consistency
+
+                    const whatsappNumberValue = whatsappInput.value.trim();
+
+                    // Check if the number starts with +92 or 92
+                    if (whatsappNumberValue.startsWith('+92') || whatsappNumberValue.startsWith('92')) {
+                        statusMsg.textContent = 'Sorry, submissions from country code +92 are not accepted.';
+                        statusMsg.className = 'mt-4 text-sm text-red-600 font-semibold';
+                        whatsappInput.classList.add('border-red-500'); // Add red border to show error
+                        whatsappInput.focus(); // Focus the field for the user
+                        return; // Stop the form submission
+                    }
+                    // ==================== END MODIFICATION ====================
+                    
+                    
+                    showLoader('Sending Request...');
                     submitBtn.disabled = true;
-                    statusMsg.textContent = 'Processing image, please wait...';
-                    statusMsg.className = 'mt-4 text-sm text-gray-600';
 
                     const file = fileInput.files[0];
                     const reader = new FileReader();
@@ -1569,11 +1588,9 @@
                                 statusMsg.textContent = 'Thank you! Your request has been submitted successfully.';
                                 statusMsg.className = 'mt-4 text-sm text-green-600 font-semibold';
                                 receiptForm.reset();
-                                setTimeout(() => {
-                                    formPanel.style.maxHeight = '0px';
-                                    toggleIcon.classList.replace('fa-chevron-up', 'fa-chevron-down');
-                                }, 3000);
-                            } else { 
+                
+                            } 
+                            else { 
                                 throw new Error(data.message); 
                             }
                         })
@@ -1584,6 +1601,7 @@
                         })
                         .finally(() => {
                             submitBtn.disabled = false;
+                            hideLoader();
                         });
                     };
 
@@ -1592,6 +1610,7 @@
                         statusMsg.textContent = 'Could not read the file. Please try a different image.';
                         statusMsg.className = 'mt-4 text-sm text-red-600 font-semibold';
                         submitBtn.disabled = false;
+                        hideLoader();
                     };
                 });
             }
