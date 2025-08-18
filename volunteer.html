@@ -1,0 +1,117 @@
+<!-- volunteer.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>My Tasks</title>
+    <style>
+         body { font-family: sans-serif; margin: 2rem; }
+        .task-card { margin-bottom: 1.5rem; padding: 1rem; border: 1px solid #ccc; border-radius: 5px; }
+        .task-card h3 { margin-top: 0; }
+        .task-form select, .task-form textarea { width: 95%; padding: 8px; margin-top: 5px; }
+        .task-form button { margin-top: 10px; padding: 8px 12px; background: #007BFF; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>My Tasks</h1>
+    <p>Welcome, <span id="volunteerEmail"></span>! <a href="login.html" id="logout">Logout</a></p>
+    <div id="tasksContainer"></div>
+
+    <script>
+        // PASTE YOUR WEB APP URL HERE
+        const API_URL = "https://script.google.com/macros/s/AKfycbxvsvo97xY-vjAzsmjE8QlCIowTfPSFF_QDMgMcmKBSqHXFZqQX5KrkBvrFZU_it3sxJA/exec";
+
+        const volunteerEmail = localStorage.getItem("userEmail");
+        const volunteerRole = localStorage.getItem("userRole");
+
+        if (!volunteerEmail || volunteerRole !== "Volunteer") {
+            window.location.href = "login.html";
+        }
+        
+        document.getElementById("volunteerEmail").textContent = volunteerEmail;
+        document.getElementById("logout").onclick = () => localStorage.clear();
+
+        function fetchMyTasks() {
+            document.getElementById("tasksContainer").innerHTML = "<p>Loading your tasks...</p>";
+            fetch(`${API_URL}?action=getVolunteerTasks&email=${volunteerEmail}`)
+                .then(res => res.json())
+                .then(data => {
+                    renderTasks(data.tasks);
+                });
+        }
+        
+        function renderTasks(data) {
+            const container = document.getElementById("tasksContainer");
+            container.innerHTML = "";
+            const headers = data.shift();
+            const idIndex = headers.indexOf("TaskID");
+            const titleIndex = headers.indexOf("TaskTitle");
+            const descIndex = headers.indexOf("TaskDescription");
+            const statusIndex = headers.indexOf("Status");
+            const notesIndex = headers.indexOf("VolunteerNotes");
+
+            if(data.length === 0) {
+                container.innerHTML = "<p>You have no tasks assigned. Great job!</p>";
+                return;
+            }
+
+            data.forEach(row => {
+                const card = document.createElement("div");
+                card.className = "task-card";
+                card.innerHTML = `
+                    <h3>${row[titleIndex]} (ID: ${row[idIndex]})</h3>
+                    <p><strong>Description:</strong> ${row[descIndex]}</p>
+                    <p><strong>Current Status:</strong> ${row[statusIndex]}</p>
+                    <form class="task-form" data-task-id="${row[idIndex]}">
+                        <label>Update Status:</label>
+                        <select name="status">
+                            <option value="In Progress" ${row[statusIndex] === 'In Progress' ? 'selected' : ''}>In Progress</option>
+                            <option value="Completed" ${row[statusIndex] === 'Completed' ? 'selected' : ''}>Completed</option>
+                            <option value="Blocked" ${row[statusIndex] === 'Blocked' ? 'selected' : ''}>Blocked</option>
+                        </select>
+                        <br>
+                        <label>Notes:</label>
+                        <textarea name="notes" rows="3">${row[notesIndex]}</textarea>
+                        <button type="submit">Update Task</button>
+                    </form>
+                `;
+                container.appendChild(card);
+            });
+
+            // Add event listeners to all update forms
+            document.querySelectorAll(".task-form").forEach(form => {
+                form.addEventListener("submit", e => {
+                    e.preventDefault();
+                    const updateData = {
+                        taskId: form.dataset.taskId,
+                        status: form.querySelector("select[name='status']").value,
+                        notes: form.querySelector("textarea[name='notes']").value
+                    };
+                    
+                    // **UPDATED FETCH LOGIC WITH BETTER ERROR HANDLING**
+                    fetch(API_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: "updateTask", updateData: updateData })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            alert(data.message);
+                            fetchMyTasks(); // Refresh list after update
+                        } else {
+                            // This now handles errors returned from the script
+                            throw new Error(data.message || 'An unknown server error occurred.');
+                        }
+                    })
+                    .catch(error => {
+                        // This will show a specific alert if something goes wrong
+                        alert('Error updating task: ' + error.message);
+                        console.error('Update Error:', error);
+                    });
+                });
+            });
+        }
+
+        fetchMyTasks();
+    </script>
+</body>
+</html>
