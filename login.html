@@ -2,53 +2,113 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Volunteer Portal Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Login | Institute of Islamic Education</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="IMG-20230327-WA0002.jpg">
     <style>
-        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f4f4f4; }
-        .login-container { padding: 2rem; background: white; box-shadow: 0 0 10px rgba(0,0,0,0.1); border-radius: 8px; }
-        input { display: block; width: 100%; padding: 8px; margin-bottom: 1rem; }
-        button { width: 100%; padding: 10px; background-color: #007BFF; color: white; border: none; cursor: pointer; }
+        body { font-family: 'Inter', sans-serif; background-color: #f0f8ff; }
+        .text-logo-blue { color: #1e3a8a; } .bg-logo-blue { background-color: #1e3a8a; }
+        .hover\:bg-logo-blue-darker:hover { background-color: #1c347d; }
+        .ring-logo-green:focus { --tw-ring-color: #16a34a; }
+        .spinner { border: 2px solid rgba(255, 255, 255, 0.3); border-top-color: white; border-radius: 50%; width: 1rem; height: 1rem; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
-<body>
-    <div class="login-container">
-        <h2>Portal Login</h2>
-        <form id="loginForm">
-            <input type="email" id="email" placeholder="Email" required>
-            <input type="password" id="password" placeholder="Password" required>
-            <button type="submit">Login</button>
-            <p id="status" style="color:red;"></p>
-        </form>
-    </div>
+<body class="flex items-center justify-center min-h-screen p-4">
+    <main class="w-full max-w-md">
+        <div class="bg-white p-8 rounded-2xl shadow-lg">
+            <div class="text-center mb-8">
+                <a href="index.html" class="inline-block mb-4">
+                    <img src="IMG-20230327-WA0002.jpg" alt="Institute Logo" class="h-16 w-16 mx-auto">
+                </a>
+                <h1 class="text-2xl font-bold text-logo-blue">Volunteer Portal Login</h1>
+                <p class="text-gray-500 mt-1">Access your dedicated volunteer dashboard.</p>
+            </div>
+            <form id="loginForm" class="space-y-6">
+                 <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3"><i class="fa-solid fa-envelope text-gray-400"></i></span>
+                        <input type="email" id="email" name="email" placeholder="you@example.com" required class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 ring-logo-green">
+                    </div>
+                </div>
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3"><i class="fa-solid fa-lock text-gray-400"></i></span>
+                        <input type="password" id="password" name="password" placeholder="••••••••" required class="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 ring-logo-green">
+                        <button type="button" id="togglePassword" class="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500"><i class="fa-solid fa-eye"></i></button>
+                    </div>
+                </div>
+                <button type="submit" id="loginButton" class="w-full flex justify-center items-center bg-logo-blue text-white font-bold py-2.5 px-4 rounded-md hover:bg-logo-blue-darker transition duration-300 disabled:opacity-75">
+                    <span id="buttonText">Login</span>
+                    <div id="buttonSpinner" class="spinner hidden ml-2"></div>
+                </button>
+                <p id="status" class="text-center text-red-600 font-medium h-5" aria-live="polite"></p>
+            </form>
+            <div class="text-center mt-4">
+                <a href="forgot-password.html" class="text-sm text-blue-600 hover:underline">Forgot Password?</a>
+            </div>
+        </div>
+        <div class="text-center mt-6">
+            <a href="index.html" class="text-sm text-gray-600 hover:text-logo-blue hover:underline"><i class="fa-solid fa-arrow-left mr-1"></i> Return to Homepage</a>
+        </div>
+    </main>
+
     <script>
-        // PASTE YOUR WEB APP URL HERE
-        const API_URL = "https://script.google.com/macros/s/AKfycbxvsvo97xY-vjAzsmjE8QlCIowTfPSFF_QDMgMcmKBSqHXFZqQX5KrkBvrFZU_it3sxJA/exec";
+        const API_URL = "https://script.google.com/macros/s/AKfycbx2x1MMjKXn5aECAiPlbPcaco9LU5P0xWW6QmKtDGA_u9Xzd9uOw84erbpujRA-AmaGsA/exec"; 
 
-        document.getElementById("loginForm").addEventListener("submit", function(e) {
+        const loginForm = document.getElementById("loginForm");
+        const statusEl = document.getElementById("status");
+        const loginButton = document.getElementById("loginButton");
+        const buttonText = document.getElementById("buttonText");
+        const buttonSpinner = document.getElementById("buttonSpinner");
+        const passwordInput = document.getElementById("password");
+        const togglePasswordBtn = document.getElementById("togglePassword");
+
+        loginForm.addEventListener("submit", function(e) {
             e.preventDefault();
-            const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
-            document.getElementById("status").textContent = "Logging in...";
+            statusEl.textContent = "";
+            loginButton.disabled = true;
+            buttonText.textContent = "Logging in...";
+            buttonSpinner.classList.remove("hidden");
 
-            fetch(`${API_URL}?action=login&email=${email}&password=${password}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === "success") {
-                        localStorage.setItem("userEmail", data.email);
-                        localStorage.setItem("userRole", data.role);
-                        if (data.role === "Admin") {
-                            window.location.href = "admin.html";
-                        } else {
-                            window.location.href = "volunteer.html";
-                        }
-                    } else {
-                        document.getElementById("status").textContent = "Error: " + data.message;
-                    }
-                })
-                .catch(error => {
-                    document.getElementById("status").textContent = "Login failed. Check console for details.";
-                    console.error("Error:", error);
-                });
+            const formData = new FormData(loginForm);
+            const data = Object.fromEntries(formData.entries());
+            data.action = "login"; 
+
+            fetch(API_URL, {
+                method: 'POST', redirect: "follow", body: JSON.stringify(data),
+                headers: { "Content-Type": "text/plain;charset=utf-8" },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success" && data.token) {
+                    localStorage.setItem("sessionToken", data.token);
+                    localStorage.setItem("userRole", data.role); // Store role for easy redirection
+                    window.location.href = data.role === "Admin" ? "admin.html" : "volunteer.html";
+                } else {
+                    throw new Error(data.message || "Invalid credentials.");
+                }
+            })
+            .catch(error => {
+                statusEl.textContent = "Error: " + error.message;
+            })
+            .finally(() => {
+                loginButton.disabled = false;
+                buttonText.textContent = "Login";
+                buttonSpinner.classList.add("hidden");
+            });
+        });
+        
+        togglePasswordBtn.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            this.querySelector('i').classList.toggle('fa-eye');
+            this.querySelector('i').classList.toggle('fa-eye-slash');
         });
     </script>
 </body>

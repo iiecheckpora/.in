@@ -1,135 +1,328 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <style>
-        body { font-family: sans-serif; margin: 2rem; }
-        h1, h2 { color: #333; }
-        .dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
-        .panel { padding: 1rem; background: #f9f9f9; border-radius: 5px; box-shadow: 0 0 5px rgba(0,0,0,0.05); }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 8px; border: 1px solid #ddd; text-align: left; }
-        form input, form select, form textarea { width: 95%; padding: 8px; margin-bottom: 10px; }
-        button { padding: 10px 15px; background: #28a745; color: white; border: none; cursor: pointer; }
+        body { font-family: 'Inter', sans-serif; }
+        .toastify { font-family: 'Inter', sans-serif; border-radius: 0.5rem; }
+        /* Add pointer cursor to sortable headers */
+        .sortable-header { cursor: pointer; }
+        .sortable-header:hover { background-color: #f9fafb; } /* light gray hover */
     </style>
 </head>
-<body>
-    <h1>Admin Dashboard</h1>
-    <p>Welcome, <span id="adminEmail"></span>! <a href="login.html" id="logout">Logout</a></p>
+<body class="bg-gray-100 text-gray-800">
 
-    <div class="dashboard">
-        <div class="panel">
-            <h2>Assign New Task</h2>
-            <form id="assignTaskForm">
-                <input type="text" id="taskTitle" placeholder="Task Title" required>
-                <textarea id="taskDesc" placeholder="Task Description"></textarea>
-                <input type="email" id="assignTo" placeholder="Assign to (Volunteer Email)" required>
-                <input type="date" id="dueDate" required>
-                <button type="submit">Assign Task</button>
-            </form>
-        </div>
-        <div class="panel">
-            <h2>Add New Volunteer</h2>
-            <form id="addVolunteerForm">
-                <input type="text" id="fullName" placeholder="Full Name" required>
-                <input type="email" id="volEmail" placeholder="Email" required>
-                <input type="password" id="volPassword" placeholder="Temporary Password" required>
-                <select id="volRole">
-                    <option value="Volunteer">Volunteer</option>
-                    <option value="Admin">Admin</option>
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="index.html" class="flex items-center space-x-3">
+                <img src="IMG-20230327-WA0002.jpg" alt="Institute Logo" class="h-10 w-10">
+                <span class="text-xl font-bold text-blue-800">Admin Portal</span>
+            </a>
+            <div>
+                <span class="text-gray-600 mr-4">Welcome, Admin!</span>
+                <button id="logoutButton" class="bg-red-500 text-white font-semibold px-4 py-2 rounded-md hover:bg-red-600 transition duration-200">
+                    <i class="fa-solid fa-right-from-bracket mr-2"></i>Logout
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto p-6">
+        <div class="bg-white p-4 rounded-lg shadow-md mb-6">
+            <h3 class="font-semibold mb-2 text-gray-700">Filter Tasks</h3>
+            <div class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4">
+                <select id="statusFilter" class="w-full sm:w-auto border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                    <option value="All">All Statuses</option>
+                    <option value="Assigned">Assigned</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Blocked">Blocked</option>
                 </select>
-                <button type="submit">Add Volunteer</button>
-            </form>
+                <input type="text" id="emailSearch" placeholder="Search by user email..." class="w-full sm:w-auto border-gray-300 rounded-md shadow-sm flex-grow focus:ring-blue-500 focus:border-blue-500">
+            </div>
         </div>
-    </div>
 
-    <div class="panel" style="margin-top: 2rem;">
-        <h2>All Tasks (Real-time) <button id="refreshData">Refresh</button></h2>
-        <div id="tasksTableContainer"></div>
-    </div>
-    <div class="panel" style="margin-top: 2rem;">
-        <h2>All Volunteers</h2>
-        <div id="volunteersTableContainer"></div>
-    </div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-lg font-semibold mb-4 border-b pb-2">Assign New Task</h2>
+                <form id="assignTaskForm" class="space-y-4">
+                    <div>
+                        <label for="taskTitle" class="block text-sm font-medium text-gray-700">Task Title</label>
+                        <input type="text" id="taskTitle" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label for="assignTo" class="block text-sm font-medium text-gray-700">Assign to (User Email)</label>
+                        <input type="email" id="assignTo" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label for="dueDate" class="block text-sm font-medium text-gray-700">Due Date</label>
+                        <input type="date" id="dueDate" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                     <div>
+                        <label for="taskDesc" class="block text-sm font-medium text-gray-700">Description</label>
+                        <textarea id="taskDesc" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300">Assign Task</button>
+                </form>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-lg font-semibold mb-4 border-b pb-2">Add New User</h2>
+                <form id="addVolunteerForm" class="space-y-4">
+                     <div>
+                        <label for="fullName" class="block text-sm font-medium text-gray-700">Full Name</label>
+                        <input type="text" id="fullName" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label for="volEmail" class="block text-sm font-medium text-gray-700">Email</label>
+                        <input type="email" id="volEmail" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label for="volPassword" class="block text-sm font-medium text-gray-700">Temporary Password</label>
+                        <input type="password" id="volPassword" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label for="volRole" class="block text-sm font-medium text-gray-700">Role</label>
+                        <select id="volRole" class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                            <option value="Volunteer">Volunteer</option>
+                            <option value="Admin">Admin</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="w-full bg-green-600 text-white font-bold py-2 px-4 rounded-md hover:bg-green-700 transition duration-300">Add User</button>
+                </form>
+            </div>
+        </div>
 
+        <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+            <h2 class="text-lg font-semibold mb-4">All Tasks <button id="refreshData" class="text-sm font-normal text-blue-500 ml-2 hover:underline">(Refresh)</button></h2>
+            <div id="tasksTableContainer" class="overflow-x-auto"></div>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-lg font-semibold mb-4">All Users</h2>
+            <div id="volunteersTableContainer" class="overflow-x-auto"></div>
+        </div>
+    </main>
+    
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script>
-        // PASTE YOUR WEB APP URL HERE
-        const API_URL = "https://script.google.com/macros/s/AKfycbxvsvo97xY-vjAzsmjE8QlCIowTfPSFF_QDMgMcmKBSqHXFZqQX5KrkBvrFZU_it3sxJA/exec";
+        const API_URL = "https://script.google.com/macros/s/AKfycbx2x1MMjKXn5aECAiPlbPcaco9LU5P0xWW6QmKtDGA_u9Xzd9uOw84erbpujRA-AmaGsA/exec";
+        const token = localStorage.getItem("sessionToken");
 
-        const adminEmail = localStorage.getItem("userEmail");
-        const adminRole = localStorage.getItem("userRole");
+        if (!token) { window.location.href = "login.html"; }
+        
+        let allTasks = []; // To store a master copy of tasks for filtering/sorting
+        let sortState = { column: -1, direction: 'asc' }; // To track sorting state
 
-        // Security check
-        if (!adminEmail || adminRole !== "Admin") {
-            window.location.href = "login.html";
+        // --- Event Listeners ---
+        document.getElementById("logoutButton").addEventListener("click", logout);
+        document.getElementById("refreshData").addEventListener("click", fetchAdminData);
+        document.getElementById("assignTaskForm").addEventListener("submit", handleFormSubmit);
+        document.getElementById("addVolunteerForm").addEventListener("submit", handleFormSubmit);
+        document.getElementById('statusFilter').addEventListener('change', applyFiltersAndRender);
+        document.getElementById('emailSearch').addEventListener('input', applyFiltersAndRender);
+
+        // --- Core Functions ---
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const formId = e.target.id;
+            let action, payloadData;
+
+            if (formId === 'assignTaskForm') {
+                action = "assignTask";
+                payloadData = {
+                    title: document.getElementById("taskTitle").value,
+                    description: document.getElementById("taskDesc").value,
+                    assignTo: document.getElementById("assignTo").value,
+                    dueDate: document.getElementById("dueDate").value
+                };
+            } else if (formId === 'addVolunteerForm') {
+                action = "addVolunteer";
+                payloadData = {
+                    fullName: document.getElementById("fullName").value,
+                    email: document.getElementById("volEmail").value,
+                    password: document.getElementById("volPassword").value,
+                    role: document.getElementById("volRole").value
+                };
+            }
+            postData({ action: action, [formId === 'assignTaskForm' ? 'taskData' : 'volunteerData']: payloadData });
+            e.target.reset(); // UX: Clear form on success
         }
 
-        document.getElementById("adminEmail").textContent = adminEmail;
-        document.getElementById("logout").onclick = () => localStorage.clear();
-        document.getElementById("refreshData").onclick = fetchAdminData;
+        function showToast(message, isError = false) {
+            Toastify({
+                text: message,
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                style: {
+                    background: isError ? "linear-gradient(to right, #ef4444, #b91c1c)" : "linear-gradient(to right, #22c55e, #15803d)",
+                }
+            }).showToast();
+        }
+        
+        function showLoading(container) {
+            container.innerHTML = `<div class="flex justify-center items-center p-8"><div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div></div>`;
+        }
+
+        function handleAuthError(error) {
+            console.error("Auth Error:", error);
+            if (error.message.includes("Unauthorized")) {
+                showToast("Session expired. Please log in again.", true);
+                setTimeout(() => {
+                    localStorage.clear();
+                    window.location.href = "login.html";
+                }, 2000);
+            }
+        }
 
         function fetchAdminData() {
-            document.getElementById("tasksTableContainer").innerHTML = "<p>Loading data...</p>";
-            fetch(`${API_URL}?action=getAdminData`)
+            showLoading(document.getElementById("tasksTableContainer"));
+            showLoading(document.getElementById("volunteersTableContainer"));
+            
+            fetch(`${API_URL}?action=getAdminData&token=${token}`)
                 .then(res => res.json())
                 .then(data => {
-                    renderTable(data.tasks, document.getElementById("tasksTableContainer"));
+                    if (data.status === 'error') throw new Error(data.message);
+                    allTasks = data.tasks ? [...data.tasks] : []; // Store master copy
+                    renderTable([...data.tasks], document.getElementById("tasksTableContainer"));
                     renderTable(data.volunteers, document.getElementById("volunteersTableContainer"));
-                });
+                })
+                .catch(handleAuthError);
         }
-
-        function renderTable(data, container) {
-            let table = '<table>';
-            data.forEach((row, index) => {
-                table += '<tr>';
-                if (index === 0) { // Headers
-                    row.forEach(cell => table += `<th>${cell}</th>`);
-                } else { // Data rows
-                    row.forEach(cell => table += `<td>${cell}</td>`);
-                }
-                table += '</tr>';
-            });
-            table += '</table>';
-            container.innerHTML = table;
-        }
-
-        document.getElementById("assignTaskForm").addEventListener("submit", e => {
-            e.preventDefault();
-            const taskData = {
-                title: document.getElementById("taskTitle").value,
-                description: document.getElementById("taskDesc").value,
-                assignTo: document.getElementById("assignTo").value,
-                dueDate: document.getElementById("dueDate").value
-            };
-            postData({ action: "assignTask", taskData: taskData });
-        });
-        
-        document.getElementById("addVolunteerForm").addEventListener("submit", e => {
-            e.preventDefault();
-            const volunteerData = {
-                fullName: document.getElementById("fullName").value,
-                email: document.getElementById("volEmail").value,
-                password: document.getElementById("volPassword").value,
-                role: document.getElementById("volRole").value
-            };
-            postData({ action: "addVolunteer", volunteerData: volunteerData });
-        });
 
         function postData(payload) {
+            payload.token = token;
+            
             fetch(API_URL, {
-                method: 'POST',
-                body: JSON.stringify(payload)
+                method: 'POST', redirect: 'follow', body: JSON.stringify(payload),
+                headers: { "Content-Type": "text/plain;charset=utf-8" },
             })
             .then(res => res.json())
             .then(data => {
-                alert(data.message);
-                fetchAdminData(); // Refresh data after action
+                if (data.status === 'error') throw new Error(data.message);
+                showToast(data.message);
+                fetchAdminData();
+            })
+            .catch(err => {
+                showToast(err.message, true);
+                handleAuthError(err);
             });
         }
         
-        // Initial data load and periodic refresh for real-time feel
+        function logout() {
+            // UX: Add confirmation dialog
+            if (confirm("Are you sure you want to logout?")) {
+                // No need to call postData for logout, just clear local state
+                localStorage.clear();
+                window.location.href = "login.html";
+            }
+        }
+        
+        function renderTable(data, container) {
+            container.innerHTML = "";
+            if (!data || data.length < 1) {
+                container.innerHTML = `<p class="text-gray-500 p-4">No data available.</p>`;
+                return;
+            }
+
+            const table = document.createElement('table');
+            table.className = "min-w-full divide-y divide-gray-200";
+            const thead = document.createElement('thead');
+            thead.className = "bg-gray-50";
+            const headerRow = document.createElement('tr');
+            
+            const headers = data.shift(); // Use a copy
+            headers.forEach(headerText => {
+                const th = document.createElement('th');
+                th.className = "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider";
+                th.textContent = headerText;
+                
+                // Add sorting only to the tasks table
+                if (container.id === 'tasksTableContainer') {
+                    th.classList.add('sortable-header');
+                    th.addEventListener('click', handleHeaderClick);
+                    const colIndex = allTasks.length > 0 ? allTasks[0].indexOf(headerText) : -1;
+                    if (sortState.column === colIndex) {
+                        th.textContent += sortState.direction === 'asc' ? ' ▲' : ' ▼';
+                    }
+                }
+                headerRow.appendChild(th);
+            });
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+
+            const tbody = document.createElement('tbody');
+            tbody.className = "bg-white divide-y divide-gray-200";
+            data.forEach(rowData => {
+                const tr = document.createElement('tr');
+                rowData.forEach(cellData => {
+                    const td = document.createElement('td');
+                    td.className = "px-6 py-4 whitespace-nowrap text-sm text-gray-700";
+                    td.textContent = cellData;
+                    tr.appendChild(td);
+                });
+                tbody.appendChild(tr);
+            });
+            table.appendChild(tbody);
+            container.appendChild(table);
+        }
+
+        // --- Filtering and Sorting Functions ---
+        function applyFiltersAndRender() {
+            if (allTasks.length < 2) return;
+            const headers = allTasks[0];
+            let dataRows = allTasks.slice(1);
+
+            const statusValue = document.getElementById('statusFilter').value;
+            const emailValue = document.getElementById('emailSearch').value.toLowerCase();
+            
+            if (statusValue !== 'All') {
+                const statusIndex = headers.indexOf('Status');
+                if(statusIndex > -1) dataRows = dataRows.filter(row => row[statusIndex] === statusValue);
+            }
+            if (emailValue) {
+                const emailIndex = headers.indexOf('AssignedToEmail');
+                if(emailIndex > -1) dataRows = dataRows.filter(row => row[emailIndex].toLowerCase().includes(emailValue));
+            }
+            
+            renderTable([headers, ...dataRows], document.getElementById("tasksTableContainer"));
+        }
+
+        function handleHeaderClick(e) {
+            if (allTasks.length < 2) return;
+            const headers = allTasks[0];
+            const headerText = e.target.textContent.replace(' ▲', '').replace(' ▼', '');
+            const colIndex = headers.indexOf(headerText);
+
+            if (colIndex === -1) return;
+
+            if (sortState.column === colIndex) {
+                sortState.direction = sortState.direction === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortState.column = colIndex;
+                sortState.direction = 'asc';
+            }
+
+            let dataRows = allTasks.slice(1);
+            dataRows.sort((a, b) => {
+                const valA = a[colIndex];
+                const valB = b[colIndex];
+                if (valA < valB) return sortState.direction === 'asc' ? -1 : 1;
+                if (valA > valB) return sortState.direction === 'asc' ? 1 : -1;
+                return 0;
+            });
+
+            renderTable([headers, ...dataRows], document.getElementById("tasksTableContainer"));
+        }
+
+        // --- Initial Load ---
         fetchAdminData();
-        setInterval(fetchAdminData, 30000); // Refresh every 30 seconds
     </script>
 </body>
 </html>

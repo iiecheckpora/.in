@@ -1,83 +1,199 @@
-<!-- volunteer.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Tasks</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <style>
-         body { font-family: sans-serif; margin: 2rem; }
-        .task-card { margin-bottom: 1.5rem; padding: 1rem; border: 1px solid #ccc; border-radius: 5px; }
-        .task-card h3 { margin-top: 0; }
-        .task-form select, .task-form textarea { width: 95%; padding: 8px; margin-top: 5px; }
-        .task-form button { margin-top: 10px; padding: 8px 12px; background: #007BFF; color: white; border: none; cursor: pointer; }
+        body { font-family: 'Inter', sans-serif; }
+        .toastify { font-family: 'Inter', sans-serif; border-radius: 0.5rem; }
     </style>
 </head>
-<body>
-    <h1>My Tasks</h1>
-    <p>Welcome, <span id="volunteerEmail"></span>! <a href="login.html" id="logout">Logout</a></p>
-    <div id="tasksContainer"></div>
+<body class="bg-gray-100 text-gray-800">
 
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+             <a href="index.html" class="flex items-center space-x-3">
+                <img src="IMG-20230327-WA0002.jpg" alt="Institute Logo" class="h-10 w-10">
+                <span class="text-xl font-bold text-blue-800">Volunteer Portal</span>
+            </a>
+            <div>
+                <span id="welcomeMessage" class="text-gray-600 mr-4">Welcome!</span>
+                <button id="profileButton" class="bg-blue-500 text-white font-semibold px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200 mr-2">
+                    <i class="fa-solid fa-user mr-2"></i>My Profile
+                </button>
+                <button id="logoutButton" class="bg-red-500 text-white font-semibold px-4 py-2 rounded-md hover:bg-red-600 transition duration-200">
+                    <i class="fa-solid fa-right-from-bracket mr-2"></i>Logout
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto p-6">
+        <div id="tasksContainer" class="space-y-6">
+            </div>
+    </main>
+
+    <div id="profileModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-[100] hidden">
+        <div class="bg-white p-8 rounded-lg shadow-2xl max-w-md w-full">
+            <h2 class="text-2xl font-bold mb-4">My Profile</h2>
+            <form id="profileForm">
+                <div>
+                    <label for="profileName" class="block text-sm font-medium text-gray-700">Full Name</label>
+                    <input type="text" id="profileName" class="mt-1 block w-full border border-gray-300 rounded-md p-2 shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div class="mt-4">
+                    <label for="profileEmail" class="block text-sm font-medium text-gray-700">Email</label>
+                    <input type="email" id="profileEmail" class="mt-1 block w-full border border-gray-300 rounded-md p-2 bg-gray-100" disabled>
+                </div>
+                <div class="mt-6 flex justify-end space-x-4">
+                    <button type="button" id="closeModalButton" class="bg-gray-200 px-4 py-2 rounded-md hover:bg-gray-300">Cancel</button>
+                    <button type="submit" class="bg-blue-600 text-white font-bold px-4 py-2 rounded-md hover:bg-blue-700">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script>
-        // PASTE YOUR WEB APP URL HERE
-        const API_URL = "https://script.google.com/macros/s/AKfycbxvsvo97xY-vjAzsmjE8QlCIowTfPSFF_QDMgMcmKBSqHXFZqQX5KrkBvrFZU_it3sxJA/exec";
+        const API_URL = "https://script.google.com/macros/s/AKfycbx2x1MMjKXn5aECAiPlbPcaco9LU5P0xWW6QmKtDGA_u9Xzd9uOw84erbpujRA-AmaGsA/exec";
+        const token = localStorage.getItem("sessionToken");
 
-        const volunteerEmail = localStorage.getItem("userEmail");
-        const volunteerRole = localStorage.getItem("userRole");
+        if (!token) { window.location.href = "login.html"; }
 
-        if (!volunteerEmail || volunteerRole !== "Volunteer") {
-            window.location.href = "login.html";
+        // --- Event Listeners ---
+        document.getElementById("logoutButton").addEventListener("click", logout);
+        // NEW: Event listeners for Profile Modal
+        document.getElementById("profileButton").addEventListener("click", openProfileModal);
+        document.getElementById("closeModalButton").addEventListener("click", () => document.getElementById('profileModal').classList.add('hidden'));
+        document.getElementById("profileForm").addEventListener("submit", handleProfileUpdate);
+
+
+        // --- Core Functions ---
+        function showToast(message, isError = false) {
+            Toastify({
+                text: message, duration: 3000, close: true, gravity: "top", position: "right",
+                style: { background: isError ? "linear-gradient(to right, #ef4444, #b91c1c)" : "linear-gradient(to right, #22c55e, #15803d)" }
+            }).showToast();
+        }
+
+        function showLoading(container) {
+            container.innerHTML = `<div class="flex justify-center items-center p-8"><div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div></div>`;
+        }
+
+        function handleAuthError(error) {
+            console.error("Auth Error:", error);
+            if (error.message.includes("Unauthorized")) {
+                showToast("Session expired. Please log in again.", true);
+                setTimeout(() => {
+                    localStorage.clear();
+                    window.location.href = "login.html";
+                }, 2000);
+            }
+        }
+
+        // MODIFIED: postData function now accepts an optional callback for more complex actions
+        function postData(payload, callback) {
+            payload.token = token;
+            fetch(API_URL, {
+                method: 'POST', redirect: 'follow', body: JSON.stringify(payload),
+                headers: { "Content-Type": "text/plain;charset=utf-8" },
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'error') throw new Error(data.message);
+                showToast(data.message);
+
+                // If this was a task update, refresh the tasks list
+                if (payload.action === 'updateTask') fetchMyTasks();
+
+                // If a callback function was provided, run it
+                if (callback) callback(data);
+            })
+            .catch(err => {
+                showToast(err.message, true);
+                handleAuthError(err);
+            });
         }
         
-        document.getElementById("volunteerEmail").textContent = volunteerEmail;
-        document.getElementById("logout").onclick = () => localStorage.clear();
+        function logout() {
+            if (confirm("Are you sure you want to logout?")) {
+                localStorage.clear();
+                window.location.href = "login.html";
+            }
+        }
 
         function fetchMyTasks() {
-            document.getElementById("tasksContainer").innerHTML = "<p>Loading your tasks...</p>";
-            fetch(`${API_URL}?action=getVolunteerTasks&email=${volunteerEmail}`)
+            const container = document.getElementById("tasksContainer");
+            showLoading(container);
+            fetch(`${API_URL}?action=getVolunteerTasks&token=${token}`)
                 .then(res => res.json())
                 .then(data => {
+                    if (data.status === 'error') throw new Error(data.message);
                     renderTasks(data.tasks);
-                });
+                })
+                .catch(handleAuthError);
         }
         
         function renderTasks(data) {
             const container = document.getElementById("tasksContainer");
             container.innerHTML = "";
+            
+            if (!data || data.length < 2) {
+                 container.innerHTML = `<div class="bg-white p-6 rounded-lg shadow-md text-center text-gray-500">You have no tasks assigned. Great job!</div>`;
+                 return;
+            }
+
             const headers = data.shift();
             const idIndex = headers.indexOf("TaskID");
             const titleIndex = headers.indexOf("TaskTitle");
             const descIndex = headers.indexOf("TaskDescription");
             const statusIndex = headers.indexOf("Status");
             const notesIndex = headers.indexOf("VolunteerNotes");
-
-            if(data.length === 0) {
-                container.innerHTML = "<p>You have no tasks assigned. Great job!</p>";
-                return;
-            }
+            const dueDateIndex = headers.indexOf("DueDate");
 
             data.forEach(row => {
                 const card = document.createElement("div");
-                card.className = "task-card";
+                card.className = "bg-white p-6 rounded-lg shadow-md";
+                const dueDate = new Date(row[dueDateIndex]).toLocaleDateString();
+                const status = row[statusIndex];
+                let statusColor = 'bg-yellow-100 text-yellow-800';
+                if (status === 'Completed') statusColor = 'bg-green-100 text-green-800';
+                if (status === 'Blocked') statusColor = 'bg-red-100 text-red-800';
+
                 card.innerHTML = `
-                    <h3>${row[titleIndex]} (ID: ${row[idIndex]})</h3>
-                    <p><strong>Description:</strong> ${row[descIndex]}</p>
-                    <p><strong>Current Status:</strong> ${row[statusIndex]}</p>
-                    <form class="task-form" data-task-id="${row[idIndex]}">
-                        <label>Update Status:</label>
-                        <select name="status">
-                            <option value="In Progress" ${row[statusIndex] === 'In Progress' ? 'selected' : ''}>In Progress</option>
-                            <option value="Completed" ${row[statusIndex] === 'Completed' ? 'selected' : ''}>Completed</option>
-                            <option value="Blocked" ${row[statusIndex] === 'Blocked' ? 'selected' : ''}>Blocked</option>
-                        </select>
-                        <br>
-                        <label>Notes:</label>
-                        <textarea name="notes" rows="3">${row[notesIndex]}</textarea>
-                        <button type="submit">Update Task</button>
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="text-lg font-bold text-gray-800">${row[titleIndex]}</h3>
+                            <p class="text-sm text-gray-500">Due: ${dueDate}</p>
+                        </div>
+                        <span class="text-sm font-semibold px-3 py-1 rounded-full ${statusColor}">${status}</span>
+                    </div>
+                    <p class="text-gray-600 mt-4 mb-4 border-t pt-4">${row[descIndex] || 'No description provided.'}</p>
+                    <form class="task-form space-y-3" data-task-id="${row[idIndex]}">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Update Status:</label>
+                            <select name="status" class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                                <option value="Assigned" ${status === 'Assigned' ? 'selected' : ''}>Assigned</option>
+                                <option value="In Progress" ${status === 'In Progress' ? 'selected' : ''}>In Progress</option>
+                                <option value="Completed" ${status === 'Completed' ? 'selected' : ''}>Completed</option>
+                                <option value="Blocked" ${status === 'Blocked' ? 'selected' : ''}>Blocked</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Notes:</label>
+                            <textarea name="notes" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">${row[notesIndex] || ''}</textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300">Update Task</button>
                     </form>
                 `;
                 container.appendChild(card);
             });
 
-            // Add event listeners to all update forms
             document.querySelectorAll(".task-form").forEach(form => {
                 form.addEventListener("submit", e => {
                     e.preventDefault();
@@ -86,32 +202,41 @@
                         status: form.querySelector("select[name='status']").value,
                         notes: form.querySelector("textarea[name='notes']").value
                     };
-                    
-                    // **UPDATED FETCH LOGIC WITH BETTER ERROR HANDLING**
-                    fetch(API_URL, {
-                        method: 'POST',
-                        body: JSON.stringify({ action: "updateTask", updateData: updateData })
-                    })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.status === 'success') {
-                            alert(data.message);
-                            fetchMyTasks(); // Refresh list after update
-                        } else {
-                            // This now handles errors returned from the script
-                            throw new Error(data.message || 'An unknown server error occurred.');
-                        }
-                    })
-                    .catch(error => {
-                        // This will show a specific alert if something goes wrong
-                        alert('Error updating task: ' + error.message);
-                        console.error('Update Error:', error);
-                    });
+                    postData({ action: "updateTask", updateData: updateData });
                 });
             });
         }
 
+        // --- NEW: Functions for Profile Management ---
+        function openProfileModal() {
+            // Fetch user data and populate form
+            postData({ action: "getUserProfile" }, (data) => {
+                if (data.status === 'success') {
+                    document.getElementById('profileName').value = data.profile.fullName;
+                    document.getElementById('profileEmail').value = data.profile.email;
+                    document.getElementById('profileModal').classList.remove('hidden');
+                } else {
+                    showToast("Could not load profile data.", true);
+                }
+            });
+        }
+
+        function handleProfileUpdate(e) {
+            e.preventDefault();
+            const profileData = {
+                fullName: document.getElementById('profileName').value
+            };
+            // Use the callback to close the modal only on success
+            postData({ action: "updateUserProfile", profileData: profileData }, () => {
+                 document.getElementById('profileModal').classList.add('hidden');
+                 // Update the welcome message in the header
+                 openProfileModal(); // Re-fetch to get the latest name for the welcome message
+            });
+        }
+
+        // --- Initial Load ---
         fetchMyTasks();
+        openProfileModal(); // Fetch profile to show the welcome name
     </script>
 </body>
 </html>
