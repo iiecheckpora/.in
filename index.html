@@ -226,14 +226,14 @@
         <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
             <!-- Left side of the navbar: Logo and Institute Name -->
             <a href="" class="flex items-center space-x-3">
-                <img src="IMG-20230327-WA0002.jpg" alt="Institute Logo" class="h-12 w-12">
+                <img src="IMG-20230327-WA0002.jpg" alt="Institute Logo" class="h-12 w-12 p-0.5 bg-white shadow-md rounded-md">
                 <div class="text-center">
                     <h1 class="text-xl font-bold text-logo-blue">Institute of Islamic Education</h1>
                     <p class="text-xl font-bold text-logo-green" lang="ar" dir="rtl">معهد التربية الاسلامية</p>
                 </div>
             </a>
             <!-- Desktop Navigation Links: This block is hidden on small screens (`lg:flex` means it's a flex container on large screens and up). -->
-            <div class="hidden xl:flex items-center space-x-4">
+            <div class="hidden items-center space-x-4">
                 <!-- Each `<a>` tag is a hyperlink to a different section of the page. -->
                 <a href="#about" class="text-gray-600 hover:text-logo-green">About Us</a>
                 <a href="#notices" class="text-gray-600 hover:text-logo-green">Notices</a>
@@ -244,14 +244,14 @@
                 <a href="#library" class="text-gray-600 hover:text-logo-green">Library</a>
                 <a href="#admissions" class="text-gray-600 hover:text-logo-green">Admissions</a>
                 <a href="#newsletter" class="text-gray-600 hover:text-logo-green">Al-Tarbiya</a>
-                <a href="#social" class="text-gray-600 hover:text-logo-green">Contact</a>
+                <a href="#contact" class="text-gray-600 hover:text-logo-green">Contact</a>
                 <a href="#feedback" class="text-gray-600 hover:text-logo-green font-medium">Give Feedback</a>
                 <a href="login.html" class="bg-logo-blue text-white px-4 py-2 rounded-full">Portal Login</a>
                 <!-- This link is styled as a button for emphasis. -->
                 <a href="#donate" class="bg-logo-green text-white px-4 py-2 rounded-full">Donate</a>
             </div>
             <!-- Mobile Menu Button (Hamburger Icon): This is only visible on small screens (`lg:hidden`). -->
-            <div class="xl:hidden">
+            <div>
                 <button id="mobile-menu-button" class="text-gray-600 hover:text-logo-green focus:outline-none">
                     <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path class="hamburger-top" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16"></path>
@@ -262,7 +262,7 @@
             </div>
         </nav>
         <!-- Mobile Menu Panel: This is hidden by default and shown when the hamburger icon is clicked. -->
-        <div id="mobile-menu" class="xl:hidden hidden px-6 pt-2 pb-4">
+        <div id="mobile-menu" class="hidden px-6 pt-2 pb-4">
             <!-- The navigation links are stacked vertically for mobile view. -->
             <a href="#about" class="block py-2 text-gray-600 hover:text-logo-green">About Us</a>
             <a href="#notices" class="block py-2 text-gray-600 hover:text-logo-green">Notices</a>
@@ -273,7 +273,7 @@
             <a href="#library" class="block py-2 text-gray-600 hover:text-logo-green">Library</a>
             <a href="#admissions" class="block py-2 text-gray-600 hover:text-logo-green">Admissions</a>
             <a href="#newsletter" class="block py-2 text-gray-600 hover:text-logo-green">Al-Tarbiya</a>
-            <a href="#social" class="block py-2 text-gray-600 hover:text-logo-green">Contact</a>
+            <a href="#contact" class="block py-2 text-gray-600 hover:text-logo-green">Contact</a>
             <a href="#feedback" class="block py-2 text-gray-600 hover:text-logo-green font-medium">Give Feedback</a>
             <a href="login.html" class="block mt-2 bg-logo-blue text-white text-center px-4 py-2 rounded-full">Portal Login</a>
             <a href="#donate" class="block mt-2 bg-logo-green text-white text-center px-4 py-2 rounded-full">Donate</a>
@@ -283,6 +283,7 @@
     <!-- The `<main>` tag represents the primary content of the page. -->
     <main>
         <!-- Hero Section: The main introductory block at the top of the page. -->
+         
         <section class="bg-white py-20">
             <div class="container mx-auto px-6 text-center">
 
@@ -891,22 +892,6 @@
             </div>
         </section>
 
-        <!-- Social Media Section -->
-        <section id="social" class="bg-gray-100 py-16">
-            <div class="container mx-auto px-6 text-center">
-                <h3 class="text-3xl font-bold mb-8 text-logo-blue">Connect With Us</h3>
-                <p class="text-gray-600 mb-8">Follow our journey and stay updated on our social media channels.</p>
-                <!-- A flex container to hold the social media icons. -->
-                <div class="flex justify-center space-x-6">
-                    <a href="tel:+919419737927" aria-label="Call us" class="text-gray-600 hover:text-logo-green transform hover:scale-125 transition duration-300"><i class="fa-solid fa-phone fa-3x"></i></a>
-                    <a href="https://wa.me/+919419737927" target="_blank" aria-label="Contact us on WhatsApp" class="text-gray-600 hover:text-logo-green transform hover:scale-125 transition duration-300"><i class="fab fa-whatsapp fa-3x"></i></a>
-                    <a href="mailto:iiecheckpora@gmail.com" aria-label="Email us" class="text-gray-600 hover:text-logo-green transform hover:scale-125 transition duration-300"><i class="fa-solid fa-envelope fa-3x"></i></a>
-                    <a href="https://youtube.com/@instituteofislamiceducation?feature=shared" target="_blank" aria-label="Visit our YouTube channel" class="text-gray-600 hover:text-logo-green transform hover:scale-125 transition duration-300"><i class="fab fa-youtube fa-3x"></i></a>
-                    <a href="https://m.facebook.com/501487530283263/" target="_blank" aria-label="Visit our Facebook page" class="text-gray-600 hover:text-logo-green transform hover:scale-125 transition duration-300"><i class="fab fa-facebook-f fa-3x"></i></a>              
-                </div>
-            </div>
-        </section>
-
         <!-- Feedback Form Section -->
         <section id="feedback" class="py-16">
             <div class="container mx-auto px-6">
@@ -1066,12 +1051,15 @@
     </div>
 
     <!-- Footer Section -->
-    <footer class="bg-gradient-footer text-white py-8">
+    <footer class="bg-gradient-footer text-white py-12">
         <div class="container mx-auto px-6 text-center">
-            <!-- Head Office Location -->
-            <div class="mb-6">
-                <h4 class="text-lg font-bold mb-2">Head Office</h4>
-                <div class="bg-logo-blue p-1.5 rounded-full shadow-2xl inline-block">
+            
+            <div class="mb-8">
+                <h4 class="text-lg font-bold mb-2 flex items-center justify-center">
+                    <i class="fa-solid fa-landmark mr-3"></i>
+                    <span>Head Office</span>
+                </h4>
+                <div class="bg-logo-blue p-1 rounded-full shadow-2xl inline-block">
                     <a href="https://maps.app.goo.gl/yaZa531xtGu3nXMn9" target="_blank" class="inline-flex items-center bg-gray-100 rounded-full py-1 pl-2 pr-3 text-logo-green font-semibold">
                         <i class="fa-solid fa-location-dot text-2xl mr-2 icon-bob"></i>
                         <span>Chanthan Chak Pora, Beerwah</span>
@@ -1081,7 +1069,22 @@
                     </a>
                 </div>
             </div>
-            <!-- Copyright and credits -->
+
+            <div class="mb-8" id="contact">
+                <h4 class="text-lg font-bold mb-4 flex items-center justify-center">
+                    <i class="fa-regular fa-comments mr-3"></i>
+                    <span>Get in Touch</span>
+                </h4>
+                
+                <div class="flex justify-center space-x-6">
+                    <a href="tel:+919419737927" aria-label="Call us" class="text-white hover:opacity-75 transform hover:scale-110 transition duration-300"><i class="fa-solid fa-phone fa-2x"></i></a>
+                    <a href="https://wa.me/+919419737927" target="_blank" aria-label="Contact us on WhatsApp" class="text-white hover:opacity-75 transform hover:scale-110 transition duration-300"><i class="fab fa-whatsapp fa-2x"></i></a>
+                    <a href="mailto:iiecheckpora@gmail.com" aria-label="Email us" class="text-white hover:opacity-75 transform hover:scale-110 transition duration-300"><i class="fa-solid fa-envelope fa-2x"></i></a>
+                    <a href="https://youtube.com/@instituteofislamiceducation?feature=shared" target="_blank" aria-label="Visit our YouTube channel" class="text-white hover:opacity-75 transform hover:scale-110 transition duration-300"><i class="fab fa-youtube fa-2x"></i></a>
+                    <a href="https://m.facebook.com/501487530283263/" target="_blank" aria-label="Visit our Facebook page" class="text-white hover:opacity-75 transform hover:scale-110 transition duration-300"><i class="fab fa-facebook-f fa-2x"></i></a>
+                </div>
+            </div>
+
             <div class="border-t border-green-300 pt-6">
                 <p>© 2025 Institute of Islamic Education. All Rights Reserved.</p>
             </div>
