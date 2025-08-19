@@ -209,6 +209,12 @@
         /* This rule enables smooth scrolling when a user clicks on an anchor link (e.g., <a href="#about">). */
         html {
             scroll-behavior: smooth;
+            
+        }
+        /* --- Scroll Target Offset --- */
+        /* This adds space above a section when scrolling to it, preventing the sticky header from hiding the title. */
+        .scroll-target {
+            scroll-margin-top: 80px; /* Adjust this value to match your header's height */
         }
     </style>
 </head>
@@ -287,7 +293,7 @@
         <section class="bg-white py-20">
             <div class="container mx-auto px-6 text-center">
 
-                <h2 class="text-4xl font-extrabold mb-2 text-logo-blue">Institute of Islamic Education</h2>
+                <h2 class="text-2xl font-extrabold mb-2 text-logo-blue">Institute of Islamic Education</h2>
                 <p class="text-2xl text-logo-green mb-4 font-bold" lang="ar" dir="rtl">معهد التربية الاسلامية</p>
                 <p class="max-w-3xl mx-auto text-gray-500 mb-10">
                     Dedicated to fostering a rich learning environment rooted in Islamic principles. We strive for excellence in education, character development, and community service.
@@ -307,7 +313,7 @@
             </div>
         </section>
         <!-- About Us Section -->
-        <section id="about" class="py-16">
+        <section id="about" class="py-16 scroll-target">
             <div class="container mx-auto px-6">
                 <h3 class="text-3xl font-bold text-center mb-8 text-logo-blue">About Our Institute</h3>
                 <!-- A styled container for the about text. -->
@@ -321,7 +327,7 @@
             </div>
         </section>
         <!-- Notice Board Section: `id="notices"` allows it to be targeted by anchor links. -->
-        <section id="notices" class="py-16">
+        <section id="notices" class="py-16 scroll-target">
             <div class="container mx-auto px-6">
                 <h3 class="text-3xl font-bold text-center mb-8 text-logo-blue">Notice Board</h3>
                 
@@ -346,7 +352,7 @@
             </div>
         </section>
         <!-- Meet our instructors -->
-        <section id="instructors" class="py-16">
+        <section id="instructors" class="py-16 scroll-target">
             <div class="container mx-auto px-6">
                 
                 <h3 class="text-3xl font-bold text-center mb-12 text-logo-blue">Meet Our Instructors</h3>
@@ -372,7 +378,7 @@
         </section>
 
         <!-- Events Section -->
-        <section id="events" class="bg-white py-16">
+        <section id="events" class="bg-white py-16 scroll-target">
             <div class="container mx-auto px-6">
                 <h3 class="text-3xl font-bold text-center mb-12 text-logo-blue title-pulse">Upcoming Events</h3>
                 
@@ -411,7 +417,7 @@
         </section>
 
         <!-- testimonials -->
-        <section id="testimonials" class="py-16 bg-gray-50">
+        <section id="testimonials" class="py-16 scroll-target bg-gray-50">
             <div class="container mx-auto px-6">
                 
                 <h3 class="text-3xl font-bold text-center mb-12 text-logo-blue">What Our Students Say</h3>
@@ -437,7 +443,7 @@
         </section>
 
         <!-- Events Calendar Section -->
-        <section id="calendar" class="py-16">
+        <section id="calendar" class="py-16 scroll-target">
             <div class="container mx-auto px-6">
                 <h3 class="text-3xl font-bold text-center mb-8 text-logo-blue">Events Calendar</h3>
 
@@ -528,7 +534,7 @@
         </section>
 
         <!-- Gallery Section -->
-        <section id="gallery" class="py-16">
+        <section id="gallery" class="py-16 scroll-target">
             <div class="container mx-auto px-6">
                 <h3 class="text-3xl font-bold text-center mb-8 text-logo-blue">Our Gallery</h3>
 
@@ -559,72 +565,81 @@
             <button id="lightbox-next" class="absolute right-4 text-white text-4xl hover:text-gray-300">&#10095;</button>
         </div>
 
-        <!-- Library Section -->
-        <section id="library" class="py-16">
-            <div class="container mx-auto px-6 text-center">
-                <h3 class="text-3xl font-bold mb-8 text-logo-blue">Explore Our Library</h3>
-                
-                <!-- A notification box indicating the section is under maintenance. -->
-                <div class="max-w-3xl mx-auto bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded-lg shadow-md">
-                    <div class="flex items-center">
-                        <!-- Icon for visual context. -->
-                        <div class="text-yellow-500 pr-4">
-                            <i class="fa-solid fa-person-digging fa-2x"></i>
-                        </div>
-                        <!-- Text content of the notification. -->
-                        <div>
-                            <h4 class="text-xl font-bold text-gray-800 text-left">Section Under Maintenance</h4>
-                            <p class="text-gray-600 mt-1 text-left">
-                                Our online library is currently being updated with new resources. Please check back soon!
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Borrow a Book Section -->
-        <section id="borrow" class="pb-16">
+        <!-- library section -->
+        <section id="library" class="py-16 scroll-target">
             <div class="container mx-auto px-6">
-                <h3 class="text-3xl font-bold text-center mb-12 text-logo-blue">How to Borrow a Book</h3>
+                <h3 class="text-3xl font-bold text-center mb-12 text-logo-blue">Our Library & Resources</h3>
 
-                <!-- A styled box explaining the borrowing process. -->
-                <div class="max-w-3xl mx-auto bg-yellow-50 border-l-4 border-yellow-400 p-8 rounded-lg shadow-lg">
-                    <!-- Maintenance notice within the box. -->
-                    <div class="flex items-center mb-4">
-                        <div class="text-yellow-500 pr-4">
-                            <i class="fa-solid fa-person-digging fa-2x"></i>
-                        </div>
-                        <div>
-                            <h4 class="text-xl font-bold text-gray-800 text-left">System Under Maintenance</h4>
-                            <p class="text-gray-600 mt-1 text-left">Our new borrowing system is coming soon! The process is outlined below, but is not yet active.<br/>Until then, you are welcome to visit our library in person to borrow a book.</p>
+                <div class="max-w-3xl mx-auto space-y-4">
+
+                    <div class="accordion-item bg-white rounded-lg shadow-lg overflow-hidden">
+                        <button class="accordion-toggle w-full p-6 flex justify-between items-center text-left hover:bg-gray-50 transition focus:outline-none focus:ring-2 focus:ring-logo-blue">
+                            <span class="text-xl font-bold text-gray-800 flex items-center">
+                                <i class="fa-solid fa-book-open text-logo-green mr-4"></i>
+                                Explore Our Online Library
+                            </span>
+                            <i class="fa-solid fa-chevron-down text-gray-500 transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-panel" style="max-height: 0; overflow: hidden; transition: max-height 0.5s ease-in-out;">
+                            <div class="p-6 border-t border-gray-200">
+                                <div class="flex items-center">
+                                    <div class="text-yellow-500 pr-4">
+                                        <i class="fa-solid fa-person-digging fa-2x"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-lg font-bold text-gray-800">Section Under Maintenance</h4>
+                                        <p class="text-gray-600 mt-1">
+                                            Our online library is currently being updated with new resources. Please check back soon!
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- A horizontal line to separate the notice from the steps. -->
-                    <div class="border-t border-yellow-200 pt-6 space-y-4">
-                        <!-- Step 1 -->
-                        <div class="flex items-start">
-                            <div class="flex-shrink-0 bg-yellow-400 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center mr-4">1</div>
-                            <p class="text-gray-700"><strong>Register Online:</strong> Submit your application, official ID, and the name of the book you wish to borrow via our upcoming online form.</p>
-                        </div>
-                        <!-- Step 2 -->
-                        <div class="flex items-start">
-                            <div class="flex-shrink-0 bg-yellow-400 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center mr-4">2</div>
-                            <p class="text-gray-700"><strong>Await Confirmation:</strong> We will check for the book's availability and send you a confirmation.</p>
-                        </div>
-                        <!-- Step 3 -->
-                        <div class="flex items-start">
-                            <div class="flex-shrink-0 bg-yellow-400 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center mr-4">3</div>
-                            <p class="text-gray-700"><strong>Collect from Office:</strong> Once confirmed, visit our office to collect your book.</p>
+                    <div class="accordion-item bg-white rounded-lg shadow-lg overflow-hidden">
+                        <button class="accordion-toggle w-full p-6 flex justify-between items-center text-left hover:bg-gray-50 transition focus:outline-none focus:ring-2 focus:ring-logo-blue">
+                            <span class="text-xl font-bold text-gray-800 flex items-center">
+                                <i class="fa-solid fa-hand-holding-hand text-logo-blue mr-4"></i>
+                                How to Borrow a Book
+                            </span>
+                            <i class="fa-solid fa-chevron-down text-gray-500 transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-panel" style="max-height: 0; overflow: hidden; transition: max-height 0.5s ease-in-out;">
+                            <div class="p-6 border-t border-gray-200">
+                                <div class="flex items-center mb-4">
+                                    <div class="text-yellow-500 pr-4">
+                                        <i class="fa-solid fa-person-digging fa-2x"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-lg font-bold text-gray-800">System Under Maintenance</h4>
+                                        <p class="text-gray-600 mt-1">Our new borrowing system is coming soon! The process is outlined below, but is not yet active.<br/>Until then, you are welcome to visit our library in person to borrow a book.</p>
+                                    </div>
+                                </div>
+                                <div class="border-t border-yellow-200 pt-6 space-y-4">
+                                    <div class="flex items-start">
+                                        <div class="flex-shrink-0 bg-yellow-400 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center mr-4">1</div>
+                                        <p class="text-gray-700"><strong>Register Online:</strong> Submit your application, official ID, and the name of the book you wish to borrow via our upcoming online form.</p>
+                                    </div>
+                                    <div class="flex items-start">
+                                        <div class="flex-shrink-0 bg-yellow-400 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center mr-4">2</div>
+                                        <p class="text-gray-700"><strong>Await Confirmation:</strong> We will check for the book's availability and send you a confirmation.</p>
+                                    </div>
+                                    <div class="flex items-start">
+                                        <div class="flex-shrink-0 bg-yellow-400 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center mr-4">3</div>
+                                        <p class="text-gray-700"><strong>Collect from Office:</strong> Once confirmed, visit our office to collect your book.</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </section>
 
         <!-- Admission Section -->
-        <section id="admissions" class="py-16">
+        <section id="admissions" class="py-16 scroll-target">
             <div class="container mx-auto px-6 text-center">
                 <h3 class="text-3xl font-bold mb-8 text-logo-blue">Admissions & Applications</h3>
                 
@@ -646,7 +661,7 @@
         </section>
 
         <!-- Newsletter Section -->
-        <section id="newsletter" class="py-16 bg-gray-50">
+        <section id="newsletter" class="py-16 scroll-target bg-gray-50">
             <div class="container mx-auto px-6 text-center">
                 <div class="max-w-2xl mx-auto">
                     <h3 class="text-3xl font-bold mb-4 text-logo-blue">Subscribe to Our Al-Tarbiya</h3>
@@ -893,7 +908,7 @@
         </section>
 
         <!-- Feedback Form Section -->
-        <section id="feedback" class="py-16">
+        <section id="feedback" class="py-16 scroll-target">
             <div class="container mx-auto px-6">
                 <h3 class="text-3xl font-bold text-center mb-8 text-logo-blue">We Value Your Feedback</h3>
                 <!-- A styled card containing the feedback form. -->
@@ -929,7 +944,7 @@
         <!-- =================================================================== -->
         <!-- ======================= DONATION SECTION START ====================== -->
         <!-- =================================================================== -->
-        <section id="donate" class="py-16 bg-white">
+        <section id="donate" class="py-16 scroll-target bg-white">
             <div class="container mx-auto px-6">
                 
                 <div class="text-center mb-12">
@@ -943,57 +958,73 @@
                     </blockquote>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                    
-                    <div class="bg-gray-50 p-6 md:p-8 rounded-lg shadow-lg border-l-4 border-logo-blue flex flex-col">
-                        <h4 class="text-2xl font-bold text-logo-blue mb-6 flex items-center"><i class="fa-solid fa-landmark mr-3"></i>Direct Bank Transfer</h4>
-                        
-                        <div class="space-y-4 text-sm md:text-base">
-                            <div class="flex justify-between items-center"><span class="text-gray-600">Account Name:</span><span class="font-semibold text-gray-800">Institute of Islamic Education</span></div><hr>
-                            <div class="flex justify-between items-center">
-                                <span class="text-gray-600">Account Number:</span>
-                                <div class="flex items-center space-x-2">
-                                    <span class="font-semibold text-gray-800">0036040100037596</span>
-                                    <button data-copy="0036040100037596" class="copy-btn text-gray-500 hover:text-logo-blue transition"><i class="fa-regular fa-copy"></i></button>
+                <div class="max-w-3xl mx-auto space-y-4">
+
+                    <div class="accordion-item-donate bg-white rounded-lg shadow-lg overflow-hidden">
+                        <button class="accordion-toggle-donate w-full p-6 flex justify-between items-center text-left hover:bg-gray-50 transition focus:outline-none focus:ring-2 focus:ring-logo-blue">
+                            <span class="text-xl font-bold text-gray-800 flex items-center">
+                                <i class="fa-solid fa-landmark text-logo-blue mr-4"></i>
+                                Direct Bank Transfer
+                            </span>
+                            <i class="fa-solid fa-chevron-down text-gray-500 transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-panel-donate" style="max-height: 0; overflow: hidden; transition: max-height 0.5s ease-in-out;">
+                            <div class="p-6 border-t border-gray-200">
+                                <div class="bg-gray-50 p-6 rounded-lg">
+                                    <div class="space-y-4 text-sm md:text-base">
+                                        <div class="flex justify-between items-center"><span class="text-gray-600">Account Name:</span><span class="font-semibold text-gray-800">Institute of Islamic Education</span></div><hr>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-gray-600">Account Number:</span>
+                                            <div class="flex items-center space-x-2">
+                                                <span class="font-semibold text-gray-800">0036040100037596</span>
+                                                <button data-copy="0036040100037596" class="copy-btn text-gray-500 hover:text-logo-blue transition"><i class="fa-regular fa-copy"></i></button>
+                                            </div>
+                                        </div><hr>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-gray-600">IFSC Code:</span>
+                                            <div class="flex items-center space-x-2">
+                                                <span class="font-semibold text-gray-800">JAKA0BEERWA</span>
+                                                <button data-copy="JAKA0BEERWA" class="copy-btn text-gray-500 hover:text-logo-blue transition"><i class="fa-regular fa-copy"></i></button>
+                                            </div>
+                                        </div><hr>
+                                        <div class="flex justify-between items-center"><span class="text-gray-600">Bank Name:</span><span class="font-semibold text-gray-800">J&K Bank</span></div><hr>
+                                        <div class="flex justify-between items-center"><span class="text-gray-600">Branch:</span><span class="font-semibold text-gray-800">Beerwah</span></div>
+                                    </div>
+                                    <div class="mt-4 pt-4 border-t border-gray-200 text-center">
+                                        <p class="text-sm text-gray-600">
+                                            <i class="fa-solid fa-headset mr-1 opacity-75"></i>
+                                            For assistance, please 
+                                            <a href="tel:+919419737927" class="font-semibold text-logo-blue hover:underline">
+                                                call us at +91 94197 37927
+                                            </a>.
+                                        </p>
+                                    </div>
                                 </div>
-                            </div><hr>
-                            <div class="flex justify-between items-center">
-                                <span class="text-gray-600">IFSC Code:</span>
-                                <div class="flex items-center space-x-2">
-                                    <span class="font-semibold text-gray-800">JAKA0BEERWA</span>
-                                    <button data-copy="JAKA0BEERWA" class="copy-btn text-gray-500 hover:text-logo-blue transition"><i class="fa-regular fa-copy"></i></button>
-                                </div>
-                            </div><hr>
-                            <div class="flex justify-between items-center"><span class="text-gray-600">Bank Name:</span><span class="font-semibold text-gray-800">J&K Bank</span></div><hr>
-                            <div class="flex justify-between items-center"><span class="text-gray-600">Branch:</span><span class="font-semibold text-gray-800">Beerwah</span></div>
-                        </div>
-                        
-                        
-                        <div class="mt-4 pt-4 border-t border-gray-200 text-center">
-                            <p class="text-sm text-gray-600">
-                                <i class="fa-solid fa-headset mr-1 opacity-75"></i>
-                                For assistance, please 
-                                <a href="tel:+919419737927" class="font-semibold text-logo-blue hover:underline">
-                                    call us at +91 94197 37927
-                                </a>.
-                            </p>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="bg-gray-50 p-6 md:p-8 rounded-lg shadow-lg border-l-4 border-logo-green flex flex-col items-center justify-center text-center">
-                        <h4 class="text-2xl font-bold text-logo-green mb-4 flex items-center">
-                            <i class="fa-solid fa-qrcode mr-3"></i>
-                            UPI / QR Code
-                        </h4>
-                        
-                        <div class="flex-grow flex flex-col items-center justify-center">
-                            <i class="fa-solid fa-hourglass-half fa-3x text-gray-400 mb-4"></i>
-                            <h5 class="text-xl font-bold text-gray-700">Coming Soon</h5>
-                            <p class="text-gray-500 mt-2">
-                                Our secure UPI payment option is currently under setup. Please check back shortly!
-                            </p>
+                    <div class="accordion-item-donate bg-white rounded-lg shadow-lg overflow-hidden">
+                        <button class="accordion-toggle-donate w-full p-6 flex justify-between items-center text-left hover:bg-gray-50 transition focus:outline-none focus:ring-2 focus:ring-logo-green">
+                            <span class="text-xl font-bold text-gray-800 flex items-center">
+                                <i class="fa-solid fa-qrcode text-logo-green mr-4"></i>
+                                UPI / QR Code
+                            </span>
+                            <i class="fa-solid fa-chevron-down text-gray-500 transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-panel-donate" style="max-height: 0; overflow: hidden; transition: max-height 0.5s ease-in-out;">
+                            <div class="p-6 border-t border-gray-200 text-center">
+                                <div class="flex-grow flex flex-col items-center justify-center">
+                                    <i class="fa-solid fa-hourglass-half fa-3x text-gray-400 mb-4"></i>
+                                    <h5 class="text-xl font-bold text-gray-700">Coming Soon</h5>
+                                    <p class="text-gray-500 mt-2">
+                                        Our secure UPI payment option is currently under setup. Please check back shortly!
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </section>
@@ -1595,6 +1626,66 @@
                     };
                 });
             }
+
+            // --- Accordion Logic for Library Section ---
+            const accordionItems = document.querySelectorAll('.accordion-item');
+
+            accordionItems.forEach(item => {
+                const toggle = item.querySelector('.accordion-toggle');
+                const panel = item.querySelector('.accordion-panel');
+                const icon = toggle.querySelector('.fa-chevron-down');
+
+                toggle.addEventListener('click', () => {
+                    // Close all other accordion items first
+                    accordionItems.forEach(otherItem => {
+                        if (otherItem !== item) {
+                            const otherPanel = otherItem.querySelector('.accordion-panel');
+                            const otherIcon = otherItem.querySelector('.fa-chevron-down');
+                            otherPanel.style.maxHeight = '0';
+                            otherIcon.classList.remove('rotate-180');
+                        }
+                    });
+
+                    // Toggle the clicked accordion item
+                    if (panel.style.maxHeight !== '0px' && panel.style.maxHeight) {
+                        panel.style.maxHeight = '0';
+                        icon.classList.remove('rotate-180');
+                    } else {
+                        panel.style.maxHeight = panel.scrollHeight + 'px';
+                        icon.classList.add('rotate-180');
+                    }
+                });
+            });
+
+            // --- Accordion Logic for Donation Section ---
+            const accordionItemsDonate = document.querySelectorAll('.accordion-item-donate');
+
+            accordionItemsDonate.forEach(item => {
+                const toggle = item.querySelector('.accordion-toggle-donate');
+                const panel = item.querySelector('.accordion-panel-donate');
+                const icon = toggle.querySelector('.fa-chevron-down');
+
+                toggle.addEventListener('click', () => {
+                    // Close all other donation accordion items first
+                    accordionItemsDonate.forEach(otherItem => {
+                        if (otherItem !== item) {
+                            const otherPanel = otherItem.querySelector('.accordion-panel-donate');
+                            const otherIcon = otherItem.querySelector('.fa-chevron-down');
+                            otherPanel.style.maxHeight = '0';
+                            otherIcon.classList.remove('rotate-180');
+                        }
+                    });
+
+                    // Toggle the clicked donation accordion item
+                    if (panel.style.maxHeight !== '0px' && panel.style.maxHeight) {
+                        panel.style.maxHeight = '0';
+                        icon.classList.remove('rotate-180');
+                    } else {
+                        panel.style.maxHeight = panel.scrollHeight + 'px';
+                        icon.classList.add('rotate-180');
+                    }
+                });
+            });
 
         }); // End of the single DOMContentLoaded listener
     </script>
