@@ -204,7 +204,141 @@
             color: #16a34a; /* This is your logo-green color */
             font-weight: 700; /* This makes the text bold */
         }
+
+        /* --- New Mobile Sidebar Styles --- */
+        /* Increase icon size in the mobile menu */
+        .menu-link i {
+            font-size: 1.3rem; /* This is like Tailwind's text-2xl. You can change it to 1.75rem if you want it even bigger. */
+        }
+        #mobile-menu {
+            width: 4.5rem; /* Initial width for icons only */
+            transition: width 0.3s ease-in-out;
+        }
+        #mobile-menu.menu-open {
+            width: 16rem; /* 256px */
+        }
+
+        /* Base style for all menu links */
+        .menu-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #4b5563; /* text-gray-600 */
+            width: 100%;
+            overflow: hidden;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+        }
+        .menu-link:hover {
+            background-color: #f3f4f6; /* bg-gray-100 */
+        }
+
+        /* Style for the text part of the link */
+        .menu-item-text {
+            white-space: nowrap;
+            transition: all 0.2s ease-in-out;
+            max-width: 0;
+            opacity: 0;
+            transform: translateX(-10px);
+            padding-left: 0.5rem;
+        }
+
+        /* When an item is expanded, show its text label */
+        .menu-item-container.expanded .menu-item-text {
+            max-width: 12rem;
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Style for the active/expanded link */
+        .menu-item-container.expanded .menu-link {
+            background-color: #e0f2fe; /* bg-sky-100 */
+            color: #1e3a8a; /* text-logo-blue */
+            font-weight: 600;
+        }
+
+        /* Style for the group titles */
+        .menu-group-title {
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #6b7280; /* text-gray-500 */
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Styles for the action buttons at the bottom */
+        .action-button-portal, .action-button-donate {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            text-align: center;
+            transition: background-color 0.2s;
+        }
+        .action-button-portal {
+            background-color: #334155; /* This is a dark slate color */
+            color: white;
+        }
+        .action-button-portal:hover {
+            background-color: #1e293b; /* A slightly darker slate for hover */
+        }
+        .action-button-donate {
+            background-color: #22c55e; /* bg-green-500 */
+            color: white;
+        }
+        .action-button-donate:hover {
+            background-color: #16a34a; /* bg-green-600 */
+        }
         
+        /* --- New Carousel Gallery Styles --- */
+        .carousel-slide {
+            min-width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensures images fill the space without distortion */
+        }
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.4);
+            color: white;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-size: 1.5rem;
+            line-height: 1;
+            width: 3rem;
+            height: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .carousel-btn:hover {
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+        .carousel-dot {
+            width: 0.75rem;
+            height: 0.75rem;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .carousel-dot.active {
+            background-color: white;
+        }
+
         /* --- Global Behavior --- */
         /* This rule enables smooth scrolling when a user clicks on an anchor link (e.g., <a href="#about">). */
         html {
@@ -252,7 +386,7 @@
                 <a href="#newsletter" class="text-gray-600 hover:text-logo-green">Al-Tarbiya</a>
                 <a href="#contact" class="text-gray-600 hover:text-logo-green">Contact</a>
                 <a href="#feedback" class="text-gray-600 hover:text-logo-green font-medium">Give Feedback</a>
-                <a href="login.html" class="bg-logo-blue text-white px-4 py-2 rounded-full">Portal Login</a>
+                <a href="login.html" class="bg-logo-blue text-white px-4 py-2 rounded-full">Workspace</a>
                 <!-- This link is styled as a button for emphasis. -->
                 <a href="#donate" class="bg-logo-green text-white px-4 py-2 rounded-full">Donate</a>
             </div>
@@ -267,22 +401,52 @@
                 </button>
             </div>
         </nav>
-        <!-- Mobile Menu Panel: This is hidden by default and shown when the hamburger icon is clicked. -->
-        <div id="mobile-menu" class="hidden px-6 pt-2 pb-4">
-            <!-- The navigation links are stacked vertically for mobile view. -->
-            <a href="#about" class="block py-2 text-gray-600 hover:text-logo-green">About Us</a>
-            <a href="#notices" class="block py-2 text-gray-600 hover:text-logo-green">Notices</a>
-            <a href="#instructors" class="block py-2 text-gray-600 hover:text-logo-green">Instructors</a>
-            <a href="#events" class="block py-2 text-gray-600 hover:text-logo-green">Events</a>
-            <a href="#calendar" class="block py-2 text-gray-600 hover:text-logo-green">Calendar</a>
-            <a href="#gallery" class="block py-2 text-gray-600 hover:text-logo-green">Gallery</a>
-            <a href="#library" class="block py-2 text-gray-600 hover:text-logo-green">Library</a>
-            <a href="#admissions" class="block py-2 text-gray-600 hover:text-logo-green">Admissions</a>
-            <a href="#newsletter" class="block py-2 text-gray-600 hover:text-logo-green">Al-Tarbiya</a>
-            <a href="#contact" class="block py-2 text-gray-600 hover:text-logo-green">Contact</a>
-            <a href="#feedback" class="block py-2 text-gray-600 hover:text-logo-green font-medium">Give Feedback</a>
-            <a href="login.html" class="block mt-2 bg-logo-blue text-white text-center px-4 py-2 rounded-full">Portal Login</a>
-            <a href="#donate" class="block mt-2 bg-logo-green text-white text-center px-4 py-2 rounded-full">Donate</a>
+        <!-- Mobile Menu Panel (Sidebar) -->
+        <div id="mobile-menu-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-[55] hidden transition-opacity duration-300 opacity-0"></div>
+        <div id="mobile-menu" class="fixed top-0 right-0 h-full bg-white shadow-2xl z-[60] transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col">
+            
+            <!-- 1. NEW: Menu Header with Close Button -->
+            <div class="flex-shrink-0 p-4 flex items-center justify-between border-b bg-gray-50">
+                <span class="font-bold text-lg text-logo-blue">Menu</span>
+                <button id="mobile-menu-close-btn" class="text-gray-500 hover:text-logo-blue text-2xl leading-none">&times;</button>
+            </div>
+            
+            <!-- 2. Scrollable Nav Container -->
+            <nav class="flex-grow overflow-y-auto">
+                <!-- 3. NEW: Grouped Links -->
+                <div class="py-4 px-2">
+                    <h2 class="menu-group-title">Discover</h2>
+                    <ul id="mobile-nav-list-discover">
+                        <li class="menu-item-container"><a href="#about" class="menu-link"><i class="fa-solid fa-info-circle fa-fw w-6"></i><span class="menu-item-text">About Us</span></a></li>
+                        <li class="menu-item-container"><a href="#notices" class="menu-link"><i class="fa-solid fa-bullhorn fa-fw w-6"></i><span class="menu-item-text">Notices</span></a></li>
+                        <li class="menu-item-container"><a href="#instructors" class="menu-link"><i class="fa-solid fa-user-tie fa-fw w-6"></i><span class="menu-item-text">Instructors</span></a></li>
+                    </ul>
+                </div>
+                <div class="py-4 px-2">
+                    <h2 class="menu-group-title">Engage</h2>
+                    <ul id="mobile-nav-list-engage">
+                        <li class="menu-item-container"><a href="#events" class="menu-link"><i class="fa-solid fa-calendar-check fa-fw w-6"></i><span class="menu-item-text">Events</span></a></li>
+                        <li class="menu-item-container"><a href="#calendar" class="menu-link"><i class="fa-solid fa-calendar-days fa-fw w-6"></i><span class="menu-item-text">Calendar</span></a></li>
+                        <li class="menu-item-container"><a href="#gallery" class="menu-link"><i class="fa-solid fa-images fa-fw w-6"></i><span class="menu-item-text">Gallery</span></a></li>
+                        <li class="menu-item-container"><a href="#library" class="menu-link"><i class="fa-solid fa-book-open fa-fw w-6"></i><span class="menu-item-text">Library</span></a></li>
+                    </ul>
+                </div>
+                <div class="py-4 px-2">
+                    <h2 class="menu-group-title">Connect</h2>
+                    <ul id="mobile-nav-list-connect">
+                        <li class="menu-item-container"><a href="#admissions" class="menu-link"><i class="fa-solid fa-file-signature fa-fw w-6"></i><span class="menu-item-text">Admissions</span></a></li>
+                        <li class="menu-item-container"><a href="#newsletter" class="menu-link"><i class="fa-solid fa-newspaper fa-fw w-6"></i><span class="menu-item-text">Al-Tarbiya</span></a></li>
+                        <li class="menu-item-container"><a href="#contact" class="menu-link"><i class="fa-solid fa-comments fa-fw w-6"></i><span class="menu-item-text">Contact</span></a></li>
+                        <li class="menu-item-container"><a href="#feedback" class="menu-link"><i class="fa-solid fa-comment-dots fa-fw w-6"></i><span class="menu-item-text">Feedback</span></a></li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- 4. NEW: Pinned Action Buttons at the bottom -->
+            <div class="flex-shrink-0 p-4 border-t bg-gray-50 space-y-2">
+                <a href="login.html" class="action-button-portal"><i class="fa-solid fa-briefcase fa-fw mr-2"></i>Workspace</a>
+                <a href="#donate" class="action-button-donate"><i class="fa-solid fa-hand-holding-dollar fa-fw mr-2"></i>Donate</a>
+            </div>
         </div>
     </header>
 
@@ -536,19 +700,32 @@
         <!-- Gallery Section -->
         <section id="gallery" class="py-16 scroll-target">
             <div class="container mx-auto px-6">
-                <h3 class="text-3xl font-bold text-center mb-8 text-logo-blue">Our Gallery</h3>
+                <h3 class="text-3xl font-bold text-center mb-12 text-logo-blue">Our Gallery</h3>
 
-                <div id="gallery-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                    <img src="img1.jpg" alt="Students in a classroom session" class="gallery-thumbnail w-full h-48 object-cover rounded-lg shadow-md cursor-pointer hover:shadow-xl hover:scale-105 transition-transform duration-300">
-                    <img src="img2.jpg" alt="Instructor at the podium" class="gallery-thumbnail w-full h-48 object-cover rounded-lg shadow-md cursor-pointer hover:shadow-xl hover:scale-105 transition-transform duration-300">
-                    <img src="img3.jpg" alt="Close-up of Islamic calligraphy" class="gallery-thumbnail w-full h-48 object-cover rounded-lg shadow-md cursor-pointer hover:shadow-xl hover:scale-105 transition-transform duration-300">
-                    <img src="img4.jpg" alt="Group photo of event attendees" class="gallery-thumbnail w-full h-48 object-cover rounded-lg shadow-md cursor-pointer hover:shadow-xl hover:scale-105 transition-transform duration-300">
-                    <img src="img5.jpg" alt="Exterior view of the institute building" class="gallery-thumbnail w-full h-48 object-cover rounded-lg shadow-md cursor-pointer hover:shadow-xl hover:scale-105 transition-transform duration-300">
-                    <img src="img6.jpg" alt="Library with shelves full of books" class="gallery-thumbnail w-full h-48 object-cover rounded-lg shadow-md cursor-pointer hover:shadow-xl hover:scale-105 transition-transform duration-300">
-                    <img src="img7.jpg" alt="A community service event in progress" class="gallery-thumbnail w-full h-48 object-cover rounded-lg shadow-md cursor-pointer hover:shadow-xl hover:scale-105 transition-transform duration-300">
-                    <img src="img8.jpg" alt="Students receiving certificates" class="gallery-thumbnail w-full h-48 object-cover rounded-lg shadow-md cursor-pointer hover:shadow-xl hover:scale-105 transition-transform duration-300">
-                    <img src="img9.jpg" alt="Open Quran on a bookstand" class="gallery-thumbnail w-full h-48 object-cover rounded-lg shadow-md cursor-pointer hover:shadow-xl hover:scale-105 transition-transform duration-300">
-                    <img src="img10.jpg" alt="Guests enjoying refreshments" class="gallery-thumbnail w-full h-48 object-cover rounded-lg shadow-md cursor-pointer hover:shadow-xl hover:scale-105 transition-transform duration-300">
+                <!-- Carousel Container -->
+                <div id="gallery-carousel" class="relative max-w-4xl mx-auto shadow-2xl rounded-lg overflow-hidden bg-gray-100 aspect-video">
+                    
+                    <!-- Image Track: This div will slide left and right -->
+                    <div id="carousel-track" class="flex h-full transition-transform duration-500 ease-in-out">
+                        <!-- All images go inside a "carousel-slide" div -->
+                        <div class="carousel-slide"><img src="img1.jpg" alt="Students in a classroom session"></div>
+                        <div class="carousel-slide"><img src="img2.jpg" alt="Instructor at the podium"></div>
+                        <div class="carousel-slide"><img src="img3.jpg" alt="Close-up of Islamic calligraphy"></div>
+                        <div class="carousel-slide"><img src="img4.jpg" alt="Group photo of event attendees"></div>
+                        <div class="carousel-slide"><img src="img5.jpg" alt="Exterior view of the institute building"></div>
+                        <div class="carousel-slide"><img src="img6.jpg" alt="Library with shelves full of books"></div>
+                        <div class="carousel-slide"><img src="img7.jpg" alt="A community service event in progress"></div>
+                        <div class="carousel-slide"><img src="img8.jpg" alt="Students receiving certificates"></div>
+                    </div>
+
+                    <!-- Navigation Buttons -->
+                    <button id="carousel-prev" class="carousel-btn left-0 md:left-4">&#10094;</button>
+                    <button id="carousel-next" class="carousel-btn right-0 md:right-4">&#10095;</button>
+
+                    <!-- Navigation Dots -->
+                    <div id="carousel-dots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
+                        <!-- Dots will be generated by JavaScript -->
+                    </div>
                 </div>
             </div>
         </section>
@@ -1149,545 +1326,544 @@
     <!-- This script tag contains all the JavaScript for the page's interactive features. -->
     <script>
         // This single event listener ensures all JavaScript runs only after the HTML document has been loaded.
-        document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function() {
 
-            // loader function
-            const formLoader = document.getElementById('form-loader');
+    // loader function
+    const formLoader = document.getElementById('form-loader');
 
-            // Helper function to show the loader
-            const showLoader = () => {
-                formLoader.classList.add('visible');
-            };
+    // Helper function to show the loader
+    const showLoader = () => {
+        if (formLoader) formLoader.classList.add('visible');
+    };
 
-            // Helper function to hide the loader
-            const hideLoader = () => {
-                formLoader.classList.remove('visible');
-            };
+    // Helper function to hide the loader
+    const hideLoader = () => {
+        if (formLoader) formLoader.classList.remove('visible');
+    };
 
 
-            // --- Active Navigation State Logic ---
-            const navLinks = document.querySelectorAll('header nav a[href^="#"]');
-            const sections = [];
+    // --- Active Navigation State Logic ---
+    const navLinks = document.querySelectorAll('header nav a[href^="#"]');
+    const sections = [];
 
-            // Create a list of all sections linked from the nav
-            navLinks.forEach(link => {
-                const section = document.querySelector(link.getAttribute('href'));
-                if (section) {
-                    sections.push(section);
+    navLinks.forEach(link => {
+        const section = document.querySelector(link.getAttribute('href'));
+        if (section) {
+            sections.push(section);
+        }
+    });
+
+    function onScroll() {
+        const scrollPosition = window.scrollY + 150; 
+        let activeSectionFound = false;
+        for (let i = sections.length - 1; i >= 0; i--) {
+            const section = sections[i];
+            if (section.offsetTop <= scrollPosition) {
+                navLinks.forEach(link => link.classList.remove('nav-active'));
+                const activeLink = document.querySelector(`header nav a[href="#${section.id}"]`);
+                if (activeLink) {
+                    activeLink.classList.add('nav-active');
                 }
-            });
-
-            // This function will run every time the user scrolls
-            function onScroll() {
-                const scrollPosition = window.scrollY + 150; // Add an offset for better accuracy
-
-                let activeSectionFound = false;
-                for (let i = sections.length - 1; i >= 0; i--) {
-                    const section = sections[i];
-                    if (section.offsetTop <= scrollPosition) {
-                        // Remove the active class from all links first
-                        navLinks.forEach(link => link.classList.remove('nav-active'));
-
-                        // Find the matching link and add the active class
-                        const activeLink = document.querySelector(`header nav a[href="#${section.id}"]`);
-                        if (activeLink) {
-                            activeLink.classList.add('nav-active');
-                        }
-                        activeSectionFound = true;
-                        break; // Stop checking once the active section is found
-                    }
-                }
-                // If no section is active (i.e., at the very top of the page), remove all active classes
-                if (!activeSectionFound) {
-                    navLinks.forEach(link => link.classList.remove('nav-active'));
-                }
+                activeSectionFound = true;
+                break; 
             }
+        }
+        if (!activeSectionFound) {
+            navLinks.forEach(link => link.classList.remove('nav-active'));
+        }
+    }
+    window.addEventListener('scroll', onScroll);
 
-            // Listen for scroll events to run the function
-            window.addEventListener('scroll', onScroll);
+    // --- New Mobile Sidebar Logic (Final Version) ---
+const mobileMenuButton = document.getElementById('mobile-menu-button');
+const mobileMenu = document.getElementById('mobile-menu');
+const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+const mobileMenuCloseButton = document.getElementById('mobile-menu-close-btn');
+const menuItems = document.querySelectorAll('.menu-item-container');
+const donateButton = document.querySelector('.action-button-donate');
 
-            // --- Mobile Menu Logic ---
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
-            if (mobileMenuButton && mobileMenu) {
-                // Toggle the menu and the icon animation class on button click
-                mobileMenuButton.addEventListener('click', () => {
-                    mobileMenu.classList.toggle('hidden');
-                    mobileMenuButton.classList.toggle('open');
-                });
-                // Close the menu when a link inside it is clicked
-                const mobileMenuLinks = mobileMenu.querySelectorAll('a');
-                mobileMenuLinks.forEach(link => {
-                    link.addEventListener('click', () => {
-                        mobileMenu.classList.add('hidden');
-                        mobileMenuButton.classList.remove('open');
-                    });
-                });
-            }
+// Function to open or close the menu
+const toggleMenu = () => {
+    if (!mobileMenuButton || !mobileMenu || !mobileMenuOverlay) return;
+    mobileMenuButton.classList.toggle('open');
+    mobileMenu.classList.toggle('translate-x-full');
+    if (mobileMenuOverlay.classList.contains('hidden')) {
+        mobileMenuOverlay.classList.remove('hidden');
+        setTimeout(() => mobileMenuOverlay.classList.remove('opacity-0'), 10);
+    } else {
+        mobileMenuOverlay.classList.add('opacity-0');
+        setTimeout(() => mobileMenuOverlay.classList.add('hidden'), 300);
+    }
+    if (mobileMenu.classList.contains('translate-x-full')) {
+        if (menuItems) menuItems.forEach(item => item.classList.remove('expanded'));
+        mobileMenu.classList.remove('menu-open');
+    } else {
+        mobileMenu.classList.add('menu-open');
+    }
+};
 
-            // --- Popup Logic ---
-            const welcomePopup = document.getElementById('welcome-popup');
-            const closePopupButton = document.getElementById('close-popup-btn');
-            const refreshButton = document.getElementById('refresh-btn');
-            if (welcomePopup && closePopupButton && refreshButton) {
-                closePopupButton.addEventListener('click', () => welcomePopup.classList.add('hidden'));
-                refreshButton.addEventListener('click', () => location.reload());
-                if (!sessionStorage.getItem('popupShown')) {
-                    setTimeout(() => {
-                        welcomePopup.classList.remove('hidden');
-                    }, 1000);
-                    sessionStorage.setItem('popupShown', 'true');
-                }
-            }
+// --- Event Listeners ---
+if (mobileMenuButton) mobileMenuButton.addEventListener('click', toggleMenu);
+if (mobileMenuOverlay) mobileMenuOverlay.addEventListener('click', toggleMenu);
+if (mobileMenuCloseButton) mobileMenuCloseButton.addEventListener('click', toggleMenu);
 
-            // --- Shared Google Script URL for Newsletter/Feedback ---
-            const googleScriptURL = 'https://script.google.com/macros/s/AKfycbzpOLHQ7rOhOnhoVjbiBNcoWfPQ1xjTtVkgmgB9M0qtKtQyOy30pPer2nKHc13h1sqW/exec';
-
-            // --- Newsletter Form Submission Logic ---
-            const newsletterForm = document.getElementById('newsletter-form');
-            if (newsletterForm) {
-                const formStatus = document.getElementById('newsletter-form-status');
-                const submitButton = newsletterForm.querySelector('button[type="submit"]');
-                
-                newsletterForm.addEventListener('submit', (e) => {
+// Logic for clicking on a menu item
+if (menuItems.length > 0) {
+    menuItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+            const isExpanded = this.classList.contains('expanded');
+            const link = this.querySelector('a');
+            if (!link) return;
+            const targetUrl = link.getAttribute('href');
+            if (isExpanded) {
+                if (targetUrl.startsWith('#')) {
                     e.preventDefault();
-                    showLoader();
-                    submitButton.disabled = true;
-                    formStatus.textContent = 'Subscribing...';
-                    formStatus.className = 'mt-4 text-sm text-gray-600';
-
-                    const formData = new FormData(newsletterForm);
-                    // Convert the form data to a plain JavaScript object
-                    const data = Object.fromEntries(formData.entries());
-
-                    fetch(googleScriptURL, { 
-                        method: 'POST', 
-                        // **THE FIX IS HERE:** We now stringify the data object into JSON
-                        body: JSON.stringify(data) 
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.result === 'success') { 
-                                formStatus.textContent = 'Thank you for subscribing! Please check your email.';
-                                formStatus.className = 'mt-4 text-sm text-green-500 font-semibold';
-                                newsletterForm.reset();
-                            } else {
-                                throw new Error(data.error || 'An unknown error occurred.');
-                            }
-                        }).catch(error => {
-                            console.error('Error:', error);
-                            formStatus.textContent = 'Submission failed. Please try again.';
-                            formStatus.className = 'mt-4 text-sm text-red-500 font-semibold';
-                        }).finally(() => {
-                            submitButton.disabled = false;
-                            hideLoader();
-                        });
-                });
+                    document.querySelector(targetUrl)?.scrollIntoView({ behavior: 'smooth' });
+                    toggleMenu();
+                } else {
+                    window.location.href = targetUrl;
+                }
+            } else {
+                e.preventDefault();
+                menuItems.forEach(otherItem => otherItem.classList.remove('expanded'));
+                this.classList.add('expanded');
             }
+        });
+    });
+}
 
+// Logic for the donate button
+if (donateButton) {
+    donateButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetUrl = donateButton.getAttribute('href');
+        document.querySelector(targetUrl)?.scrollIntoView({ behavior: 'smooth' });
+        toggleMenu();
+    });
+}
+    // --- Popup Logic ---
+    const welcomePopup = document.getElementById('welcome-popup');
+    const closePopupButton = document.getElementById('close-popup-btn');
+    const refreshButton = document.getElementById('refresh-btn');
+    if (welcomePopup && closePopupButton && refreshButton) {
+        closePopupButton.addEventListener('click', () => welcomePopup.classList.add('hidden'));
+        refreshButton.addEventListener('click', () => location.reload());
+        if (!sessionStorage.getItem('popupShown')) {
+            setTimeout(() => {
+                welcomePopup.classList.remove('hidden');
+            }, 1000);
+            sessionStorage.setItem('popupShown', 'true');
+        }
+    }
 
-            // --- Gallery Lightbox Logic ---
-            const galleryGrid = document.getElementById('gallery-grid');
-            if (galleryGrid) {
-                const lightbox = document.getElementById('lightbox');
-                const lightboxImage = document.getElementById('lightbox-image');
-                const lightboxClose = document.getElementById('lightbox-close');
-                const lightboxNext = document.getElementById('lightbox-next');
-                const lightboxPrev = document.getElementById('lightbox-prev');
-                const thumbnails = document.querySelectorAll('.gallery-thumbnail');
+    // --- Shared Google Script URL for Newsletter/Feedback ---
+    const googleScriptURL = 'https://script.google.com/macros/s/AKfycbzpOLHQ7rOhOnhoVjbiBNcoWfPQ1xjTtVkgmgB9M0qtKtQyOy30pPer2nKHc13h1sqW/exec';
 
-                let currentIndex = 0;
-
-                const showImage = (index) => {
-                    const thumb = thumbnails[index];
-                    if (thumb) {
-                        lightboxImage.src = thumb.src;
-                        currentIndex = index;
-                        lightbox.classList.remove('hidden');
-                    }
-                };
-
-                const hideLightbox = () => {
-                    lightbox.classList.add('hidden');
-                };
-
-                const showNextImage = () => {
-                    const nextIndex = (currentIndex + 1) % thumbnails.length;
-                    showImage(nextIndex);
-                };
-
-                const showPrevImage = () => {
-                    const prevIndex = (currentIndex - 1 + thumbnails.length) % thumbnails.length;
-                    showImage(prevIndex);
-                };
-
-                thumbnails.forEach((thumb, index) => {
-                    thumb.addEventListener('click', () => showImage(index));
-                });
-
-                lightboxClose.addEventListener('click', hideLightbox);
-                lightboxNext.addEventListener('click', showNextImage);
-                lightboxPrev.addEventListener('click', showPrevImage);
-                
-                // Also hide lightbox if user clicks on the background overlay
-                lightbox.addEventListener('click', (e) => {
-                    if (e.target === lightbox) {
-                        hideLightbox();
-                    }
-                });
-
-                // Add keyboard navigation
-                document.addEventListener('keydown', (e) => {
-                    if (!lightbox.classList.contains('hidden')) {
-                        if (e.key === 'ArrowRight') showNextImage();
-                        if (e.key === 'ArrowLeft') showPrevImage();
-                        if (e.key === 'Escape') hideLightbox();
-                    }
-                });
-            }
-
-            // --- Feedback Form Submission Logic ---
-            const feedbackForm = document.getElementById('feedback-form');
-            if (feedbackForm) {
-                const formStatus = document.getElementById('form-status');
-                const submitButton = feedbackForm.querySelector('button[type="submit"]');
-                
-                feedbackForm.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    showLoader();
-                    submitButton.disabled = true;
-                    formStatus.textContent = 'Submitting...';
-                    formStatus.className = 'mt-4 text-sm text-gray-600';
-
-                    const formData = new FormData(feedbackForm);
-                    // Convert the form data to a plain JavaScript object
-                    const data = Object.fromEntries(formData.entries());
-
-                    fetch(googleScriptURL, { 
-                        method: 'POST', 
-                        // **THE FIX IS HERE:** We now stringify the data object into JSON
-                        body: JSON.stringify(data)
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.result === 'success') {
-                                formStatus.textContent = 'Thank you for your feedback!';
-                                formStatus.className = 'mt-4 text-sm text-green-500 font-semibold';
-                                feedbackForm.reset();
-                            } else {
-                                throw new Error(data.error || 'An unknown error occurred.');
-                            }
-                        }).catch(error => {
-                            console.error('Error:', error);
-                            formStatus.textContent = 'Submission failed. Please try again.';
-                            formStatus.className = 'mt-4 text-sm text-red-500 font-semibold';
-                        }).finally(() => {
-                            submitButton.disabled = false;
-                            hideLoader();
-                        });
-                });
-            }
-
-            // --- Back to Top Button Logic ---
-            const backToTopButton = document.getElementById('back-to-top-btn');
-            if (backToTopButton) {
-                window.addEventListener('scroll', () => {
-                    if (window.scrollY > 300) {
-                        backToTopButton.classList.remove('opacity-0', 'pointer-events-none');
+    // --- Newsletter Form Submission Logic ---
+    const newsletterForm = document.getElementById('newsletter-form');
+    if (newsletterForm) {
+        const formStatus = document.getElementById('newsletter-form-status');
+        const submitButton = newsletterForm.querySelector('button[type="submit"]');
+        newsletterForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            showLoader();
+            submitButton.disabled = true;
+            formStatus.textContent = 'Subscribing...';
+            formStatus.className = 'mt-4 text-sm text-gray-600';
+            const formData = new FormData(newsletterForm);
+            const data = Object.fromEntries(formData.entries());
+            fetch(googleScriptURL, {
+                    method: 'POST',
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.result === 'success') {
+                        formStatus.textContent = 'Thank you for subscribing! Please check your email.';
+                        formStatus.className = 'mt-4 text-sm text-green-500 font-semibold';
+                        newsletterForm.reset();
                     } else {
-                        backToTopButton.classList.add('opacity-0', 'pointer-events-none');
+                        throw new Error(data.error || 'An unknown error occurred.');
                     }
+                }).catch(error => {
+                    console.error('Error:', error);
+                    formStatus.textContent = 'Submission failed. Please try again.';
+                    formStatus.className = 'mt-4 text-sm text-red-500 font-semibold';
+                }).finally(() => {
+                    submitButton.disabled = false;
+                    hideLoader();
                 });
-                backToTopButton.addEventListener('click', () => {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                });
-            }
+        });
+    }
 
-            // --- Preloader Logic ---
-            const preloader = document.getElementById('preloader');
-            window.addEventListener('load', () => {
-                if (preloader) {
-                    preloader.classList.add('opacity-0');
-                    setTimeout(() => preloader.remove(), 500);
-                }
+    // --- New Carousel Gallery Logic ---
+    const carousel = document.getElementById('gallery-carousel');
+    if (carousel) {
+        const track = document.getElementById('carousel-track');
+        const slides = Array.from(track.children);
+        const nextButton = document.getElementById('carousel-next');
+        const prevButton = document.getElementById('carousel-prev');
+        const dotsNav = document.getElementById('carousel-dots');
+
+        // Create dots for navigation
+        slides.forEach((slide, index) => {
+            const dot = document.createElement('button');
+            dot.classList.add('carousel-dot');
+            if (index === 0) dot.classList.add('active');
+            dotsNav.appendChild(dot);
+        });
+
+        const dots = Array.from(dotsNav.children);
+        let currentIndex = 0;
+
+        const moveToSlide = (targetIndex) => {
+            const currentSlide = track.querySelector('.current-slide');
+            if(currentSlide) currentSlide.classList.remove('current-slide');
+            
+            slides[targetIndex].classList.add('current-slide');
+            track.style.transform = 'translateX(-' + targetIndex * 100 + '%)';
+            
+            // Update dots
+            const currentDot = dotsNav.querySelector('.active');
+            if(currentDot) currentDot.classList.remove('active');
+            dots[targetIndex].classList.add('active');
+
+            currentIndex = targetIndex;
+        };
+
+        // When next button is clicked
+        nextButton.addEventListener('click', e => {
+            const nextIndex = (currentIndex + 1) % slides.length;
+            moveToSlide(nextIndex);
+        });
+
+        // When prev button is clicked
+        prevButton.addEventListener('click', e => {
+            const prevIndex = (currentIndex - 1 + slides.length) % slides.length;
+            moveToSlide(prevIndex);
+        });
+
+        // When a dot is clicked
+        dotsNav.addEventListener('click', e => {
+            const targetDot = e.target.closest('button');
+            if (!targetDot) return;
+            
+            const targetIndex = dots.findIndex(dot => dot === targetDot);
+            moveToSlide(targetIndex);
+        });
+
+        // Initialize the first slide
+        slides[0].classList.add('current-slide');
+    }
+
+    // --- Feedback Form Submission Logic ---
+    const feedbackForm = document.getElementById('feedback-form');
+    if (feedbackForm) {
+        const formStatus = document.getElementById('form-status');
+        const submitButton = feedbackForm.querySelector('button[type="submit"]');
+        feedbackForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            showLoader();
+            submitButton.disabled = true;
+            formStatus.textContent = 'Submitting...';
+            formStatus.className = 'mt-4 text-sm text-gray-600';
+            const formData = new FormData(feedbackForm);
+            const data = Object.fromEntries(formData.entries());
+            fetch(googleScriptURL, {
+                    method: 'POST',
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.result === 'success') {
+                        formStatus.textContent = 'Thank you for your feedback!';
+                        formStatus.className = 'mt-4 text-sm text-green-500 font-semibold';
+                        feedbackForm.reset();
+                    } else {
+                        throw new Error(data.error || 'An unknown error occurred.');
+                    }
+                }).catch(error => {
+                    console.error('Error:', error);
+                    formStatus.textContent = 'Submission failed. Please try again.';
+                    formStatus.className = 'mt-4 text-sm text-red-500 font-semibold';
+                }).finally(() => {
+                    submitButton.disabled = false;
+                    hideLoader();
+                });
+        });
+    }
+
+    // --- Back to Top Button Logic ---
+    const backToTopButton = document.getElementById('back-to-top-btn');
+    if (backToTopButton) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTopButton.classList.remove('opacity-0', 'pointer-events-none');
+            } else {
+                backToTopButton.classList.add('opacity-0', 'pointer-events-none');
+            }
+        });
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
             });
+        });
+    }
 
-            // --- Copy to Clipboard Logic for Donation Section ---
-            const donationSection = document.getElementById('donate');
-            if (donationSection) {
-                donationSection.addEventListener('click', function(e) {
-                    const copyButton = e.target.closest('.copy-btn');
-                    if (copyButton) {
-                        const textToCopy = copyButton.dataset.copy;
-                        navigator.clipboard.writeText(textToCopy).then(() => {
-                            const originalIcon = copyButton.innerHTML;
-                            copyButton.innerHTML = `<i class="fa-solid fa-check text-green-500"></i>`;
-                            setTimeout(() => {
-                                copyButton.innerHTML = originalIcon;
-                            }, 2000);
-                        }).catch(err => console.error('Failed to copy text: ', err));
-                    }
-                });
+    // --- Preloader Logic ---
+    const preloader = document.getElementById('preloader');
+    window.addEventListener('load', () => {
+        if (preloader) {
+            preloader.classList.add('opacity-0');
+            setTimeout(() => preloader.remove(), 500);
+        }
+    });
+
+    // --- Copy to Clipboard Logic for Donation Section ---
+    const donationSection = document.getElementById('donate');
+    if (donationSection) {
+        donationSection.addEventListener('click', function(e) {
+            const copyButton = e.target.closest('.copy-btn');
+            if (copyButton) {
+                const textToCopy = copyButton.dataset.copy;
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    const originalIcon = copyButton.innerHTML;
+                    copyButton.innerHTML = `<i class="fa-solid fa-check text-green-500"></i>`;
+                    setTimeout(() => {
+                        copyButton.innerHTML = originalIcon;
+                    }, 2000);
+                }).catch(err => console.error('Failed to copy text: ', err));
             }
+        });
+    }
 
+    // --- Calendar Logic ---
+    const monthYearHeader = document.getElementById('month-year-header');
+    if (monthYearHeader) {
+        const calendarDaysGrid = document.getElementById('calendar-days-grid');
+        const prevMonthBtn = document.getElementById('prev-month-btn');
+        const nextMonthBtn = document.getElementById('next-month-btn');
+        const todayBtn = document.getElementById('today-btn');
+        const eventModal = document.getElementById('event-modal');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+        const eventDates = {
+            '2025-8-16': {
+                title: 'One Day Dawrah',
+                time: '9:30 AM - 6:30 PM',
+                description: 'Join us for our One Day Dawrah Series. We will cover, تائية الإلبيري في الزهد والحكم'
+            }
+        };
+        let currentDate = new Date();
+        currentDate.setDate(1);
 
-            // --- Calendar Logic ---
-            const monthYearHeader = document.getElementById('month-year-header');
-            const calendarDaysGrid = document.getElementById('calendar-days-grid');
-            const prevMonthBtn = document.getElementById('prev-month-btn');
-            const nextMonthBtn = document.getElementById('next-month-btn');
-            const todayBtn = document.getElementById('today-btn');
-            const eventModal = document.getElementById('event-modal');
-            const closeModalBtn = document.getElementById('close-modal-btn');
-            if (monthYearHeader) { // Check if calendar elements exist
-                const eventDates = {
-                    '2025-8-16': {
-                        title: 'One Day Dawrah',
-                        time: '9:30 AM - 6:30 PM',
-                        description: 'Join us for our One Day Dawrah Series. We will cover, تائية الإلبيري في الزهد والحكم'
+        function renderCalendar() {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            monthYearHeader.textContent = new Intl.DateTimeFormat('en-US', {
+                year: 'numeric',
+                month: 'long'
+            }).format(currentDate);
+            calendarDaysGrid.innerHTML = '';
+            const firstDayOfMonth = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            for (let i = 0; i < firstDayOfMonth; i++) {
+                calendarDaysGrid.innerHTML += `<div></div>`;
+            }
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayCell = document.createElement('div');
+                dayCell.className = 'p-2 text-center rounded-full cursor-pointer hover:bg-gray-100 transition';
+                dayCell.textContent = day;
+                const cellDate = new Date(year, month, day);
+                const isCurrentDay = day === new Date().getDate() && month === new Date().getMonth() && year === new Date().getFullYear();
+                const dateString = `${year}-${month + 1}-${day}`;
+                const event = eventDates[dateString];
+                if (event) {
+                    if (cellDate < today) {
+                        dayCell.classList.add('bg-gray-400', 'text-white', 'font-bold', 'opacity-75');
+                    } else {
+                        dayCell.classList.add('bg-logo-green', 'text-white', 'font-bold', 'event-day-blinking');
                     }
-                };
-                let currentDate = new Date();
-                currentDate.setDate(1);
+                    dayCell.addEventListener('click', () => showEventModal(event));
+                } else if (isCurrentDay) {
+                    dayCell.classList.add('bg-logo-blue', 'text-white', 'font-bold');
+                }
+                calendarDaysGrid.appendChild(dayCell);
+            }
+        }
 
-                function renderCalendar() {
-                    const year = currentDate.getFullYear();
-                    const month = currentDate.getMonth();
+        function showEventModal(event) {
+            if (eventModal) {
+                document.getElementById('event-modal-title').textContent = event.title;
+                document.getElementById('event-modal-time').textContent = event.time;
+                document.getElementById('event-modal-description').textContent = event.description;
+                eventModal.classList.remove('hidden');
+            }
+        }
+        if (prevMonthBtn) prevMonthBtn.addEventListener('click', () => {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            renderCalendar();
+        });
+        if (nextMonthBtn) nextMonthBtn.addEventListener('click', () => {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            renderCalendar();
+        });
+        if (todayBtn) todayBtn.addEventListener('click', () => {
+            currentDate = new Date();
+            currentDate.setDate(1);
+            renderCalendar();
+        });
+        if (closeModalBtn) closeModalBtn.addEventListener('click', () => eventModal.classList.add('hidden'));
+        if (eventModal) eventModal.addEventListener('click', (e) => {
+            if (e.target === eventModal) eventModal.classList.add('hidden');
+        });
+        renderCalendar();
+    }
 
-                    // --- CHANGE 1: Get today's date without time for accurate comparison ---
-                    const today = new Date();
-                    today.setHours(0, 0, 0, 0); // Set to midnight to compare dates only
+    // --- Integrated Receipt Form Logic ---
+    const toggleBtn = document.getElementById('toggle-receipt-form');
+    if (toggleBtn) {
+        const formPanel = document.getElementById('receipt-form-panel');
+        const toggleIcon = document.getElementById('toggle-icon');
+        toggleBtn.addEventListener('click', () => {
+            if (formPanel && toggleIcon) {
+                const isClosed = formPanel.style.maxHeight === '0px' || !formPanel.style.maxHeight;
+                formPanel.style.maxHeight = isClosed ? formPanel.scrollHeight + 'px' : '0px';
+                toggleIcon.classList.toggle('fa-chevron-down', !isClosed);
+                toggleIcon.classList.toggle('fa-chevron-up', isClosed);
+            }
+        });
+    }
 
-                    monthYearHeader.textContent = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long' }).format(currentDate);
-                    calendarDaysGrid.innerHTML = '';
-                    
-                    const firstDayOfMonth = new Date(year, month, 1).getDay();
-                    const daysInMonth = new Date(year, month + 1, 0).getDate();
-                    
-                    for (let i = 0; i < firstDayOfMonth; i++) {
-                        calendarDaysGrid.innerHTML += `<div></div>`;
-                    }
-                    
-                    for (let day = 1; day <= daysInMonth; day++) {
-                        const dayCell = document.createElement('div');
-                        dayCell.className = 'p-2 text-center rounded-full cursor-pointer hover:bg-gray-100 transition';
-                        dayCell.textContent = day;
-
-                        // --- CHANGE 2: Create a date object for the current cell being rendered ---
-                        const cellDate = new Date(year, month, day);
-
-                        const isCurrentDay = day === new Date().getDate() && month === new Date().getMonth() && year === new Date().getFullYear();
-                        const dateString = `${year}-${month + 1}-${day}`;
-                        const event = eventDates[dateString];
-
-                        if (event) {
-                            // --- CHANGE 3: Check if the event's date is in the past ---
-                            if (cellDate < today) {
-                                // Style for past events (gray background, no blinking)
-                                dayCell.classList.add('bg-gray-400', 'text-white', 'font-bold', 'opacity-75');
-                            } else {
-                                // Style for upcoming/current events (original green, blinking style)
-                                dayCell.classList.add('bg-logo-green', 'text-white', 'font-bold', 'event-day-blinking');
-                            }
-                            // The modal will work for both past and future events
-                            dayCell.addEventListener('click', () => showEventModal(event));
-                        } else if (isCurrentDay) {
-                            // This styling for the current day remains the same
-                            dayCell.classList.add('bg-logo-blue', 'text-white', 'font-bold');
+    const receiptForm = document.getElementById('receipt-form');
+    if (receiptForm) {
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby39h5_YPF6or9VrE_m-K2-pjr3AMzkR8G24jvgF_Kro_DEqWybkLMlROMJit05HFAM/exec";
+        const submitBtn = document.getElementById('submit-receipt-request');
+        const statusMsg = document.getElementById('receipt-form-status');
+        const fileInput = document.getElementById('screenshot');
+        const whatsappInput = document.getElementById('whatsappNumber');
+        receiptForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            statusMsg.textContent = '';
+            whatsappInput.classList.remove('border-red-500');
+            const whatsappNumberValue = whatsappInput.value.trim();
+            if (whatsappNumberValue.startsWith('+92') || whatsappNumberValue.startsWith('92')) {
+                statusMsg.textContent = 'Sorry, submissions from country code +92 are not accepted.';
+                statusMsg.className = 'mt-4 text-sm text-red-600 font-semibold';
+                whatsappInput.classList.add('border-red-500');
+                whatsappInput.focus();
+                return;
+            }
+            showLoader('Sending Request...');
+            submitBtn.disabled = true;
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = (event) => {
+                statusMsg.textContent = 'Submitting your request...';
+                const formData = new FormData(receiptForm);
+                const data = Object.fromEntries(formData.entries());
+                data.base64Data = event.target.result;
+                data.fileName = file.name;
+                data.mimeType = file.type;
+                fetch(SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify(data),
+                        headers: {
+                            'Content-Type': 'text/plain;charset=utf-8',
+                        },
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            statusMsg.textContent = 'Thank you! Your request has been submitted successfully.';
+                            statusMsg.className = 'mt-4 text-sm text-green-600 font-semibold';
+                            receiptForm.reset();
+                        } else {
+                            throw new Error(data.message);
                         }
-                        
-                        calendarDaysGrid.appendChild(dayCell);
-                    }
-                }
-
-                function showEventModal(event) {
-                    document.getElementById('event-modal-title').textContent = event.title;
-                    document.getElementById('event-modal-time').textContent = event.time;
-                    document.getElementById('event-modal-description').textContent = event.description;
-                    eventModal.classList.remove('hidden');
-                }
-                prevMonthBtn.addEventListener('click', () => {
-                    currentDate.setMonth(currentDate.getMonth() - 1);
-                    renderCalendar();
-                });
-                nextMonthBtn.addEventListener('click', () => {
-                    currentDate.setMonth(currentDate.getMonth() + 1);
-                    renderCalendar();
-                });
-                todayBtn.addEventListener('click', () => {
-                    currentDate = new Date();
-                    currentDate.setDate(1);
-                    renderCalendar();
-                });
-                closeModalBtn.addEventListener('click', () => eventModal.classList.add('hidden'));
-                eventModal.addEventListener('click', (e) => {
-                    if (e.target === eventModal) eventModal.classList.add('hidden');
-                });
-                renderCalendar();
-            }
-
-            // --- Integrated Receipt Form Logic ---
-            const toggleBtn = document.getElementById('toggle-receipt-form');
-            const formPanel = document.getElementById('receipt-form-panel');
-            const toggleIcon = document.getElementById('toggle-icon');
-            const receiptForm = document.getElementById('receipt-form');
-
-            if (toggleBtn && formPanel && toggleIcon) {
-                toggleBtn.addEventListener('click', () => {
-                    const isClosed = formPanel.style.maxHeight === '0px' || !formPanel.style.maxHeight;
-                    formPanel.style.maxHeight = isClosed ? formPanel.scrollHeight + 'px' : '0px';
-                    toggleIcon.classList.toggle('fa-chevron-down', !isClosed);
-                    toggleIcon.classList.toggle('fa-chevron-up', isClosed);
-                });
-            }
-
-            if (receiptForm) {
-                // The new, correct Web App URL is now here.
-                const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby39h5_YPF6or9VrE_m-K2-pjr3AMzkR8G24jvgF_Kro_DEqWybkLMlROMJit05HFAM/exec"; 
-                const submitBtn = document.getElementById('submit-receipt-request');
-                const statusMsg = document.getElementById('receipt-form-status');
-                const fileInput = document.getElementById('screenshot');
-                const whatsappInput = document.getElementById('whatsappNumber');
-
-                receiptForm.addEventListener('submit', (e) => {
-                    e.preventDefault();
-
-                    // =================== START MODIFICATION ===================
-                    // Clear previous error messages and styles
-                    statusMsg.textContent = '';
-                    whatsappInput.classList.remove('border-red-500'); // Use Tailwind class for consistency
-
-                    const whatsappNumberValue = whatsappInput.value.trim();
-
-                    // Check if the number starts with +92 or 92
-                    if (whatsappNumberValue.startsWith('+92') || whatsappNumberValue.startsWith('92')) {
-                        statusMsg.textContent = 'Sorry, submissions from country code +92 are not accepted.';
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        statusMsg.textContent = 'Something went wrong. ' + error.message;
                         statusMsg.className = 'mt-4 text-sm text-red-600 font-semibold';
-                        whatsappInput.classList.add('border-red-500'); // Add red border to show error
-                        whatsappInput.focus(); // Focus the field for the user
-                        return; // Stop the form submission
-                    }
-                    // ==================== END MODIFICATION ====================
-                    
-                    
-                    showLoader('Sending Request...');
-                    submitBtn.disabled = true;
-
-                    const file = fileInput.files[0];
-                    const reader = new FileReader();
-                    reader.readAsDataURL(file);
-
-                    reader.onload = (event) => {
-                        statusMsg.textContent = 'Submitting your request...';
-                        
-                        const formData = new FormData(receiptForm);
-                        const data = Object.fromEntries(formData.entries());
-                        
-                        data.base64Data = event.target.result;
-                        data.fileName = file.name;
-                        data.mimeType = file.type;
-
-                        fetch(SCRIPT_URL, { 
-                            method: 'POST', 
-                            body: JSON.stringify(data),
-                            headers: {
-                                'Content-Type': 'text/plain;charset=utf-8',
-                            },
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.status === 'success') {
-                                statusMsg.textContent = 'Thank you! Your request has been submitted successfully.';
-                                statusMsg.className = 'mt-4 text-sm text-green-600 font-semibold';
-                                receiptForm.reset();
-                
-                            } 
-                            else { 
-                                throw new Error(data.message); 
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            statusMsg.textContent = 'Something went wrong. ' + error.message;
-                            statusMsg.className = 'mt-4 text-sm text-red-600 font-semibold';
-                        })
-                        .finally(() => {
-                            submitBtn.disabled = false;
-                            hideLoader();
-                        });
-                    };
-
-                    reader.onerror = (error) => {
-                        console.error("File reading error:", error);
-                        statusMsg.textContent = 'Could not read the file. Please try a different image.';
-                        statusMsg.className = 'mt-4 text-sm text-red-600 font-semibold';
+                    })
+                    .finally(() => {
                         submitBtn.disabled = false;
                         hideLoader();
-                    };
-                });
-            }
+                    });
+            };
+            reader.onerror = (error) => {
+                console.error("File reading error:", error);
+                statusMsg.textContent = 'Could not read the file. Please try a different image.';
+                statusMsg.className = 'mt-4 text-sm text-red-600 font-semibold';
+                submitBtn.disabled = false;
+                hideLoader();
+            };
+        });
+    }
 
-            // --- Accordion Logic for Library Section ---
-            const accordionItems = document.querySelectorAll('.accordion-item');
-
-            accordionItems.forEach(item => {
-                const toggle = item.querySelector('.accordion-toggle');
-                const panel = item.querySelector('.accordion-panel');
+    // --- Accordion Logic for Library Section (Safer Version) ---
+    const accordionItems = document.querySelectorAll('.accordion-item');
+    if (accordionItems.length > 0) {
+        accordionItems.forEach(item => {
+            const toggle = item.querySelector('.accordion-toggle');
+            const panel = item.querySelector('.accordion-panel');
+            if (toggle && panel) {
                 const icon = toggle.querySelector('.fa-chevron-down');
-
                 toggle.addEventListener('click', () => {
-                    // Close all other accordion items first
                     accordionItems.forEach(otherItem => {
                         if (otherItem !== item) {
                             const otherPanel = otherItem.querySelector('.accordion-panel');
                             const otherIcon = otherItem.querySelector('.fa-chevron-down');
-                            otherPanel.style.maxHeight = '0';
-                            otherIcon.classList.remove('rotate-180');
+                            if (otherPanel) otherPanel.style.maxHeight = '0';
+                            if (otherIcon) otherIcon.classList.remove('rotate-180');
                         }
                     });
-
-                    // Toggle the clicked accordion item
                     if (panel.style.maxHeight !== '0px' && panel.style.maxHeight) {
                         panel.style.maxHeight = '0';
-                        icon.classList.remove('rotate-180');
+                        if (icon) icon.classList.remove('rotate-180');
                     } else {
                         panel.style.maxHeight = panel.scrollHeight + 'px';
-                        icon.classList.add('rotate-180');
+                        if (icon) icon.classList.add('rotate-180');
                     }
                 });
-            });
+            }
+        });
+    }
 
-            // --- Accordion Logic for Donation Section ---
-            const accordionItemsDonate = document.querySelectorAll('.accordion-item-donate');
-
-            accordionItemsDonate.forEach(item => {
-                const toggle = item.querySelector('.accordion-toggle-donate');
-                const panel = item.querySelector('.accordion-panel-donate');
+    // --- Accordion Logic for Donation Section (Safer Version) ---
+    const accordionItemsDonate = document.querySelectorAll('.accordion-item-donate');
+    if (accordionItemsDonate.length > 0) {
+        accordionItemsDonate.forEach(item => {
+            const toggle = item.querySelector('.accordion-toggle-donate');
+            const panel = item.querySelector('.accordion-panel-donate');
+            if (toggle && panel) {
                 const icon = toggle.querySelector('.fa-chevron-down');
-
                 toggle.addEventListener('click', () => {
-                    // Close all other donation accordion items first
                     accordionItemsDonate.forEach(otherItem => {
                         if (otherItem !== item) {
                             const otherPanel = otherItem.querySelector('.accordion-panel-donate');
                             const otherIcon = otherItem.querySelector('.fa-chevron-down');
-                            otherPanel.style.maxHeight = '0';
-                            otherIcon.classList.remove('rotate-180');
+                            if (otherPanel) otherPanel.style.maxHeight = '0';
+                            if (otherIcon) otherIcon.classList.remove('rotate-180');
                         }
                     });
-
-                    // Toggle the clicked donation accordion item
                     if (panel.style.maxHeight !== '0px' && panel.style.maxHeight) {
                         panel.style.maxHeight = '0';
-                        icon.classList.remove('rotate-180');
+                        if (icon) icon.classList.remove('rotate-180');
                     } else {
                         panel.style.maxHeight = panel.scrollHeight + 'px';
-                        icon.classList.add('rotate-180');
+                        if (icon) icon.classList.add('rotate-180');
                     }
                 });
-            });
+            }
+        });
+    }
 
-        }); // End of the single DOMContentLoaded listener
+}); // End of the single DOMContentLoaded listener
     </script>
 </body>
 </html>
