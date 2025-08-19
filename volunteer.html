@@ -11,21 +11,24 @@
     <style>
         body { font-family: 'Inter', sans-serif; }
         .toastify { font-family: 'Inter', sans-serif; border-radius: 0.5rem; }
+        .accordion-icon.rotate-180 {
+            transform: rotate(180deg);
+        }
     </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
 
     <header class="bg-white shadow-md sticky top-0 z-50">
-        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
-             <a href="index.html" class="flex items-center space-x-3">
+        <nav class="container mx-auto px-4 py-3 flex flex-wrap justify-between items-center">
+            <a href="index.html" class="flex items-center space-x-3 mb-2 sm:mb-0">
                 <img src="IMG-20230327-WA0002.jpg" alt="Institute Logo" class="h-10 w-10">
                 <span class="text-xl font-bold text-blue-800">Volunteer Portal</span>
             </a>
-            <div>
-                <span id="welcomeMessage" class="text-gray-600 mr-4">Welcome!</span>
-                <button id="profileButton" class="bg-blue-500 text-white font-semibold px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200 mr-2">
+            <div class="flex items-center space-x-2">
+                <span id="welcomeMessage" class="text-gray-600 mr-2 hidden sm:inline">Welcome!</span>
+                <a href="profile.html" class="bg-blue-500 text-white font-semibold px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200 mr-2">
                     <i class="fa-solid fa-user mr-2"></i>My Profile
-                </button>
+                </a>
                 <button id="logoutButton" class="bg-red-500 text-white font-semibold px-4 py-2 rounded-md hover:bg-red-600 transition duration-200">
                     <i class="fa-solid fa-right-from-bracket mr-2"></i>Logout
                 </button>
@@ -34,44 +37,73 @@
     </header>
 
     <main class="container mx-auto p-6">
-        <div id="tasksContainer" class="space-y-6">
+        <section id="personal-dashboard" class="mb-6">
+            <h2 class="text-xl font-semibold mb-4 text-gray-700">My Dashboard</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <p class="text-gray-500 text-sm">Tasks In Progress</p>
+                    <p id="kpi-in-progress" class="text-2xl font-bold">0</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <p class="text-gray-500 text-sm">Total Completed</p>
+                    <p id="kpi-completed" class="text-2xl font-bold">0</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <p class="text-gray-500 text-sm">Next Due Date</p>
+                    <p id="kpi-next-due" class="text-2xl font-bold">N/A</p>
+                </div>
             </div>
-    </main>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <div class="flex justify-between items-center mb-2">
+                    <h3 class="text-lg font-semibold">Your Progress</h3>
+                    <span id="progress-text" class="font-semibold text-gray-600">0/0 Tasks</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-4">
+                    <div id="progress-bar" class="bg-green-500 h-4 rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+            </div>
+        </section>
 
-    <div id="profileModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-[100] hidden">
-        <div class="bg-white p-8 rounded-lg shadow-2xl max-w-md w-full">
-            <h2 class="text-2xl font-bold mb-4">My Profile</h2>
-            <form id="profileForm">
+        <section class="bg-white p-4 rounded-lg shadow-md mb-6">
+            <div class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4">
                 <div>
-                    <label for="profileName" class="block text-sm font-medium text-gray-700">Full Name</label>
-                    <input type="text" id="profileName" class="mt-1 block w-full border border-gray-300 rounded-md p-2 shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                    <label for="statusFilter" class="block text-sm font-medium text-gray-700">Filter by Status</label>
+                    <select id="statusFilter" class="mt-1 block w-full sm:w-auto border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        <option value="All">All Active</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Assigned">Assigned</option>
+                        <option value="Blocked">Blocked</option>
+                        <option value="Completed">Completed</option>
+                    </select>
                 </div>
-                <div class="mt-4">
-                    <label for="profileEmail" class="block text-sm font-medium text-gray-700">Email</label>
-                    <input type="email" id="profileEmail" class="mt-1 block w-full border border-gray-300 rounded-md p-2 bg-gray-100" disabled>
+                <div>
+                    <label for="sortOrder" class="block text-sm font-medium text-gray-700">Sort by Due Date</label>
+                    <select id="sortOrder" class="mt-1 block w-full sm:w-auto border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        <option value="asc">Nearest First</option>
+                        <option value="desc">Farthest First</option>
+                    </select>
                 </div>
-                <div class="mt-6 flex justify-end space-x-4">
-                    <button type="button" id="closeModalButton" class="bg-gray-200 px-4 py-2 rounded-md hover:bg-gray-300">Cancel</button>
-                    <button type="submit" class="bg-blue-600 text-white font-bold px-4 py-2 rounded-md hover:bg-blue-700">Save Changes</button>
-                </div>
-            </form>
+            </div>
+        </section>
+
+        <h2 class="text-xl font-semibold mb-4 text-gray-700">Your Assigned Tasks</h2>
+        <div id="tasksContainer" class="space-y-6">
         </div>
-    </div>
+    </main>
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbx2x1MMjKXn5aECAiPlbPcaco9LU5P0xWW6QmKtDGA_u9Xzd9uOw84erbpujRA-AmaGsA/exec";
+        const API_URL = "https://script.google.com/macros/s/AKfycbxFuW26BPUhwNnXVz6UaKsBiFZH5uGk_yhe5qY8TbQRHBZxshnYWUcu9OAk3pt2UzaXbg/exec";
         const token = localStorage.getItem("sessionToken");
 
         if (!token) { window.location.href = "login.html"; }
 
-        // --- Event Listeners ---
-        document.getElementById("logoutButton").addEventListener("click", logout);
-        // NEW: Event listeners for Profile Modal
-        document.getElementById("profileButton").addEventListener("click", openProfileModal);
-        document.getElementById("closeModalButton").addEventListener("click", () => document.getElementById('profileModal').classList.add('hidden'));
-        document.getElementById("profileForm").addEventListener("submit", handleProfileUpdate);
+        let allTasksData = []; // Store master copy of task data
 
+        // --- Event Listeners ---
+        document.getElementById('statusFilter').addEventListener('change', applyFiltersAndSort);
+        document.getElementById('sortOrder').addEventListener('change', applyFiltersAndSort);
+        document.getElementById("logoutButton").addEventListener("click", logout);
 
         // --- Core Functions ---
         function showToast(message, isError = false) {
@@ -86,7 +118,7 @@
         }
 
         function handleAuthError(error) {
-            console.error("Auth Error:", error);
+           console.error("Auth Error:", error);
             if (error.message.includes("Unauthorized")) {
                 showToast("Session expired. Please log in again.", true);
                 setTimeout(() => {
@@ -96,7 +128,6 @@
             }
         }
 
-        // MODIFIED: postData function now accepts an optional callback for more complex actions
         function postData(payload, callback) {
             payload.token = token;
             fetch(API_URL, {
@@ -106,12 +137,8 @@
             .then(res => res.json())
             .then(data => {
                 if (data.status === 'error') throw new Error(data.message);
-                showToast(data.message);
-
-                // If this was a task update, refresh the tasks list
+                if(data.message) showToast(data.message);
                 if (payload.action === 'updateTask') fetchMyTasks();
-
-                // If a callback function was provided, run it
                 if (callback) callback(data);
             })
             .catch(err => {
@@ -130,13 +157,92 @@
         function fetchMyTasks() {
             const container = document.getElementById("tasksContainer");
             showLoading(container);
+            
             fetch(`${API_URL}?action=getVolunteerTasks&token=${token}`)
                 .then(res => res.json())
                 .then(data => {
                     if (data.status === 'error') throw new Error(data.message);
-                    renderTasks(data.tasks);
+                    allTasksData = data.tasks; 
+                    renderDashboard(allTasksData); 
+                    applyFiltersAndSort(); 
                 })
                 .catch(handleAuthError);
+
+            postData({ action: "getUserProfile" }, (profileData) => {
+                if (profileData.status === 'success') {
+                    document.getElementById('welcomeMessage').textContent = `Welcome, ${profileData.profile.fullName}!`;
+                }
+            });
+        }
+
+        function renderDashboard(data) {
+           if (!data || data.length < 2) {
+                document.getElementById('kpi-in-progress').textContent = 0;
+                document.getElementById('kpi-completed').textContent = 0;
+                document.getElementById('kpi-next-due').textContent = 'N/A';
+                document.getElementById('progress-text').textContent = 'No tasks assigned';
+                document.getElementById('progress-bar').style.width = '0%';
+                return;
+            }
+
+            const headers = data[0];
+            const tasks = data.slice(1);
+            const statusIndex = headers.indexOf("Status");
+            const dueDateIndex = headers.indexOf("DueDate");
+
+            let inProgressCount = 0;
+            let completedCount = 0;
+            let nextDueDate = null;
+
+            tasks.forEach(row => {
+                const status = row[statusIndex];
+                if (status === 'In Progress' || status === 'Assigned') {
+                    inProgressCount++;
+                    const dueDate = new Date(row[dueDateIndex]);
+                    if (!nextDueDate || dueDate < nextDueDate) {
+                        nextDueDate = dueDate;
+                    }
+                }
+                if (status === 'Completed') {
+                    completedCount++;
+                }
+            });
+
+            document.getElementById('kpi-in-progress').textContent = inProgressCount;
+            document.getElementById('kpi-completed').textContent = completedCount;
+            document.getElementById('kpi-next-due').textContent = nextDueDate ? nextDueDate.toLocaleDateString() : 'N/A';
+
+            const totalTasks = tasks.length;
+            const progressPercentage = totalTasks > 0 ? (completedCount / totalTasks) * 100 : 0;
+            document.getElementById('progress-text').textContent = `${completedCount}/${totalTasks} Tasks Completed`;
+            document.getElementById('progress-bar').style.width = `${progressPercentage}%`;
+        }
+        
+        function applyFiltersAndSort() {
+            if (!allTasksData || allTasksData.length < 2) {
+                renderTasks(allTasksData);
+                return;
+            }
+
+            const headers = allTasksData[0];
+            let tasks = allTasksData.slice(1);
+            const statusFilter = document.getElementById('statusFilter').value;
+            const sortOrder = document.getElementById('sortOrder').value;
+
+            if (statusFilter !== 'All') {
+                tasks = tasks.filter(row => row[headers.indexOf("Status")] === statusFilter);
+            } else {
+                tasks = tasks.filter(row => row[headers.indexOf("Status")] !== 'Completed');
+            }
+            
+            const dueDateIndex = headers.indexOf("DueDate");
+            tasks.sort((a, b) => {
+                const dateA = new Date(a[dueDateIndex]);
+                const dateB = new Date(b[dueDateIndex]);
+                return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
+            });
+            
+            renderTasks([headers, ...tasks]);
         }
         
         function renderTasks(data) {
@@ -144,54 +250,70 @@
             container.innerHTML = "";
             
             if (!data || data.length < 2) {
-                 container.innerHTML = `<div class="bg-white p-6 rounded-lg shadow-md text-center text-gray-500">You have no tasks assigned. Great job!</div>`;
+                 container.innerHTML = `<div class="bg-white p-6 rounded-lg shadow-md text-center text-gray-500">No tasks match the current filter.</div>`;
                  return;
             }
 
-            const headers = data.shift();
-            const idIndex = headers.indexOf("TaskID");
-            const titleIndex = headers.indexOf("TaskTitle");
-            const descIndex = headers.indexOf("TaskDescription");
-            const statusIndex = headers.indexOf("Status");
-            const notesIndex = headers.indexOf("VolunteerNotes");
-            const dueDateIndex = headers.indexOf("DueDate");
+            const headers = data[0];
+            const dataRows = data.slice(1);
 
-            data.forEach(row => {
+            dataRows.forEach(row => {
                 const card = document.createElement("div");
-                card.className = "bg-white p-6 rounded-lg shadow-md";
-                const dueDate = new Date(row[dueDateIndex]).toLocaleDateString();
-                const status = row[statusIndex];
-                let statusColor = 'bg-yellow-100 text-yellow-800';
+                const status = row[headers.indexOf("Status")];
+                const dueDate = new Date(row[headers.indexOf("DueDate")]);
+                const today = new Date();
+                today.setHours(0,0,0,0); 
+                
+                const isOverdue = dueDate < today && status !== 'Completed';
+                card.className = `bg-white p-6 rounded-lg shadow-md border-l-4 ${isOverdue ? 'border-red-500' : 'border-transparent'}`;
+
+                let statusColor = 'bg-blue-100 text-blue-800';
+                if (status === 'In Progress') statusColor = 'bg-yellow-100 text-yellow-800';
                 if (status === 'Completed') statusColor = 'bg-green-100 text-green-800';
                 if (status === 'Blocked') statusColor = 'bg-red-100 text-red-800';
 
                 card.innerHTML = `
-                    <div class="flex justify-between items-start">
+                    <button class="accordion-toggle flex justify-between items-center w-full text-left">
                         <div>
-                            <h3 class="text-lg font-bold text-gray-800">${row[titleIndex]}</h3>
-                            <p class="text-sm text-gray-500">Due: ${dueDate}</p>
+                            <h3 class="text-lg font-bold text-gray-800">${row[headers.indexOf("TaskTitle")]}</h3>
+                            <p class="text-sm text-gray-500">Due: ${dueDate.toLocaleDateString()}</p>
                         </div>
-                        <span class="text-sm font-semibold px-3 py-1 rounded-full ${statusColor}">${status}</span>
+                        <div class="flex items-center space-x-2">
+                            ${isOverdue ? '<span class="text-red-500 font-semibold"><i class="fa-solid fa-triangle-exclamation mr-1"></i>Overdue</span>' : ''}
+                            <span class="text-sm font-semibold px-3 py-1 rounded-full ${statusColor}">${status}</span>
+                            <svg class="accordion-icon w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </div>
+                    </button>
+                    <div class="accordion-content hidden mt-4 pt-4 border-t">
+                        <p class="text-gray-600 mb-4">${row[headers.indexOf("TaskDescription")] || 'No description provided.'}</p>
+                        <form class="task-form space-y-3" data-task-id="${row[headers.indexOf("TaskID")]}">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Update Status:</label>
+                                <select name="status" class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="Assigned" ${status === 'Assigned' ? 'selected' : ''}>Assigned</option>
+                                    <option value="In Progress" ${status === 'In Progress' ? 'selected' : ''}>In Progress</option>
+                                    <option value="Completed" ${status === 'Completed' ? 'selected' : ''}>Completed</option>
+                                    <option value="Blocked" ${status === 'Blocked' ? 'selected' : ''}>Blocked</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Notes:</label>
+                                <textarea name="notes" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">${row[headers.indexOf("VolunteerNotes")] || ''}</textarea>
+                            </div>
+                            <button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300">Update Task</button>
+                        </form>
                     </div>
-                    <p class="text-gray-600 mt-4 mb-4 border-t pt-4">${row[descIndex] || 'No description provided.'}</p>
-                    <form class="task-form space-y-3" data-task-id="${row[idIndex]}">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Update Status:</label>
-                            <select name="status" class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                                <option value="Assigned" ${status === 'Assigned' ? 'selected' : ''}>Assigned</option>
-                                <option value="In Progress" ${status === 'In Progress' ? 'selected' : ''}>In Progress</option>
-                                <option value="Completed" ${status === 'Completed' ? 'selected' : ''}>Completed</option>
-                                <option value="Blocked" ${status === 'Blocked' ? 'selected' : ''}>Blocked</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Notes:</label>
-                            <textarea name="notes" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">${row[notesIndex] || ''}</textarea>
-                        </div>
-                        <button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300">Update Task</button>
-                    </form>
                 `;
                 container.appendChild(card);
+            });
+
+            document.querySelectorAll(".accordion-toggle").forEach(button => {
+                button.addEventListener('click', () => {
+                    const content = button.nextElementSibling;
+                    const icon = button.querySelector('.accordion-icon');
+                    content.classList.toggle('hidden');
+                    icon.classList.toggle('rotate-180');
+                });
             });
 
             document.querySelectorAll(".task-form").forEach(form => {
@@ -207,36 +329,8 @@
             });
         }
 
-        // --- NEW: Functions for Profile Management ---
-        function openProfileModal() {
-            // Fetch user data and populate form
-            postData({ action: "getUserProfile" }, (data) => {
-                if (data.status === 'success') {
-                    document.getElementById('profileName').value = data.profile.fullName;
-                    document.getElementById('profileEmail').value = data.profile.email;
-                    document.getElementById('profileModal').classList.remove('hidden');
-                } else {
-                    showToast("Could not load profile data.", true);
-                }
-            });
-        }
-
-        function handleProfileUpdate(e) {
-            e.preventDefault();
-            const profileData = {
-                fullName: document.getElementById('profileName').value
-            };
-            // Use the callback to close the modal only on success
-            postData({ action: "updateUserProfile", profileData: profileData }, () => {
-                 document.getElementById('profileModal').classList.add('hidden');
-                 // Update the welcome message in the header
-                 openProfileModal(); // Re-fetch to get the latest name for the welcome message
-            });
-        }
-
         // --- Initial Load ---
         fetchMyTasks();
-        openProfileModal(); // Fetch profile to show the welcome name
     </script>
 </body>
 </html>

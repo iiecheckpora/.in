@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .toastify { font-family: 'Inter', sans-serif; border-radius: 0.5rem; }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-4 py-3 flex flex-wrap justify-between items-center">
+            <a href="index.html" class="flex items-center space-x-3">
+                <img src="IMG-20230327-WA0002.jpg" alt="Institute Logo" class="h-10 w-10">
+                <span class="text-xl font-bold text-blue-800">Volunteer Portal</span>
+            </a>
+            <div>
+                <a href="volunteer.html" class="text-blue-600 hover:underline mr-4"><i class="fa-solid fa-arrow-left mr-1"></i> Back to Tasks</a>
+                <button id="logoutButton" class="bg-red-500 text-white font-semibold px-4 py-2 rounded-md hover:bg-red-600">
+                    <i class="fa-solid fa-right-from-bracket mr-2"></i>Logout
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto p-6">
+        <h1 class="text-3xl font-bold mb-6 text-gray-800">My Profile</h1>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="space-y-6">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-xl font-semibold mb-4">Update Information</h2>
+                    <form id="profileForm" class="space-y-4">
+                        <div>
+                            <label for="profileName" class="block text-sm font-medium text-gray-700">Full Name</label>
+                            <input type="text" id="profileName" class="mt-1 block w-full border rounded-md p-2">
+                        </div>
+                        <div>
+                            <label for="profileEmail" class="block text-sm font-medium text-gray-700">Email</label>
+                            <input type="email" id="profileEmail" class="mt-1 block w-full border rounded-md p-2 bg-gray-100" disabled>
+                        </div>
+                        <button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 rounded-md hover:bg-blue-700">Save Name</button>
+                    </form>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-xl font-semibold mb-4">Change Password</h2>
+                    <form id="passwordForm" class="space-y-4">
+                        <div>
+                            <label for="newPassword" class="block text-sm font-medium text-gray-700">New Password</label>
+                            <input type="password" id="newPassword" required class="mt-1 block w-full border rounded-md p-2">
+                        </div>
+                        <div>
+                            <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirm New Password</label>
+                            <input type="password" id="confirmPassword" required class="mt-1 block w-full border rounded-md p-2">
+                        </div>
+                        <button type="submit" class="w-full bg-green-600 text-white font-bold py-2 rounded-md hover:bg-green-700">Update Password</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold mb-4">Completed Task History</h2>
+                <div id="completedTasksContainer" class="overflow-y-auto max-h-96">
+                    </div>
+            </div>
+        </div>
+    </main>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbxFuW26BPUhwNnXVz6UaKsBiFZH5uGk_yhe5qY8TbQRHBZxshnYWUcu9OAk3pt2UzaXbg/exec";
+        const token = localStorage.getItem("sessionToken");
+
+        if (!token) { window.location.href = "login.html"; }
+
+        // --- Event Listeners ---
+        document.getElementById("logoutButton").addEventListener("click", logout);
+        document.getElementById("profileForm").addEventListener("submit", handleProfileUpdate);
+        document.getElementById("passwordForm").addEventListener("submit", handlePasswordChange);
+
+        // --- Core Functions ---
+        function showToast(message, isError = false) {
+             Toastify({
+                text: message, duration: 3000, close: true, gravity: "top", position: "right",
+                style: { background: isError ? "linear-gradient(to right, #ef4444, #b91c1c)" : "linear-gradient(to right, #22c55e, #15803d)" }
+            }).showToast();
+        }
+
+        function postData(payload, callback) {
+            payload.token = token;
+            fetch(API_URL, {
+                method: 'POST', redirect: 'follow', body: JSON.stringify(payload),
+                headers: { "Content-Type": "text/plain;charset=utf-8" },
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'error') throw new Error(data.message);
+                if (callback) callback(data);
+            })
+            .catch(err => {
+                showToast(err.message, true);
+            });
+        }
+        
+        function logout() {
+            if (confirm("Are you sure you want to logout?")) {
+                localStorage.clear();
+                window.location.href = "login.html";
+            }
+        }
+
+        function fetchProfileAndTasks() {
+            // Fetch user profile info
+            postData({ action: "getUserProfile" }, (data) => {
+                if (data.status === 'success') {
+                    document.getElementById('profileName').value = data.profile.fullName;
+                    document.getElementById('profileEmail').value = data.profile.email;
+                } else {
+                    showToast("Could not load profile data.", true);
+                }
+            });
+
+            // Fetch task history
+            fetch(`${API_URL}?action=getVolunteerTasks&token=${token}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'error') throw new Error(data.message);
+                    renderCompletedTasks(data.tasks);
+                });
+        }
+
+        function renderCompletedTasks(tasks) {
+            const container = document.getElementById('completedTasksContainer');
+            if (!tasks || tasks.length < 2) {
+                container.innerHTML = `<p class="text-gray-500">No completed tasks found.</p>`;
+                return;
+            }
+            const headers = tasks[0];
+            const completed = tasks.slice(1).filter(row => row[headers.indexOf("Status")] === 'Completed');
+
+            if (completed.length === 0) {
+                 container.innerHTML = `<p class="text-gray-500">No completed tasks found.</p>`;
+                return;
+            }
+
+            let html = '<ul class="space-y-3">';
+            completed.forEach(row => {
+                const title = row[headers.indexOf("TaskTitle")];
+                const completedDate = new Date(row[headers.indexOf("LastUpdated")]).toLocaleDateString();
+                html += `<li class="border-b pb-2"><p class="font-semibold">${title}</p><p class="text-sm text-gray-500">Completed on: ${completedDate}</p></li>`;
+            });
+            html += '</ul>';
+            container.innerHTML = html;
+        }
+
+        function handleProfileUpdate(e) {
+            e.preventDefault();
+            const profileData = { fullName: document.getElementById('profileName').value };
+            postData({ action: "updateUserProfile", profileData: profileData }, () => {
+                showToast("Name updated successfully!");
+            });
+        }
+
+        function handlePasswordChange(e) {
+            e.preventDefault();
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (newPassword.length < 6) {
+                showToast("Password must be at least 6 characters long.", true);
+                return;
+            }
+            if (newPassword !== confirmPassword) {
+                showToast("Passwords do not match.", true);
+                return;
+            }
+
+            postData({ action: "changePassword", passwordData: { newPassword: newPassword } }, (data) => {
+                showToast("Password changed successfully!");
+                e.target.reset();
+            });
+        }
+
+        // --- Initial Load ---
+        fetchProfileAndTasks();
+    </script>
+</body>
+</html>
