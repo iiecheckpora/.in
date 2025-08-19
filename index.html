@@ -1326,544 +1326,549 @@
     <!-- This script tag contains all the JavaScript for the page's interactive features. -->
     <script>
         // This single event listener ensures all JavaScript runs only after the HTML document has been loaded.
-document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function() {
 
-    // loader function
-    const formLoader = document.getElementById('form-loader');
+            // loader function
+            const formLoader = document.getElementById('form-loader');
 
-    // Helper function to show the loader
-    const showLoader = () => {
-        if (formLoader) formLoader.classList.add('visible');
-    };
+            // Helper function to show the loader
+            const showLoader = () => {
+                if (formLoader) formLoader.classList.add('visible');
+            };
 
-    // Helper function to hide the loader
-    const hideLoader = () => {
-        if (formLoader) formLoader.classList.remove('visible');
-    };
+            // Helper function to hide the loader
+            const hideLoader = () => {
+                if (formLoader) formLoader.classList.remove('visible');
+            };
 
 
-    // --- Active Navigation State Logic ---
-    const navLinks = document.querySelectorAll('header nav a[href^="#"]');
-    const sections = [];
+            // --- Active Navigation State Logic ---
+            const navLinks = document.querySelectorAll('header nav a[href^="#"]');
+            const sections = [];
 
-    navLinks.forEach(link => {
-        const section = document.querySelector(link.getAttribute('href'));
-        if (section) {
-            sections.push(section);
-        }
-    });
-
-    function onScroll() {
-        const scrollPosition = window.scrollY + 150; 
-        let activeSectionFound = false;
-        for (let i = sections.length - 1; i >= 0; i--) {
-            const section = sections[i];
-            if (section.offsetTop <= scrollPosition) {
-                navLinks.forEach(link => link.classList.remove('nav-active'));
-                const activeLink = document.querySelector(`header nav a[href="#${section.id}"]`);
-                if (activeLink) {
-                    activeLink.classList.add('nav-active');
+            navLinks.forEach(link => {
+                const section = document.querySelector(link.getAttribute('href'));
+                if (section) {
+                    sections.push(section);
                 }
-                activeSectionFound = true;
-                break; 
+            });
+
+            function onScroll() {
+                const scrollPosition = window.scrollY + 150; 
+                let activeSectionFound = false;
+                for (let i = sections.length - 1; i >= 0; i--) {
+                    const section = sections[i];
+                    if (section.offsetTop <= scrollPosition) {
+                        navLinks.forEach(link => link.classList.remove('nav-active'));
+                        const activeLink = document.querySelector(`header nav a[href="#${section.id}"]`);
+                        if (activeLink) {
+                            activeLink.classList.add('nav-active');
+                        }
+                        activeSectionFound = true;
+                        break; 
+                    }
+                }
+                if (!activeSectionFound) {
+                    navLinks.forEach(link => link.classList.remove('nav-active'));
+                }
             }
-        }
-        if (!activeSectionFound) {
-            navLinks.forEach(link => link.classList.remove('nav-active'));
-        }
-    }
-    window.addEventListener('scroll', onScroll);
+            window.addEventListener('scroll', onScroll);
+            // --- New Mobile Sidebar Logic (Final Version) ---
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+            const mobileMenuCloseButton = document.getElementById('mobile-menu-close-btn');
+            const menuItems = document.querySelectorAll('.menu-item-container');
+            const donateButton = document.querySelector('.action-button-donate');
 
-    // --- New Mobile Sidebar Logic (Final Version) ---
-const mobileMenuButton = document.getElementById('mobile-menu-button');
-const mobileMenu = document.getElementById('mobile-menu');
-const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
-const mobileMenuCloseButton = document.getElementById('mobile-menu-close-btn');
-const menuItems = document.querySelectorAll('.menu-item-container');
-const donateButton = document.querySelector('.action-button-donate');
+            // Function to open or close the menu
+            const toggleMenu = () => {
+                if (!mobileMenuButton || !mobileMenu || !mobileMenuOverlay) return;
+                mobileMenuButton.classList.toggle('open');
+                mobileMenu.classList.toggle('translate-x-full');
+                if (mobileMenuOverlay.classList.contains('hidden')) {
+                    mobileMenuOverlay.classList.remove('hidden');
+                    setTimeout(() => mobileMenuOverlay.classList.remove('opacity-0'), 10);
+                } else {
+                    mobileMenuOverlay.classList.add('opacity-0');
+                    setTimeout(() => mobileMenuOverlay.classList.add('hidden'), 300);
+                }
+                if (mobileMenu.classList.contains('translate-x-full')) {
+                    // --- MENU IS CLOSING ---
+                    document.body.classList.remove('overflow-hidden'); // <-- ADD THIS LINE
+                    if (menuItems) menuItems.forEach(item => item.classList.remove('expanded'));
+                    mobileMenu.classList.remove('menu-open');
+                } else {
+                    // --- MENU IS OPENING ---
+                    document.body.classList.add('overflow-hidden'); // <-- ADD THIS LINE
+                    mobileMenu.classList.add('menu-open');
+                }
+            };
 
-// Function to open or close the menu
-const toggleMenu = () => {
-    if (!mobileMenuButton || !mobileMenu || !mobileMenuOverlay) return;
-    mobileMenuButton.classList.toggle('open');
-    mobileMenu.classList.toggle('translate-x-full');
-    if (mobileMenuOverlay.classList.contains('hidden')) {
-        mobileMenuOverlay.classList.remove('hidden');
-        setTimeout(() => mobileMenuOverlay.classList.remove('opacity-0'), 10);
-    } else {
-        mobileMenuOverlay.classList.add('opacity-0');
-        setTimeout(() => mobileMenuOverlay.classList.add('hidden'), 300);
-    }
-    if (mobileMenu.classList.contains('translate-x-full')) {
-        if (menuItems) menuItems.forEach(item => item.classList.remove('expanded'));
-        mobileMenu.classList.remove('menu-open');
-    } else {
-        mobileMenu.classList.add('menu-open');
-    }
-};
+            // --- Event Listeners ---
+            if (mobileMenuButton) mobileMenuButton.addEventListener('click', toggleMenu);
+            if (mobileMenuOverlay) mobileMenuOverlay.addEventListener('click', toggleMenu);
+            if (mobileMenuCloseButton) mobileMenuCloseButton.addEventListener('click', toggleMenu);
 
-// --- Event Listeners ---
-if (mobileMenuButton) mobileMenuButton.addEventListener('click', toggleMenu);
-if (mobileMenuOverlay) mobileMenuOverlay.addEventListener('click', toggleMenu);
-if (mobileMenuCloseButton) mobileMenuCloseButton.addEventListener('click', toggleMenu);
+            // Logic for clicking on a menu item
+            if (menuItems.length > 0) {
+                menuItems.forEach(item => {
+                    item.addEventListener('click', function(e) {
+                        const isExpanded = this.classList.contains('expanded');
+                        const link = this.querySelector('a');
+                        if (!link) return;
+                        const targetUrl = link.getAttribute('href');
+                        if (isExpanded) {
+                            if (targetUrl.startsWith('#')) {
+                                e.preventDefault();
+                                document.querySelector(targetUrl)?.scrollIntoView({ behavior: 'smooth' });
+                                toggleMenu();
+                            } else {
+                                window.location.href = targetUrl;
+                            }
+                        } else {
+                            e.preventDefault();
+                            menuItems.forEach(otherItem => otherItem.classList.remove('expanded'));
+                            this.classList.add('expanded');
+                        }
+                    });
+                });
+            }
 
-// Logic for clicking on a menu item
-if (menuItems.length > 0) {
-    menuItems.forEach(item => {
-        item.addEventListener('click', function(e) {
-            const isExpanded = this.classList.contains('expanded');
-            const link = this.querySelector('a');
-            if (!link) return;
-            const targetUrl = link.getAttribute('href');
-            if (isExpanded) {
-                if (targetUrl.startsWith('#')) {
+            // Logic for the donate button
+            if (donateButton) {
+                donateButton.addEventListener('click', (e) => {
                     e.preventDefault();
+                    const targetUrl = donateButton.getAttribute('href');
                     document.querySelector(targetUrl)?.scrollIntoView({ behavior: 'smooth' });
                     toggleMenu();
-                } else {
-                    window.location.href = targetUrl;
-                }
-            } else {
-                e.preventDefault();
-                menuItems.forEach(otherItem => otherItem.classList.remove('expanded'));
-                this.classList.add('expanded');
-            }
-        });
-    });
-}
-
-// Logic for the donate button
-if (donateButton) {
-    donateButton.addEventListener('click', (e) => {
-        e.preventDefault();
-        const targetUrl = donateButton.getAttribute('href');
-        document.querySelector(targetUrl)?.scrollIntoView({ behavior: 'smooth' });
-        toggleMenu();
-    });
-}
-    // --- Popup Logic ---
-    const welcomePopup = document.getElementById('welcome-popup');
-    const closePopupButton = document.getElementById('close-popup-btn');
-    const refreshButton = document.getElementById('refresh-btn');
-    if (welcomePopup && closePopupButton && refreshButton) {
-        closePopupButton.addEventListener('click', () => welcomePopup.classList.add('hidden'));
-        refreshButton.addEventListener('click', () => location.reload());
-        if (!sessionStorage.getItem('popupShown')) {
-            setTimeout(() => {
-                welcomePopup.classList.remove('hidden');
-            }, 1000);
-            sessionStorage.setItem('popupShown', 'true');
-        }
-    }
-
-    // --- Shared Google Script URL for Newsletter/Feedback ---
-    const googleScriptURL = 'https://script.google.com/macros/s/AKfycbzpOLHQ7rOhOnhoVjbiBNcoWfPQ1xjTtVkgmgB9M0qtKtQyOy30pPer2nKHc13h1sqW/exec';
-
-    // --- Newsletter Form Submission Logic ---
-    const newsletterForm = document.getElementById('newsletter-form');
-    if (newsletterForm) {
-        const formStatus = document.getElementById('newsletter-form-status');
-        const submitButton = newsletterForm.querySelector('button[type="submit"]');
-        newsletterForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            showLoader();
-            submitButton.disabled = true;
-            formStatus.textContent = 'Subscribing...';
-            formStatus.className = 'mt-4 text-sm text-gray-600';
-            const formData = new FormData(newsletterForm);
-            const data = Object.fromEntries(formData.entries());
-            fetch(googleScriptURL, {
-                    method: 'POST',
-                    body: JSON.stringify(data)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.result === 'success') {
-                        formStatus.textContent = 'Thank you for subscribing! Please check your email.';
-                        formStatus.className = 'mt-4 text-sm text-green-500 font-semibold';
-                        newsletterForm.reset();
-                    } else {
-                        throw new Error(data.error || 'An unknown error occurred.');
-                    }
-                }).catch(error => {
-                    console.error('Error:', error);
-                    formStatus.textContent = 'Submission failed. Please try again.';
-                    formStatus.className = 'mt-4 text-sm text-red-500 font-semibold';
-                }).finally(() => {
-                    submitButton.disabled = false;
-                    hideLoader();
                 });
-        });
-    }
-
-    // --- New Carousel Gallery Logic ---
-    const carousel = document.getElementById('gallery-carousel');
-    if (carousel) {
-        const track = document.getElementById('carousel-track');
-        const slides = Array.from(track.children);
-        const nextButton = document.getElementById('carousel-next');
-        const prevButton = document.getElementById('carousel-prev');
-        const dotsNav = document.getElementById('carousel-dots');
-
-        // Create dots for navigation
-        slides.forEach((slide, index) => {
-            const dot = document.createElement('button');
-            dot.classList.add('carousel-dot');
-            if (index === 0) dot.classList.add('active');
-            dotsNav.appendChild(dot);
-        });
-
-        const dots = Array.from(dotsNav.children);
-        let currentIndex = 0;
-
-        const moveToSlide = (targetIndex) => {
-            const currentSlide = track.querySelector('.current-slide');
-            if(currentSlide) currentSlide.classList.remove('current-slide');
-            
-            slides[targetIndex].classList.add('current-slide');
-            track.style.transform = 'translateX(-' + targetIndex * 100 + '%)';
-            
-            // Update dots
-            const currentDot = dotsNav.querySelector('.active');
-            if(currentDot) currentDot.classList.remove('active');
-            dots[targetIndex].classList.add('active');
-
-            currentIndex = targetIndex;
-        };
-
-        // When next button is clicked
-        nextButton.addEventListener('click', e => {
-            const nextIndex = (currentIndex + 1) % slides.length;
-            moveToSlide(nextIndex);
-        });
-
-        // When prev button is clicked
-        prevButton.addEventListener('click', e => {
-            const prevIndex = (currentIndex - 1 + slides.length) % slides.length;
-            moveToSlide(prevIndex);
-        });
-
-        // When a dot is clicked
-        dotsNav.addEventListener('click', e => {
-            const targetDot = e.target.closest('button');
-            if (!targetDot) return;
-            
-            const targetIndex = dots.findIndex(dot => dot === targetDot);
-            moveToSlide(targetIndex);
-        });
-
-        // Initialize the first slide
-        slides[0].classList.add('current-slide');
-    }
-
-    // --- Feedback Form Submission Logic ---
-    const feedbackForm = document.getElementById('feedback-form');
-    if (feedbackForm) {
-        const formStatus = document.getElementById('form-status');
-        const submitButton = feedbackForm.querySelector('button[type="submit"]');
-        feedbackForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            showLoader();
-            submitButton.disabled = true;
-            formStatus.textContent = 'Submitting...';
-            formStatus.className = 'mt-4 text-sm text-gray-600';
-            const formData = new FormData(feedbackForm);
-            const data = Object.fromEntries(formData.entries());
-            fetch(googleScriptURL, {
-                    method: 'POST',
-                    body: JSON.stringify(data)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.result === 'success') {
-                        formStatus.textContent = 'Thank you for your feedback!';
-                        formStatus.className = 'mt-4 text-sm text-green-500 font-semibold';
-                        feedbackForm.reset();
-                    } else {
-                        throw new Error(data.error || 'An unknown error occurred.');
-                    }
-                }).catch(error => {
-                    console.error('Error:', error);
-                    formStatus.textContent = 'Submission failed. Please try again.';
-                    formStatus.className = 'mt-4 text-sm text-red-500 font-semibold';
-                }).finally(() => {
-                    submitButton.disabled = false;
-                    hideLoader();
-                });
-        });
-    }
-
-    // --- Back to Top Button Logic ---
-    const backToTopButton = document.getElementById('back-to-top-btn');
-    if (backToTopButton) {
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) {
-                backToTopButton.classList.remove('opacity-0', 'pointer-events-none');
-            } else {
-                backToTopButton.classList.add('opacity-0', 'pointer-events-none');
             }
-        });
-        backToTopButton.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
-    }
 
-    // --- Preloader Logic ---
-    const preloader = document.getElementById('preloader');
-    window.addEventListener('load', () => {
-        if (preloader) {
-            preloader.classList.add('opacity-0');
-            setTimeout(() => preloader.remove(), 500);
-        }
-    });
 
-    // --- Copy to Clipboard Logic for Donation Section ---
-    const donationSection = document.getElementById('donate');
-    if (donationSection) {
-        donationSection.addEventListener('click', function(e) {
-            const copyButton = e.target.closest('.copy-btn');
-            if (copyButton) {
-                const textToCopy = copyButton.dataset.copy;
-                navigator.clipboard.writeText(textToCopy).then(() => {
-                    const originalIcon = copyButton.innerHTML;
-                    copyButton.innerHTML = `<i class="fa-solid fa-check text-green-500"></i>`;
+            // --- Popup Logic ---
+            const welcomePopup = document.getElementById('welcome-popup');
+            const closePopupButton = document.getElementById('close-popup-btn');
+            const refreshButton = document.getElementById('refresh-btn');
+            if (welcomePopup && closePopupButton && refreshButton) {
+                closePopupButton.addEventListener('click', () => welcomePopup.classList.add('hidden'));
+                refreshButton.addEventListener('click', () => location.reload());
+                if (!sessionStorage.getItem('popupShown')) {
                     setTimeout(() => {
-                        copyButton.innerHTML = originalIcon;
-                    }, 2000);
-                }).catch(err => console.error('Failed to copy text: ', err));
-            }
-        });
-    }
-
-    // --- Calendar Logic ---
-    const monthYearHeader = document.getElementById('month-year-header');
-    if (monthYearHeader) {
-        const calendarDaysGrid = document.getElementById('calendar-days-grid');
-        const prevMonthBtn = document.getElementById('prev-month-btn');
-        const nextMonthBtn = document.getElementById('next-month-btn');
-        const todayBtn = document.getElementById('today-btn');
-        const eventModal = document.getElementById('event-modal');
-        const closeModalBtn = document.getElementById('close-modal-btn');
-        const eventDates = {
-            '2025-8-16': {
-                title: 'One Day Dawrah',
-                time: '9:30 AM - 6:30 PM',
-                description: 'Join us for our One Day Dawrah Series. We will cover, تائية الإلبيري في الزهد والحكم'
-            }
-        };
-        let currentDate = new Date();
-        currentDate.setDate(1);
-
-        function renderCalendar() {
-            const year = currentDate.getFullYear();
-            const month = currentDate.getMonth();
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            monthYearHeader.textContent = new Intl.DateTimeFormat('en-US', {
-                year: 'numeric',
-                month: 'long'
-            }).format(currentDate);
-            calendarDaysGrid.innerHTML = '';
-            const firstDayOfMonth = new Date(year, month, 1).getDay();
-            const daysInMonth = new Date(year, month + 1, 0).getDate();
-            for (let i = 0; i < firstDayOfMonth; i++) {
-                calendarDaysGrid.innerHTML += `<div></div>`;
-            }
-            for (let day = 1; day <= daysInMonth; day++) {
-                const dayCell = document.createElement('div');
-                dayCell.className = 'p-2 text-center rounded-full cursor-pointer hover:bg-gray-100 transition';
-                dayCell.textContent = day;
-                const cellDate = new Date(year, month, day);
-                const isCurrentDay = day === new Date().getDate() && month === new Date().getMonth() && year === new Date().getFullYear();
-                const dateString = `${year}-${month + 1}-${day}`;
-                const event = eventDates[dateString];
-                if (event) {
-                    if (cellDate < today) {
-                        dayCell.classList.add('bg-gray-400', 'text-white', 'font-bold', 'opacity-75');
-                    } else {
-                        dayCell.classList.add('bg-logo-green', 'text-white', 'font-bold', 'event-day-blinking');
-                    }
-                    dayCell.addEventListener('click', () => showEventModal(event));
-                } else if (isCurrentDay) {
-                    dayCell.classList.add('bg-logo-blue', 'text-white', 'font-bold');
+                        welcomePopup.classList.remove('hidden');
+                    }, 1000);
+                    sessionStorage.setItem('popupShown', 'true');
                 }
-                calendarDaysGrid.appendChild(dayCell);
             }
-        }
 
-        function showEventModal(event) {
-            if (eventModal) {
-                document.getElementById('event-modal-title').textContent = event.title;
-                document.getElementById('event-modal-time').textContent = event.time;
-                document.getElementById('event-modal-description').textContent = event.description;
-                eventModal.classList.remove('hidden');
-            }
-        }
-        if (prevMonthBtn) prevMonthBtn.addEventListener('click', () => {
-            currentDate.setMonth(currentDate.getMonth() - 1);
-            renderCalendar();
-        });
-        if (nextMonthBtn) nextMonthBtn.addEventListener('click', () => {
-            currentDate.setMonth(currentDate.getMonth() + 1);
-            renderCalendar();
-        });
-        if (todayBtn) todayBtn.addEventListener('click', () => {
-            currentDate = new Date();
-            currentDate.setDate(1);
-            renderCalendar();
-        });
-        if (closeModalBtn) closeModalBtn.addEventListener('click', () => eventModal.classList.add('hidden'));
-        if (eventModal) eventModal.addEventListener('click', (e) => {
-            if (e.target === eventModal) eventModal.classList.add('hidden');
-        });
-        renderCalendar();
-    }
+            // --- Shared Google Script URL for Newsletter/Feedback ---
+            const googleScriptURL = 'https://script.google.com/macros/s/AKfycbzpOLHQ7rOhOnhoVjbiBNcoWfPQ1xjTtVkgmgB9M0qtKtQyOy30pPer2nKHc13h1sqW/exec';
 
-    // --- Integrated Receipt Form Logic ---
-    const toggleBtn = document.getElementById('toggle-receipt-form');
-    if (toggleBtn) {
-        const formPanel = document.getElementById('receipt-form-panel');
-        const toggleIcon = document.getElementById('toggle-icon');
-        toggleBtn.addEventListener('click', () => {
-            if (formPanel && toggleIcon) {
-                const isClosed = formPanel.style.maxHeight === '0px' || !formPanel.style.maxHeight;
-                formPanel.style.maxHeight = isClosed ? formPanel.scrollHeight + 'px' : '0px';
-                toggleIcon.classList.toggle('fa-chevron-down', !isClosed);
-                toggleIcon.classList.toggle('fa-chevron-up', isClosed);
+            // --- Newsletter Form Submission Logic ---
+            const newsletterForm = document.getElementById('newsletter-form');
+            if (newsletterForm) {
+                const formStatus = document.getElementById('newsletter-form-status');
+                const submitButton = newsletterForm.querySelector('button[type="submit"]');
+                newsletterForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    showLoader();
+                    submitButton.disabled = true;
+                    formStatus.textContent = 'Subscribing...';
+                    formStatus.className = 'mt-4 text-sm text-gray-600';
+                    const formData = new FormData(newsletterForm);
+                    const data = Object.fromEntries(formData.entries());
+                    fetch(googleScriptURL, {
+                            method: 'POST',
+                            body: JSON.stringify(data)
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.result === 'success') {
+                                formStatus.textContent = 'Thank you for subscribing! Please check your email.';
+                                formStatus.className = 'mt-4 text-sm text-green-500 font-semibold';
+                                newsletterForm.reset();
+                            } else {
+                                throw new Error(data.error || 'An unknown error occurred.');
+                            }
+                        }).catch(error => {
+                            console.error('Error:', error);
+                            formStatus.textContent = 'Submission failed. Please try again.';
+                            formStatus.className = 'mt-4 text-sm text-red-500 font-semibold';
+                        }).finally(() => {
+                            submitButton.disabled = false;
+                            hideLoader();
+                        });
+                });
             }
-        });
-    }
 
-    const receiptForm = document.getElementById('receipt-form');
-    if (receiptForm) {
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby39h5_YPF6or9VrE_m-K2-pjr3AMzkR8G24jvgF_Kro_DEqWybkLMlROMJit05HFAM/exec";
-        const submitBtn = document.getElementById('submit-receipt-request');
-        const statusMsg = document.getElementById('receipt-form-status');
-        const fileInput = document.getElementById('screenshot');
-        const whatsappInput = document.getElementById('whatsappNumber');
-        receiptForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            statusMsg.textContent = '';
-            whatsappInput.classList.remove('border-red-500');
-            const whatsappNumberValue = whatsappInput.value.trim();
-            if (whatsappNumberValue.startsWith('+92') || whatsappNumberValue.startsWith('92')) {
-                statusMsg.textContent = 'Sorry, submissions from country code +92 are not accepted.';
-                statusMsg.className = 'mt-4 text-sm text-red-600 font-semibold';
-                whatsappInput.classList.add('border-red-500');
-                whatsappInput.focus();
-                return;
+            // --- New Carousel Gallery Logic ---
+            const carousel = document.getElementById('gallery-carousel');
+            if (carousel) {
+                const track = document.getElementById('carousel-track');
+                const slides = Array.from(track.children);
+                const nextButton = document.getElementById('carousel-next');
+                const prevButton = document.getElementById('carousel-prev');
+                const dotsNav = document.getElementById('carousel-dots');
+
+                // Create dots for navigation
+                slides.forEach((slide, index) => {
+                    const dot = document.createElement('button');
+                    dot.classList.add('carousel-dot');
+                    if (index === 0) dot.classList.add('active');
+                    dotsNav.appendChild(dot);
+                });
+
+                const dots = Array.from(dotsNav.children);
+                let currentIndex = 0;
+
+                const moveToSlide = (targetIndex) => {
+                    const currentSlide = track.querySelector('.current-slide');
+                    if(currentSlide) currentSlide.classList.remove('current-slide');
+                    
+                    slides[targetIndex].classList.add('current-slide');
+                    track.style.transform = 'translateX(-' + targetIndex * 100 + '%)';
+                    
+                    // Update dots
+                    const currentDot = dotsNav.querySelector('.active');
+                    if(currentDot) currentDot.classList.remove('active');
+                    dots[targetIndex].classList.add('active');
+
+                    currentIndex = targetIndex;
+                };
+
+                // When next button is clicked
+                nextButton.addEventListener('click', e => {
+                    const nextIndex = (currentIndex + 1) % slides.length;
+                    moveToSlide(nextIndex);
+                });
+
+                // When prev button is clicked
+                prevButton.addEventListener('click', e => {
+                    const prevIndex = (currentIndex - 1 + slides.length) % slides.length;
+                    moveToSlide(prevIndex);
+                });
+
+                // When a dot is clicked
+                dotsNav.addEventListener('click', e => {
+                    const targetDot = e.target.closest('button');
+                    if (!targetDot) return;
+                    
+                    const targetIndex = dots.findIndex(dot => dot === targetDot);
+                    moveToSlide(targetIndex);
+                });
+
+                // Initialize the first slide
+                slides[0].classList.add('current-slide');
             }
-            showLoader('Sending Request...');
-            submitBtn.disabled = true;
-            const file = fileInput.files[0];
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = (event) => {
-                statusMsg.textContent = 'Submitting your request...';
-                const formData = new FormData(receiptForm);
-                const data = Object.fromEntries(formData.entries());
-                data.base64Data = event.target.result;
-                data.fileName = file.name;
-                data.mimeType = file.type;
-                fetch(SCRIPT_URL, {
-                        method: 'POST',
-                        body: JSON.stringify(data),
-                        headers: {
-                            'Content-Type': 'text/plain;charset=utf-8',
-                        },
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.status === 'success') {
-                            statusMsg.textContent = 'Thank you! Your request has been submitted successfully.';
-                            statusMsg.className = 'mt-4 text-sm text-green-600 font-semibold';
-                            receiptForm.reset();
-                        } else {
-                            throw new Error(data.message);
+
+            // --- Feedback Form Submission Logic ---
+            const feedbackForm = document.getElementById('feedback-form');
+            if (feedbackForm) {
+                const formStatus = document.getElementById('form-status');
+                const submitButton = feedbackForm.querySelector('button[type="submit"]');
+                feedbackForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    showLoader();
+                    submitButton.disabled = true;
+                    formStatus.textContent = 'Submitting...';
+                    formStatus.className = 'mt-4 text-sm text-gray-600';
+                    const formData = new FormData(feedbackForm);
+                    const data = Object.fromEntries(formData.entries());
+                    fetch(googleScriptURL, {
+                            method: 'POST',
+                            body: JSON.stringify(data)
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.result === 'success') {
+                                formStatus.textContent = 'Thank you for your feedback!';
+                                formStatus.className = 'mt-4 text-sm text-green-500 font-semibold';
+                                feedbackForm.reset();
+                            } else {
+                                throw new Error(data.error || 'An unknown error occurred.');
+                            }
+                        }).catch(error => {
+                            console.error('Error:', error);
+                            formStatus.textContent = 'Submission failed. Please try again.';
+                            formStatus.className = 'mt-4 text-sm text-red-500 font-semibold';
+                        }).finally(() => {
+                            submitButton.disabled = false;
+                            hideLoader();
+                        });
+                });
+            }
+
+            // --- Back to Top Button Logic ---
+            const backToTopButton = document.getElementById('back-to-top-btn');
+            if (backToTopButton) {
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 300) {
+                        backToTopButton.classList.remove('opacity-0', 'pointer-events-none');
+                    } else {
+                        backToTopButton.classList.add('opacity-0', 'pointer-events-none');
+                    }
+                });
+                backToTopButton.addEventListener('click', () => {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            }
+
+            // --- Preloader Logic ---
+            const preloader = document.getElementById('preloader');
+            window.addEventListener('load', () => {
+                if (preloader) {
+                    preloader.classList.add('opacity-0');
+                    setTimeout(() => preloader.remove(), 500);
+                }
+            });
+
+            // --- Copy to Clipboard Logic for Donation Section ---
+            const donationSection = document.getElementById('donate');
+            if (donationSection) {
+                donationSection.addEventListener('click', function(e) {
+                    const copyButton = e.target.closest('.copy-btn');
+                    if (copyButton) {
+                        const textToCopy = copyButton.dataset.copy;
+                        navigator.clipboard.writeText(textToCopy).then(() => {
+                            const originalIcon = copyButton.innerHTML;
+                            copyButton.innerHTML = `<i class="fa-solid fa-check text-green-500"></i>`;
+                            setTimeout(() => {
+                                copyButton.innerHTML = originalIcon;
+                            }, 2000);
+                        }).catch(err => console.error('Failed to copy text: ', err));
+                    }
+                });
+            }
+
+            // --- Calendar Logic ---
+            const monthYearHeader = document.getElementById('month-year-header');
+            if (monthYearHeader) {
+                const calendarDaysGrid = document.getElementById('calendar-days-grid');
+                const prevMonthBtn = document.getElementById('prev-month-btn');
+                const nextMonthBtn = document.getElementById('next-month-btn');
+                const todayBtn = document.getElementById('today-btn');
+                const eventModal = document.getElementById('event-modal');
+                const closeModalBtn = document.getElementById('close-modal-btn');
+                const eventDates = {
+                    '2025-8-16': {
+                        title: 'One Day Dawrah',
+                        time: '9:30 AM - 6:30 PM',
+                        description: 'Join us for our One Day Dawrah Series. We will cover, تائية الإلبيري في الزهد والحكم'
+                    }
+                };
+                let currentDate = new Date();
+                currentDate.setDate(1);
+
+                function renderCalendar() {
+                    const year = currentDate.getFullYear();
+                    const month = currentDate.getMonth();
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    monthYearHeader.textContent = new Intl.DateTimeFormat('en-US', {
+                        year: 'numeric',
+                        month: 'long'
+                    }).format(currentDate);
+                    calendarDaysGrid.innerHTML = '';
+                    const firstDayOfMonth = new Date(year, month, 1).getDay();
+                    const daysInMonth = new Date(year, month + 1, 0).getDate();
+                    for (let i = 0; i < firstDayOfMonth; i++) {
+                        calendarDaysGrid.innerHTML += `<div></div>`;
+                    }
+                    for (let day = 1; day <= daysInMonth; day++) {
+                        const dayCell = document.createElement('div');
+                        dayCell.className = 'p-2 text-center rounded-full cursor-pointer hover:bg-gray-100 transition';
+                        dayCell.textContent = day;
+                        const cellDate = new Date(year, month, day);
+                        const isCurrentDay = day === new Date().getDate() && month === new Date().getMonth() && year === new Date().getFullYear();
+                        const dateString = `${year}-${month + 1}-${day}`;
+                        const event = eventDates[dateString];
+                        if (event) {
+                            if (cellDate < today) {
+                                dayCell.classList.add('bg-gray-400', 'text-white', 'font-bold', 'opacity-75');
+                            } else {
+                                dayCell.classList.add('bg-logo-green', 'text-white', 'font-bold', 'event-day-blinking');
+                            }
+                            dayCell.addEventListener('click', () => showEventModal(event));
+                        } else if (isCurrentDay) {
+                            dayCell.classList.add('bg-logo-blue', 'text-white', 'font-bold');
                         }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        statusMsg.textContent = 'Something went wrong. ' + error.message;
+                        calendarDaysGrid.appendChild(dayCell);
+                    }
+                }
+
+                function showEventModal(event) {
+                    if (eventModal) {
+                        document.getElementById('event-modal-title').textContent = event.title;
+                        document.getElementById('event-modal-time').textContent = event.time;
+                        document.getElementById('event-modal-description').textContent = event.description;
+                        eventModal.classList.remove('hidden');
+                    }
+                }
+                if (prevMonthBtn) prevMonthBtn.addEventListener('click', () => {
+                    currentDate.setMonth(currentDate.getMonth() - 1);
+                    renderCalendar();
+                });
+                if (nextMonthBtn) nextMonthBtn.addEventListener('click', () => {
+                    currentDate.setMonth(currentDate.getMonth() + 1);
+                    renderCalendar();
+                });
+                if (todayBtn) todayBtn.addEventListener('click', () => {
+                    currentDate = new Date();
+                    currentDate.setDate(1);
+                    renderCalendar();
+                });
+                if (closeModalBtn) closeModalBtn.addEventListener('click', () => eventModal.classList.add('hidden'));
+                if (eventModal) eventModal.addEventListener('click', (e) => {
+                    if (e.target === eventModal) eventModal.classList.add('hidden');
+                });
+                renderCalendar();
+            }
+
+            // --- Integrated Receipt Form Logic ---
+            const toggleBtn = document.getElementById('toggle-receipt-form');
+            if (toggleBtn) {
+                const formPanel = document.getElementById('receipt-form-panel');
+                const toggleIcon = document.getElementById('toggle-icon');
+                toggleBtn.addEventListener('click', () => {
+                    if (formPanel && toggleIcon) {
+                        const isClosed = formPanel.style.maxHeight === '0px' || !formPanel.style.maxHeight;
+                        formPanel.style.maxHeight = isClosed ? formPanel.scrollHeight + 'px' : '0px';
+                        toggleIcon.classList.toggle('fa-chevron-down', !isClosed);
+                        toggleIcon.classList.toggle('fa-chevron-up', isClosed);
+                    }
+                });
+            }
+
+            const receiptForm = document.getElementById('receipt-form');
+            if (receiptForm) {
+                const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby39h5_YPF6or9VrE_m-K2-pjr3AMzkR8G24jvgF_Kro_DEqWybkLMlROMJit05HFAM/exec";
+                const submitBtn = document.getElementById('submit-receipt-request');
+                const statusMsg = document.getElementById('receipt-form-status');
+                const fileInput = document.getElementById('screenshot');
+                const whatsappInput = document.getElementById('whatsappNumber');
+                receiptForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    statusMsg.textContent = '';
+                    whatsappInput.classList.remove('border-red-500');
+                    const whatsappNumberValue = whatsappInput.value.trim();
+                    if (whatsappNumberValue.startsWith('+92') || whatsappNumberValue.startsWith('92')) {
+                        statusMsg.textContent = 'Sorry, submissions from country code +92 are not accepted.';
                         statusMsg.className = 'mt-4 text-sm text-red-600 font-semibold';
-                    })
-                    .finally(() => {
+                        whatsappInput.classList.add('border-red-500');
+                        whatsappInput.focus();
+                        return;
+                    }
+                    showLoader('Sending Request...');
+                    submitBtn.disabled = true;
+                    const file = fileInput.files[0];
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = (event) => {
+                        statusMsg.textContent = 'Submitting your request...';
+                        const formData = new FormData(receiptForm);
+                        const data = Object.fromEntries(formData.entries());
+                        data.base64Data = event.target.result;
+                        data.fileName = file.name;
+                        data.mimeType = file.type;
+                        fetch(SCRIPT_URL, {
+                                method: 'POST',
+                                body: JSON.stringify(data),
+                                headers: {
+                                    'Content-Type': 'text/plain;charset=utf-8',
+                                },
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.status === 'success') {
+                                    statusMsg.textContent = 'Thank you! Your request has been submitted successfully.';
+                                    statusMsg.className = 'mt-4 text-sm text-green-600 font-semibold';
+                                    receiptForm.reset();
+                                } else {
+                                    throw new Error(data.message);
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                statusMsg.textContent = 'Something went wrong. ' + error.message;
+                                statusMsg.className = 'mt-4 text-sm text-red-600 font-semibold';
+                            })
+                            .finally(() => {
+                                submitBtn.disabled = false;
+                                hideLoader();
+                            });
+                    };
+                    reader.onerror = (error) => {
+                        console.error("File reading error:", error);
+                        statusMsg.textContent = 'Could not read the file. Please try a different image.';
+                        statusMsg.className = 'mt-4 text-sm text-red-600 font-semibold';
                         submitBtn.disabled = false;
                         hideLoader();
-                    });
-            };
-            reader.onerror = (error) => {
-                console.error("File reading error:", error);
-                statusMsg.textContent = 'Could not read the file. Please try a different image.';
-                statusMsg.className = 'mt-4 text-sm text-red-600 font-semibold';
-                submitBtn.disabled = false;
-                hideLoader();
-            };
-        });
-    }
+                    };
+                });
+            }
 
-    // --- Accordion Logic for Library Section (Safer Version) ---
-    const accordionItems = document.querySelectorAll('.accordion-item');
-    if (accordionItems.length > 0) {
-        accordionItems.forEach(item => {
-            const toggle = item.querySelector('.accordion-toggle');
-            const panel = item.querySelector('.accordion-panel');
-            if (toggle && panel) {
-                const icon = toggle.querySelector('.fa-chevron-down');
-                toggle.addEventListener('click', () => {
-                    accordionItems.forEach(otherItem => {
-                        if (otherItem !== item) {
-                            const otherPanel = otherItem.querySelector('.accordion-panel');
-                            const otherIcon = otherItem.querySelector('.fa-chevron-down');
-                            if (otherPanel) otherPanel.style.maxHeight = '0';
-                            if (otherIcon) otherIcon.classList.remove('rotate-180');
-                        }
-                    });
-                    if (panel.style.maxHeight !== '0px' && panel.style.maxHeight) {
-                        panel.style.maxHeight = '0';
-                        if (icon) icon.classList.remove('rotate-180');
-                    } else {
-                        panel.style.maxHeight = panel.scrollHeight + 'px';
-                        if (icon) icon.classList.add('rotate-180');
+            // --- Accordion Logic for Library Section (Safer Version) ---
+            const accordionItems = document.querySelectorAll('.accordion-item');
+            if (accordionItems.length > 0) {
+                accordionItems.forEach(item => {
+                    const toggle = item.querySelector('.accordion-toggle');
+                    const panel = item.querySelector('.accordion-panel');
+                    if (toggle && panel) {
+                        const icon = toggle.querySelector('.fa-chevron-down');
+                        toggle.addEventListener('click', () => {
+                            accordionItems.forEach(otherItem => {
+                                if (otherItem !== item) {
+                                    const otherPanel = otherItem.querySelector('.accordion-panel');
+                                    const otherIcon = otherItem.querySelector('.fa-chevron-down');
+                                    if (otherPanel) otherPanel.style.maxHeight = '0';
+                                    if (otherIcon) otherIcon.classList.remove('rotate-180');
+                                }
+                            });
+                            if (panel.style.maxHeight !== '0px' && panel.style.maxHeight) {
+                                panel.style.maxHeight = '0';
+                                if (icon) icon.classList.remove('rotate-180');
+                            } else {
+                                panel.style.maxHeight = panel.scrollHeight + 'px';
+                                if (icon) icon.classList.add('rotate-180');
+                            }
+                        });
                     }
                 });
             }
-        });
-    }
 
-    // --- Accordion Logic for Donation Section (Safer Version) ---
-    const accordionItemsDonate = document.querySelectorAll('.accordion-item-donate');
-    if (accordionItemsDonate.length > 0) {
-        accordionItemsDonate.forEach(item => {
-            const toggle = item.querySelector('.accordion-toggle-donate');
-            const panel = item.querySelector('.accordion-panel-donate');
-            if (toggle && panel) {
-                const icon = toggle.querySelector('.fa-chevron-down');
-                toggle.addEventListener('click', () => {
-                    accordionItemsDonate.forEach(otherItem => {
-                        if (otherItem !== item) {
-                            const otherPanel = otherItem.querySelector('.accordion-panel-donate');
-                            const otherIcon = otherItem.querySelector('.fa-chevron-down');
-                            if (otherPanel) otherPanel.style.maxHeight = '0';
-                            if (otherIcon) otherIcon.classList.remove('rotate-180');
-                        }
-                    });
-                    if (panel.style.maxHeight !== '0px' && panel.style.maxHeight) {
-                        panel.style.maxHeight = '0';
-                        if (icon) icon.classList.remove('rotate-180');
-                    } else {
-                        panel.style.maxHeight = panel.scrollHeight + 'px';
-                        if (icon) icon.classList.add('rotate-180');
+            // --- Accordion Logic for Donation Section (Safer Version) ---
+            const accordionItemsDonate = document.querySelectorAll('.accordion-item-donate');
+            if (accordionItemsDonate.length > 0) {
+                accordionItemsDonate.forEach(item => {
+                    const toggle = item.querySelector('.accordion-toggle-donate');
+                    const panel = item.querySelector('.accordion-panel-donate');
+                    if (toggle && panel) {
+                        const icon = toggle.querySelector('.fa-chevron-down');
+                        toggle.addEventListener('click', () => {
+                            accordionItemsDonate.forEach(otherItem => {
+                                if (otherItem !== item) {
+                                    const otherPanel = otherItem.querySelector('.accordion-panel-donate');
+                                    const otherIcon = otherItem.querySelector('.fa-chevron-down');
+                                    if (otherPanel) otherPanel.style.maxHeight = '0';
+                                    if (otherIcon) otherIcon.classList.remove('rotate-180');
+                                }
+                            });
+                            if (panel.style.maxHeight !== '0px' && panel.style.maxHeight) {
+                                panel.style.maxHeight = '0';
+                                if (icon) icon.classList.remove('rotate-180');
+                            } else {
+                                panel.style.maxHeight = panel.scrollHeight + 'px';
+                                if (icon) icon.classList.add('rotate-180');
+                            }
+                        });
                     }
                 });
             }
-        });
-    }
 
-}); // End of the single DOMContentLoaded listener
+        }); // End of the single DOMContentLoaded listener
     </script>
 </body>
 </html>
