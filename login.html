@@ -15,18 +15,31 @@
         .ring-logo-green:focus { --tw-ring-color: #16a34a; }
         .spinner { border: 2px solid rgba(255, 255, 255, 0.3); border-top-color: white; border-radius: 50%; width: 1rem; height: 1rem; animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
+        .tab { cursor: pointer; padding: 0.75rem 1.5rem; border-bottom: 2px solid transparent; }
+        .tab.active { border-color: #1e3a8a; color: #1e3a8a; font-weight: 600; }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen p-4">
     <main class="w-full max-w-md">
         <div class="bg-white p-8 rounded-2xl shadow-lg">
-            <div class="text-center mb-8">
+            <div class="text-center mb-6">
                 <a href="index.html" class="inline-block mb-4">
                     <img src="IMG-20230327-WA0002.jpg" alt="Institute Logo" class="h-16 w-16 mx-auto">
                 </a>
-                <h1 class="text-2xl font-bold text-logo-blue">Volunteer Portal Login</h1>
-                <p class="text-gray-500 mt-1">Access your dedicated volunteer dashboard.</p>
+                <h1 id="login-title" class="text-2xl font-bold text-logo-blue">Ansari Login</h1>
+                <h1 id="login-title" class="text-2xl font-bold text-logo-blue">أَنْصَارِيّ</h1>
+                <p class="text-gray-500 mt-1">Access your dedicated dashboard.</p>
             </div>
+
+            <div class="flex justify-center border-b mb-6">
+                <div id="volunteer-tab" class="tab active" onclick="switchTab('volunteer')">
+                    <i class="fa-solid fa-user mr-2"></i>Volunteer
+                </div>
+                <div id="admin-tab" class="tab" onclick="switchTab('admin')">
+                    <i class="fa-solid fa-user-shield mr-2"></i>Admin
+                </div>
+            </div>
+
             <form id="loginForm" class="space-y-6">
                  <div>
                     <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
@@ -59,7 +72,7 @@
     </main>
 
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbxFuW26BPUhwNnXVz6UaKsBiFZH5uGk_yhe5qY8TbQRHBZxshnYWUcu9OAk3pt2UzaXbg/exec"; 
+        const API_URL = "https://script.google.com/macros/s/AKfycbxFuW26BPUhwNnXVz6UaKsBiFZH5uGk_yhe5qY8TbQRHBZxshnYWUcu9OAk3pt2UzaXbg/exec";
 
         const loginForm = document.getElementById("loginForm");
         const statusEl = document.getElementById("status");
@@ -68,6 +81,21 @@
         const buttonSpinner = document.getElementById("buttonSpinner");
         const passwordInput = document.getElementById("password");
         const togglePasswordBtn = document.getElementById("togglePassword");
+        const loginTitle = document.getElementById("login-title");
+        const volunteerTab = document.getElementById("volunteer-tab");
+        const adminTab = document.getElementById("admin-tab");
+
+        function switchTab(tab) {
+            if (tab === 'admin') {
+                adminTab.classList.add('active');
+                volunteerTab.classList.remove('active');
+                loginTitle.textContent = "Admin Portal Login";
+            } else {
+                volunteerTab.classList.add('active');
+                adminTab.classList.remove('active');
+                loginTitle.textContent = "Ansari Login";
+            }
+        }
 
         loginForm.addEventListener("submit", function(e) {
             e.preventDefault();
@@ -78,7 +106,7 @@
 
             const formData = new FormData(loginForm);
             const data = Object.fromEntries(formData.entries());
-            data.action = "login"; 
+            data.action = "login";
 
             fetch(API_URL, {
                 method: 'POST', redirect: "follow", body: JSON.stringify(data),
@@ -88,7 +116,7 @@
             .then(data => {
                 if (data.status === "success" && data.token) {
                     localStorage.setItem("sessionToken", data.token);
-                    localStorage.setItem("userRole", data.role); // Store role for easy redirection
+                    localStorage.setItem("userRole", data.role);
                     window.location.href = data.role === "Admin" ? "admin.html" : "volunteer.html";
                 } else {
                     throw new Error(data.message || "Invalid credentials.");
@@ -103,7 +131,7 @@
                 buttonSpinner.classList.add("hidden");
             });
         });
-        
+
         togglePasswordBtn.addEventListener('click', function() {
             const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
             passwordInput.setAttribute('type', type);

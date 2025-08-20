@@ -11,8 +11,10 @@
     <style>
         body { font-family: 'Inter', sans-serif; }
         .toastify { font-family: 'Inter', sans-serif; border-radius: 0.5rem; }
-        .accordion-icon.rotate-180 {
-            transform: rotate(180deg);
+        .accordion-icon.rotate-180 { transform: rotate(180deg); }
+        /* Style for the new motivation section */
+        .motivation-card {
+            background: linear-gradient(135deg, #1e3a8a 0%, #16a34a 100%);
         }
     </style>
 </head>
@@ -37,6 +39,16 @@
     </header>
 
     <main class="container mx-auto p-6">
+
+        <section id="motivation-hub" class="mb-8">
+            <div class="motivation-card text-white p-6 rounded-xl shadow-lg">
+                <h2 class="text-xl font-bold mb-3 flex items-center"><i class="fa-solid fa-star mr-3"></i>A Reminder for Us</h2>
+                <blockquote class="border-l-4 border-white pl-4">
+                    <p id="motivation-text" class="text-lg italic"></p>
+                    <cite id="motivation-source" class="block text-right mt-2 font-semibold"></cite>
+                </blockquote>
+            </div>
+        </section>
         <section id="personal-dashboard" class="mb-6">
             <h2 class="text-xl font-semibold mb-4 text-gray-700">My Dashboard</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
@@ -98,7 +110,7 @@
 
         if (!token) { window.location.href = "login.html"; }
 
-        let allTasksData = []; // Store master copy of task data
+        let allTasksData = [];
 
         // --- Event Listeners ---
         document.getElementById('statusFilter').addEventListener('change', applyFiltersAndSort);
@@ -113,9 +125,29 @@
             }).showToast();
         }
 
+        // --- NEW: Motivation Quotes ---
+        const motivationalQuotes = [
+            { text: "Verily, actions are but by intentions, and every man shall have only that which he intended.", source: "Hadith (Bukhari & Muslim)" },
+            { text: "So whoever does an atom's weight of good will see it.", source: "Quran (99:7)" },
+            { text: "The best of people are those who are most beneficial to people.", source: "Hadith (Al-Mu’jam al-Awsat)" },
+            { text: "And whatever you do of good - indeed, Allah is Knowing of it.", source: "Quran (2:215)" },
+            { text: "The upper hand is better than the lower hand. The upper hand is the one that gives, and the lower hand is the one that takes.", source: "Hadith (Muslim)" }
+        ];
+
+        function displayMotivation() {
+            const randomIndex = Math.floor(Math.random() * motivationalQuotes.length);
+            const quote = motivationalQuotes[randomIndex];
+            document.getElementById('motivation-text').textContent = `"${quote.text}"`;
+            document.getElementById('motivation-source').textContent = `- ${quote.source}`;
+        }
+        // ============================
+
         function showLoading(container) {
             container.innerHTML = `<div class="flex justify-center items-center p-8"><div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div></div>`;
         }
+
+        // ... (rest of your JavaScript functions: handleAuthError, postData, logout, etc.)
+        // The rest of the script remains the same as in your original file.
 
         function handleAuthError(error) {
            console.error("Auth Error:", error);
@@ -330,7 +362,10 @@
         }
 
         // --- Initial Load ---
-        fetchMyTasks();
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchMyTasks();
+            displayMotivation();
+        });
     </script>
 </body>
 </html>
