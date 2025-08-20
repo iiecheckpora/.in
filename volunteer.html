@@ -6,365 +6,462 @@
     <title>My Tasks</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Mirza:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <style>
+        html { scroll-behavior: smooth; }
         body { font-family: 'Inter', sans-serif; }
+        .body-no-scroll { overflow: hidden; }
         .toastify { font-family: 'Inter', sans-serif; border-radius: 0.5rem; }
         .accordion-icon.rotate-180 { transform: rotate(180deg); }
-        /* Style for the new motivation section */
         .motivation-card {
             background: linear-gradient(135deg, #1e3a8a 0%, #16a34a 100%);
         }
+        [lang="ar"] { font-family: 'Mirza', serif; }
+        .scroll-target { scroll-margin-top: 80px; }
+
+        /* Sidebar Styles */
+        #sidebar { 
+            transition: transform 0.3s ease-in-out; 
+            background-color: #1e3a8a; /* New menu color */
+        }
+        #sidebar.open { transform: translateX(0); }
+        .sidebar-link { transition: background-color 0.2s, color 0.2s; }
+        .sidebar-link:hover { background-color: #2563eb; color: white; } /* A lighter blue for hover */
+        .sidebar-link.active { background-color: #1d4ed8; color: white; font-weight: 600; } /* A slightly different blue for active */
+
+        /* Loader Styles */
+        #loader-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #ffffff; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; z-index: 9999;
+            transition: opacity 0.75s ease-in-out, visibility 0.75s;
+            opacity: 1; visibility: visible; text-align: center;
+        }
+        #loader-overlay.hidden { opacity: 0; visibility: hidden; }
+        .loader-logo { width: 80px; height: 80px; animation: pulse-zoom 2s infinite cubic-bezier(0.4, 0, 0.6, 1); }
+        .loader-text { margin-top: 1rem; font-size: 1.125rem; font-weight: 600; color: #1e3a8a; animation: text-fade 2s infinite ease-in-out; }
+        .loader-quote { margin-top: 1.5rem; font-size: 1rem; font-style: italic; color: #4b5563; max-width: 90vw; width: 500px; padding: 0 1rem; }
+        @keyframes pulse-zoom { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.8; } }
+        @keyframes text-fade { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
     </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
 
-    <header class="bg-white shadow-md sticky top-0 z-50">
-        <nav class="container mx-auto px-4 py-3 flex flex-wrap justify-between items-center">
-            <a href="index.html" class="flex items-center space-x-3 mb-2 sm:mb-0">
-                <img src="IMG-20230327-WA0002.jpg" alt="Institute Logo" class="h-10 w-10">
-                <span class="text-xl font-bold text-blue-800">Volunteer Portal</span>
-            </a>
-            <div class="flex items-center space-x-2">
-                <span id="welcomeMessage" class="text-gray-600 mr-2 hidden sm:inline">Welcome!</span>
-                <a href="profile.html" class="bg-blue-500 text-white font-semibold px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200 mr-2">
-                    <i class="fa-solid fa-user mr-2"></i>My Profile
+    <div id="loader-overlay">
+        <img src="IMG-20230327-WA0002.jpg" alt="Institute Logo" class="loader-logo">
+        <p class="loader-text">Loading Dashboard...</p>
+        <p id="loader-motivation-text" class="loader-quote"></p>
+    </div>
+
+    <aside id="sidebar" class="text-gray-100 w-64 min-h-screen p-4 flex flex-col fixed top-0 right-0 z-[60] translate-x-full lg:translate-x-0">
+        <a href="index.html" class="flex items-center space-x-3 pb-4 border-b border-blue-500">
+            <img src="IMG-20230327-WA0002.jpg" alt="Institute Logo" class="h-12 w-12 p-0.5 bg-white shadow-md rounded-md">
+            <div class="text-left">
+                <h1 class="text-sm font-bold text-white leading-tight">Institute of Islamic Education</h1>
+                <p class="text-sm font-bold text-green-400" lang="ar" dir="rtl">معهد التربية الاسلامية</p>
+            </div>
+        </a>
+        <nav class="flex-grow mt-4">
+            <ul class="space-y-2" id="sidebar-nav">
+                <li><a href="#personal-dashboard" class="sidebar-link flex items-center p-2 rounded-md"><i class="fa-solid fa-tachometer-alt fa-fw mr-3"></i>Dashboard</a></li>
+                <li><a href="#tasksContainer" class="sidebar-link flex items-center p-2 rounded-md"><i class="fa-solid fa-tasks fa-fw mr-3"></i>My Tasks</a></li>
+                <li><a href="profile.html" class="sidebar-link flex items-center p-2 rounded-md"><i class="fa-solid fa-user fa-fw mr-3"></i>My Profile</a></li>
+            </ul>
+        </nav>
+        <div class="pt-4 border-t border-blue-500">
+             <div id="welcomeMessageContainer" class="bg-blue-700 p-3 rounded-lg text-center">
+                <i class="fa-solid fa-user-check fa-2x text-blue-300"></i>
+                <p id="welcomeMessage" class="font-semibold mt-2">Welcome!</p>
+            </div>
+            <button id="logoutButton" class="w-full mt-4 bg-red-500 text-white font-semibold py-2 rounded-md hover:bg-red-600 transition duration-200">
+                <i class="fa-solid fa-right-from-bracket mr-2"></i>Logout
+            </button>
+        </div>
+    </aside>
+
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden lg:hidden"></div>
+
+    <div class="lg:mr-64">
+        <header class="bg-white shadow-md sticky top-0 z-40 lg:hidden">
+            <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+                <a href="index.html">
+                    <img src="IMG-20230327-WA0002.jpg" alt="Institute Logo" class="h-12 w-12 p-0.5 bg-white shadow-md rounded-md">
                 </a>
-                <button id="logoutButton" class="bg-red-500 text-white font-semibold px-4 py-2 rounded-md hover:bg-red-600 transition duration-200">
-                    <i class="fa-solid fa-right-from-bracket mr-2"></i>Logout
+                <span class="text-lg font-bold text-blue-800">Volunteer Portal</span>
+                <button id="menu-toggle-btn" class="text-gray-700">
+                    <i class="fa-solid fa-bars fa-lg"></i>
                 </button>
             </div>
-        </nav>
-    </header>
+        </header>
 
-    <main class="container mx-auto p-6">
+        <main class="container mx-auto p-4 sm:p-6">
 
-        <section id="motivation-hub" class="mb-8">
-            <div class="motivation-card text-white p-6 rounded-xl shadow-lg">
-                <h2 class="text-xl font-bold mb-3 flex items-center"><i class="fa-solid fa-star mr-3"></i>A Reminder for Us</h2>
-                <blockquote class="border-l-4 border-white pl-4">
-                    <p id="motivation-text" class="text-lg italic"></p>
-                    <cite id="motivation-source" class="block text-right mt-2 font-semibold"></cite>
-                </blockquote>
-            </div>
-        </section>
-        <section id="personal-dashboard" class="mb-6">
-            <h2 class="text-xl font-semibold mb-4 text-gray-700">My Dashboard</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <section id="motivation-hub" class="mb-6 sm:mb-8 scroll-target">
+                <div class="motivation-card text-white p-6 rounded-xl shadow-lg">
+                    <h2 class="text-xl font-bold mb-3 flex items-center"><i class="fa-solid fa-star mr-3"></i>A Reminder for Us</h2>
+                    <blockquote class="border-l-4 border-white pl-4">
+                        <p id="motivation-text" class="text-base sm:text-lg italic"></p>
+                        <cite id="motivation-source" class="block text-right mt-2 font-semibold"></cite>
+                    </blockquote>
+                </div>
+            </section>
+            
+            <section id="personal-dashboard" class="mb-6 scroll-target">
+                <h2 class="text-xl font-semibold mb-4 text-gray-700">My Dashboard</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mb-6">
+                    <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md">
+                        <p class="text-gray-500 text-sm">Tasks In Progress</p>
+                        <p id="kpi-in-progress" class="text-2xl font-bold">0</p>
+                    </div>
+                    <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md">
+                        <p class="text-gray-500 text-sm">Total Completed</p>
+                        <p id="kpi-completed" class="text-2xl font-bold">0</p>
+                    </div>
+                    <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md">
+                        <p class="text-gray-500 text-sm">Next Due Date</p>
+                        <p id="kpi-next-due" class="text-2xl font-bold">N/A</p>
+                    </div>
+                </div>
                 <div class="bg-white p-6 rounded-lg shadow-md">
-                    <p class="text-gray-500 text-sm">Tasks In Progress</p>
-                    <p id="kpi-in-progress" class="text-2xl font-bold">0</p>
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="text-lg font-semibold">Your Progress</h3>
+                        <span id="progress-text" class="font-semibold text-gray-600">0/0 Tasks</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-4">
+                        <div id="progress-bar" class="bg-green-500 h-4 rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <p class="text-gray-500 text-sm">Total Completed</p>
-                    <p id="kpi-completed" class="text-2xl font-bold">0</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <p class="text-gray-500 text-sm">Next Due Date</p>
-                    <p id="kpi-next-due" class="text-2xl font-bold">N/A</p>
-                </div>
-            </div>
-            <div class="bg-white p-6 rounded-lg shadow-md">
-                <div class="flex justify-between items-center mb-2">
-                    <h3 class="text-lg font-semibold">Your Progress</h3>
-                    <span id="progress-text" class="font-semibold text-gray-600">0/0 Tasks</span>
-                </div>
-                <div class="w-full bg-gray-200 rounded-full h-4">
-                    <div id="progress-bar" class="bg-green-500 h-4 rounded-full transition-all duration-500" style="width: 0%"></div>
-                </div>
-            </div>
-        </section>
+            </section>
 
-        <section class="bg-white p-4 rounded-lg shadow-md mb-6">
-            <div class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4">
-                <div>
-                    <label for="statusFilter" class="block text-sm font-medium text-gray-700">Filter by Status</label>
-                    <select id="statusFilter" class="mt-1 block w-full sm:w-auto border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                        <option value="All">All Active</option>
-                        <option value="In Progress">In Progress</option>
-                        <option value="Assigned">Assigned</option>
-                        <option value="Blocked">Blocked</option>
-                        <option value="Completed">Completed</option>
-                    </select>
+            <section class="bg-white p-4 rounded-lg shadow-md mb-6">
+                <div class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4">
+                    <div>
+                        <label for="statusFilter" class="block text-sm font-medium text-gray-700">Filter by Status</label>
+                        <select id="statusFilter" class="mt-1 block w-full sm:w-auto border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                            <option value="All">All Active</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Assigned">Assigned</option>
+                            <option value="Blocked">Blocked</option>
+                            <option value="Completed">Completed</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="sortOrder" class="block text-sm font-medium text-gray-700">Sort by Due Date</label>
+                        <select id="sortOrder" class="mt-1 block w-full sm:w-auto border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                            <option value="asc">Nearest First</option>
+                            <option value="desc">Farthest First</option>
+                        </select>
+                    </div>
                 </div>
-                <div>
-                    <label for="sortOrder" class="block text-sm font-medium text-gray-700">Sort by Due Date</label>
-                    <select id="sortOrder" class="mt-1 block w-full sm:w-auto border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                        <option value="asc">Nearest First</option>
-                        <option value="desc">Farthest First</option>
-                    </select>
-                </div>
-            </div>
-        </section>
+            </section>
 
-        <h2 class="text-xl font-semibold mb-4 text-gray-700">Your Assigned Tasks</h2>
-        <div id="tasksContainer" class="space-y-6">
-        </div>
-    </main>
+            <h2 class="text-xl font-semibold mb-4 text-gray-700">Your Assigned Tasks</h2>
+            <div id="tasksContainer" class="space-y-6 scroll-target">
+            </div>
+        </main>
+    </div>
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbxO0V6dKowgCvrN3CwvnPoO2Le4Er6SHcxRkKCO3Cmw4f8CJGu5nSKikTen6VUkGDuy2A/exec";
-        const token = localStorage.getItem("sessionToken");
+        document.addEventListener('DOMContentLoaded', () => {
+            const API_URL = "https://script.google.com/macros/s/AKfycbxO0V6dKowgCvrN3CwvnPoO2Le4Er6SHcxRkKCO3Cmw4f8CJGu5nSKikTen6VUkGDuy2A/exec";
+            const token = localStorage.getItem("sessionToken");
+            const loaderOverlay = document.getElementById('loader-overlay'); 
 
-        if (!token) { window.location.href = "login.html"; }
+            if (!token) { window.location.href = "login.html"; }
 
-        let allTasksData = [];
-
-        // --- Event Listeners ---
-        document.getElementById('statusFilter').addEventListener('change', applyFiltersAndSort);
-        document.getElementById('sortOrder').addEventListener('change', applyFiltersAndSort);
-        document.getElementById("logoutButton").addEventListener("click", logout);
-
-        // --- Core Functions ---
-        function showToast(message, isError = false) {
-            Toastify({
-                text: message, duration: 3000, close: true, gravity: "top", position: "right",
-                style: { background: isError ? "linear-gradient(to right, #ef4444, #b91c1c)" : "linear-gradient(to right, #22c55e, #15803d)" }
-            }).showToast();
-        }
-
-        // --- NEW: Motivation Quotes ---
-        const motivationalQuotes = [
-            { text: "Verily, actions are but by intentions, and every man shall have only that which he intended.", source: "Hadith (Bukhari & Muslim)" },
-            { text: "So whoever does an atom's weight of good will see it.", source: "Quran (99:7)" },
-            { text: "The best of people are those who are most beneficial to people.", source: "Hadith (Al-Mu’jam al-Awsat)" },
-            { text: "And whatever you do of good - indeed, Allah is Knowing of it.", source: "Quran (2:215)" },
-            { text: "The upper hand is better than the lower hand. The upper hand is the one that gives, and the lower hand is the one that takes.", source: "Hadith (Muslim)" }
-        ];
-
-        function displayMotivation() {
-            const randomIndex = Math.floor(Math.random() * motivationalQuotes.length);
-            const quote = motivationalQuotes[randomIndex];
-            document.getElementById('motivation-text').textContent = `"${quote.text}"`;
-            document.getElementById('motivation-source').textContent = `- ${quote.source}`;
-        }
-        // ============================
-
-        function showLoading(container) {
-            container.innerHTML = `<div class="flex justify-center items-center p-8"><div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div></div>`;
-        }
-
-        // ... (rest of your JavaScript functions: handleAuthError, postData, logout, etc.)
-        // The rest of the script remains the same as in your original file.
-
-        function handleAuthError(error) {
-           console.error("Auth Error:", error);
-            if (error.message.includes("Unauthorized")) {
-                showToast("Session expired. Please log in again.", true);
-                setTimeout(() => {
-                    localStorage.clear();
-                    window.location.href = "login.html";
-                }, 2000);
-            }
-        }
-
-        function postData(payload, callback) {
-            payload.token = token;
-            fetch(API_URL, {
-                method: 'POST', redirect: 'follow', body: JSON.stringify(payload),
-                headers: { "Content-Type": "text/plain;charset=utf-8" },
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.status === 'error') throw new Error(data.message);
-                if(data.message) showToast(data.message);
-                if (payload.action === 'updateTask') fetchMyTasks();
-                if (callback) callback(data);
-            })
-            .catch(err => {
-                showToast(err.message, true);
-                handleAuthError(err);
-            });
-        }
-        
-        function logout() {
-            if (confirm("Are you sure you want to logout?")) {
-                localStorage.clear();
-                window.location.href = "login.html";
-            }
-        }
-
-        function fetchMyTasks() {
-            const container = document.getElementById("tasksContainer");
-            showLoading(container);
+            let allTasksData = [];
             
-            fetch(`${API_URL}?action=getVolunteerTasks&token=${token}`)
+            const sidebar = document.getElementById('sidebar');
+            const menuToggleBtn = document.getElementById('menu-toggle-btn');
+            const sidebarOverlay = document.getElementById('sidebar-overlay');
+            const body = document.body;
+
+            const toggleSidebar = () => {
+                sidebar.classList.toggle('open');
+                sidebarOverlay.classList.toggle('hidden');
+                body.classList.toggle('body-no-scroll');
+            };
+
+            if (menuToggleBtn) menuToggleBtn.addEventListener('click', toggleSidebar);
+            if (sidebarOverlay) sidebarOverlay.addEventListener('click', toggleSidebar);
+            
+            document.querySelectorAll('.sidebar-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 1024) {
+                        toggleSidebar();
+                    }
+                });
+            });
+
+            // --- Event Listeners ---
+            document.getElementById('statusFilter').addEventListener('change', applyFiltersAndSort);
+            document.getElementById('sortOrder').addEventListener('change', applyFiltersAndSort);
+            document.getElementById("logoutButton").addEventListener("click", logout);
+
+            // --- Core Functions ---
+            function showToast(message, isError = false) {
+                Toastify({
+                    text: message, duration: 3000, close: true, gravity: "top", position: "right",
+                    style: { background: isError ? "linear-gradient(to right, #ef4444, #b91c1c)" : "linear-gradient(to right, #22c55e, #15803d)" }
+                }).showToast();
+            }
+
+            const motivationalQuotes = [
+                { text: "Verily, actions are but by intentions, and every man shall have only that which he intended.", source: "Hadith (Bukhari & Muslim)" },
+                { text: "So whoever does an atom's weight of good will see it.", source: "Quran (99:7)" },
+                { text: "The best of people are those who are most beneficial to people.", source: "Hadith (Al-Mu’jam al-Awsat)" },
+                { text: "And whatever you do of good - indeed, Allah is Knowing of it.", source: "Quran (2:215)" },
+                { text: "The upper hand is better than the lower hand. The upper hand is the one that gives, and the lower hand is the one that takes.", source: "Hadith (Muslim)" }
+            ];
+
+            function displayMotivation() {
+                const randomIndex = Math.floor(Math.random() * motivationalQuotes.length);
+                const quote = motivationalQuotes[randomIndex];
+                document.getElementById('motivation-text').textContent = `"${quote.text}"`;
+                document.getElementById('motivation-source').textContent = `- ${quote.source}`;
+                document.getElementById('loader-motivation-text').textContent = quote.text;
+            }
+
+            function handleAuthError(error) {
+               console.error("Auth Error:", error);
+                if (error.message.includes("Unauthorized")) {
+                    showToast("Session expired. Please log in again.", true);
+                    setTimeout(() => {
+                        localStorage.clear();
+                        window.location.href = "login.html";
+                    }, 2000);
+                }
+            }
+
+            function postData(payload, callback) {
+                payload.token = token;
+                
+                // Show loader only for task updates, as initial load is handled by fetchMyTasks
+                if (payload.action === 'updateTask') {
+                    loaderOverlay.classList.remove('hidden');
+                }
+
+                fetch(API_URL, {
+                    method: 'POST', redirect: 'follow', body: JSON.stringify(payload),
+                    headers: { "Content-Type": "text/plain;charset=utf-8" },
+                })
                 .then(res => res.json())
                 .then(data => {
+                    if (data.status === 'error') throw new Error(data.message);
+                    if(data.message) showToast(data.message);
+                    
+                    // If the action was to update a task, re-fetch all tasks to refresh the UI
+                    if (payload.action === 'updateTask') {
+                        // The fetchMyTasks function will handle hiding the loader
+                        fetchMyTasks(false); // Pass false to prevent showing loader again
+                    }
+
+                    if (callback) callback(data);
+                })
+                .catch(err => {
+                    showToast(err.message, true);
+                    handleAuthError(err);
+                    // Hide loader on error if it was a task update
+                    if (payload.action === 'updateTask') {
+                        loaderOverlay.classList.add('hidden');
+                    }
+                });
+            }
+            
+            function logout() {
+                if (confirm("Are you sure you want to logout?")) {
+                    localStorage.clear();
+                    window.location.href = "login.html";
+                }
+            }
+
+            function fetchMyTasks(showLoader = true) {
+                if (showLoader) {
+                    loaderOverlay.classList.remove('hidden');
+                }
+                
+                const tasksPromise = fetch(`${API_URL}?action=getVolunteerTasks&token=${token}`).then(res => res.json());
+                
+                // Fetch profile only on initial load
+                if (showLoader) {
+                    postData({ action: "getUserProfile" }, (profileData) => {
+                        if (profileData.status === 'success') {
+                            document.getElementById('welcomeMessage').textContent = `Welcome, ${profileData.profile.fullName}!`;
+                        }
+                    });
+                }
+
+                tasksPromise.then(data => {
                     if (data.status === 'error') throw new Error(data.message);
                     allTasksData = data.tasks; 
                     renderDashboard(allTasksData); 
                     applyFiltersAndSort(); 
                 })
-                .catch(handleAuthError);
-
-            postData({ action: "getUserProfile" }, (profileData) => {
-                if (profileData.status === 'success') {
-                    document.getElementById('welcomeMessage').textContent = `Welcome, ${profileData.profile.fullName}!`;
-                }
-            });
-        }
-
-        function renderDashboard(data) {
-           if (!data || data.length < 2) {
-                document.getElementById('kpi-in-progress').textContent = 0;
-                document.getElementById('kpi-completed').textContent = 0;
-                document.getElementById('kpi-next-due').textContent = 'N/A';
-                document.getElementById('progress-text').textContent = 'No tasks assigned';
-                document.getElementById('progress-bar').style.width = '0%';
-                return;
+                .catch(handleAuthError)
+                .finally(() => {
+                    loaderOverlay.classList.add('hidden');
+                });
             }
 
-            const headers = data[0];
-            const tasks = data.slice(1);
-            const statusIndex = headers.indexOf("Status");
-            const dueDateIndex = headers.indexOf("DueDate");
+            function renderDashboard(data) {
+               if (!data || data.length < 2) {
+                    document.getElementById('kpi-in-progress').textContent = 0;
+                    document.getElementById('kpi-completed').textContent = 0;
+                    document.getElementById('kpi-next-due').textContent = 'N/A';
+                    document.getElementById('progress-text').textContent = 'No tasks assigned';
+                    document.getElementById('progress-bar').style.width = '0%';
+                    return;
+                }
 
-            let inProgressCount = 0;
-            let completedCount = 0;
-            let nextDueDate = null;
+                const headers = data[0];
+                const tasks = data.slice(1);
+                const statusIndex = headers.indexOf("Status");
+                const dueDateIndex = headers.indexOf("DueDate");
 
-            tasks.forEach(row => {
-                const status = row[statusIndex];
-                if (status === 'In Progress' || status === 'Assigned') {
-                    inProgressCount++;
-                    const dueDate = new Date(row[dueDateIndex]);
-                    if (!nextDueDate || dueDate < nextDueDate) {
-                        nextDueDate = dueDate;
+                let inProgressCount = 0;
+                let completedCount = 0;
+                let nextDueDate = null;
+
+                tasks.forEach(row => {
+                    const status = row[statusIndex];
+                    if (status === 'In Progress' || status === 'Assigned') {
+                        inProgressCount++;
+                        const dueDate = new Date(row[dueDateIndex]);
+                        if (!nextDueDate || dueDate < nextDueDate) {
+                            nextDueDate = dueDate;
+                        }
                     }
+                    if (status === 'Completed') {
+                        completedCount++;
+                    }
+                });
+
+                document.getElementById('kpi-in-progress').textContent = inProgressCount;
+                document.getElementById('kpi-completed').textContent = completedCount;
+                document.getElementById('kpi-next-due').textContent = nextDueDate ? nextDueDate.toLocaleDateString() : 'N/A';
+
+                const totalTasks = tasks.length;
+                const progressPercentage = totalTasks > 0 ? (completedCount / totalTasks) * 100 : 0;
+                document.getElementById('progress-text').textContent = `${completedCount}/${totalTasks} Tasks Completed`;
+                document.getElementById('progress-bar').style.width = `${progressPercentage}%`;
+            }
+            
+            function applyFiltersAndSort() {
+                if (!allTasksData || allTasksData.length < 2) {
+                    renderTasks(allTasksData);
+                    return;
                 }
-                if (status === 'Completed') {
-                    completedCount++;
+
+                const headers = allTasksData[0];
+                let tasks = allTasksData.slice(1);
+                const statusFilter = document.getElementById('statusFilter').value;
+                const sortOrder = document.getElementById('sortOrder').value;
+
+                if (statusFilter !== 'All') {
+                    tasks = tasks.filter(row => row[headers.indexOf("Status")] === statusFilter);
+                } else {
+                    tasks = tasks.filter(row => row[headers.indexOf("Status")] !== 'Completed');
                 }
-            });
-
-            document.getElementById('kpi-in-progress').textContent = inProgressCount;
-            document.getElementById('kpi-completed').textContent = completedCount;
-            document.getElementById('kpi-next-due').textContent = nextDueDate ? nextDueDate.toLocaleDateString() : 'N/A';
-
-            const totalTasks = tasks.length;
-            const progressPercentage = totalTasks > 0 ? (completedCount / totalTasks) * 100 : 0;
-            document.getElementById('progress-text').textContent = `${completedCount}/${totalTasks} Tasks Completed`;
-            document.getElementById('progress-bar').style.width = `${progressPercentage}%`;
-        }
-        
-        function applyFiltersAndSort() {
-            if (!allTasksData || allTasksData.length < 2) {
-                renderTasks(allTasksData);
-                return;
-            }
-
-            const headers = allTasksData[0];
-            let tasks = allTasksData.slice(1);
-            const statusFilter = document.getElementById('statusFilter').value;
-            const sortOrder = document.getElementById('sortOrder').value;
-
-            if (statusFilter !== 'All') {
-                tasks = tasks.filter(row => row[headers.indexOf("Status")] === statusFilter);
-            } else {
-                tasks = tasks.filter(row => row[headers.indexOf("Status")] !== 'Completed');
-            }
-            
-            const dueDateIndex = headers.indexOf("DueDate");
-            tasks.sort((a, b) => {
-                const dateA = new Date(a[dueDateIndex]);
-                const dateB = new Date(b[dueDateIndex]);
-                return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
-            });
-            
-            renderTasks([headers, ...tasks]);
-        }
-        
-        function renderTasks(data) {
-            const container = document.getElementById("tasksContainer");
-            container.innerHTML = "";
-            
-            if (!data || data.length < 2) {
-                 container.innerHTML = `<div class="bg-white p-6 rounded-lg shadow-md text-center text-gray-500">No tasks match the current filter.</div>`;
-                 return;
-            }
-
-            const headers = data[0];
-            const dataRows = data.slice(1);
-
-            dataRows.forEach(row => {
-                const card = document.createElement("div");
-                const status = row[headers.indexOf("Status")];
-                const dueDate = new Date(row[headers.indexOf("DueDate")]);
-                const today = new Date();
-                today.setHours(0,0,0,0); 
                 
-                const isOverdue = dueDate < today && status !== 'Completed';
-                card.className = `bg-white p-6 rounded-lg shadow-md border-l-4 ${isOverdue ? 'border-red-500' : 'border-transparent'}`;
-
-                let statusColor = 'bg-blue-100 text-blue-800';
-                if (status === 'In Progress') statusColor = 'bg-yellow-100 text-yellow-800';
-                if (status === 'Completed') statusColor = 'bg-green-100 text-green-800';
-                if (status === 'Blocked') statusColor = 'bg-red-100 text-red-800';
-
-                card.innerHTML = `
-                    <button class="accordion-toggle flex justify-between items-center w-full text-left">
-                        <div>
-                            <h3 class="text-lg font-bold text-gray-800">${row[headers.indexOf("TaskTitle")]}</h3>
-                            <p class="text-sm text-gray-500">Due: ${dueDate.toLocaleDateString()}</p>
-                        </div>
-                        <div class="flex items-center space-x-2">
-                            ${isOverdue ? '<span class="text-red-500 font-semibold"><i class="fa-solid fa-triangle-exclamation mr-1"></i>Overdue</span>' : ''}
-                            <span class="text-sm font-semibold px-3 py-1 rounded-full ${statusColor}">${status}</span>
-                            <svg class="accordion-icon w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                        </div>
-                    </button>
-                    <div class="accordion-content hidden mt-4 pt-4 border-t">
-                        <p class="text-gray-600 mb-4">${row[headers.indexOf("TaskDescription")] || 'No description provided.'}</p>
-                        <form class="task-form space-y-3" data-task-id="${row[headers.indexOf("TaskID")]}">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Update Status:</label>
-                                <select name="status" class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                                    <option value="Assigned" ${status === 'Assigned' ? 'selected' : ''}>Assigned</option>
-                                    <option value="In Progress" ${status === 'In Progress' ? 'selected' : ''}>In Progress</option>
-                                    <option value="Completed" ${status === 'Completed' ? 'selected' : ''}>Completed</option>
-                                    <option value="Blocked" ${status === 'Blocked' ? 'selected' : ''}>Blocked</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Notes:</label>
-                                <textarea name="notes" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">${row[headers.indexOf("VolunteerNotes")] || ''}</textarea>
-                            </div>
-                            <button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300">Update Task</button>
-                        </form>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-
-            document.querySelectorAll(".accordion-toggle").forEach(button => {
-                button.addEventListener('click', () => {
-                    const content = button.nextElementSibling;
-                    const icon = button.querySelector('.accordion-icon');
-                    content.classList.toggle('hidden');
-                    icon.classList.toggle('rotate-180');
+                const dueDateIndex = headers.indexOf("DueDate");
+                tasks.sort((a, b) => {
+                    const dateA = new Date(a[dueDateIndex]);
+                    const dateB = new Date(b[dueDateIndex]);
+                    return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
                 });
-            });
+                
+                renderTasks([headers, ...tasks]);
+            }
+            
+            function renderTasks(data) {
+                const container = document.getElementById("tasksContainer");
+                container.innerHTML = "";
+                
+                if (!data || data.length < 2) {
+                     container.innerHTML = `<div class="bg-white p-6 rounded-lg shadow-md text-center text-gray-500">No tasks match the current filter.</div>`;
+                     return;
+                }
 
-            document.querySelectorAll(".task-form").forEach(form => {
-                form.addEventListener("submit", e => {
-                    e.preventDefault();
-                    const updateData = {
-                        taskId: form.dataset.taskId,
-                        status: form.querySelector("select[name='status']").value,
-                        notes: form.querySelector("textarea[name='notes']").value
-                    };
-                    postData({ action: "updateTask", updateData: updateData });
+                const headers = data[0];
+                const dataRows = data.slice(1);
+
+                dataRows.forEach(row => {
+                    const card = document.createElement("div");
+                    const status = row[headers.indexOf("Status")];
+                    const dueDate = new Date(row[headers.indexOf("DueDate")]);
+                    const today = new Date();
+                    today.setHours(0,0,0,0); 
+                    
+                    const isOverdue = dueDate < today && status !== 'Completed';
+                    card.className = `bg-white p-6 rounded-lg shadow-md border-l-4 ${isOverdue ? 'border-red-500' : 'border-transparent'}`;
+
+                    let statusColor = 'bg-blue-100 text-blue-800';
+                    if (status === 'In Progress') statusColor = 'bg-yellow-100 text-yellow-800';
+                    if (status === 'Completed') statusColor = 'bg-green-100 text-green-800';
+                    if (status === 'Blocked') statusColor = 'bg-red-100 text-red-800';
+
+                    card.innerHTML = `
+                        <button class="accordion-toggle flex justify-between items-center w-full text-left">
+                            <div>
+                                <h3 class="text-lg font-bold text-gray-800">${row[headers.indexOf("TaskTitle")]}</h3>
+                                <p class="text-sm text-gray-500">Due: ${dueDate.toLocaleDateString()}</p>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                ${isOverdue ? '<span class="text-red-500 font-semibold"><i class="fa-solid fa-triangle-exclamation mr-1"></i>Overdue</span>' : ''}
+                                <span class="text-sm font-semibold px-3 py-1 rounded-full ${statusColor}">${status}</span>
+                                <svg class="accordion-icon w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </div>
+                        </button>
+                        <div class="accordion-content hidden mt-4 pt-4 border-t">
+                            <p class="text-gray-600 mb-4">${row[headers.indexOf("TaskDescription")] || 'No description provided.'}</p>
+                            <form class="task-form space-y-3" data-task-id="${row[headers.indexOf("TaskID")]}">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Update Status:</label>
+                                    <select name="status" class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                                        <option value="Assigned" ${status === 'Assigned' ? 'selected' : ''}>Assigned</option>
+                                        <option value="In Progress" ${status === 'In Progress' ? 'selected' : ''}>In Progress</option>
+                                        <option value="Completed" ${status === 'Completed' ? 'selected' : ''}>Completed</option>
+                                        <option value="Blocked" ${status === 'Blocked' ? 'selected' : ''}>Blocked</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Notes:</label>
+                                    <textarea name="notes" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">${row[headers.indexOf("VolunteerNotes")] || ''}</textarea>
+                                </div>
+                                <button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300">Update Task</button>
+                            </form>
+                        </div>
+                    `;
+                    container.appendChild(card);
                 });
-            });
-        }
 
-        // --- Initial Load ---
-        document.addEventListener('DOMContentLoaded', () => {
-            fetchMyTasks();
+                document.querySelectorAll(".accordion-toggle").forEach(button => {
+                    button.addEventListener('click', () => {
+                        const content = button.nextElementSibling;
+                        const icon = button.querySelector('.accordion-icon');
+                        content.classList.toggle('hidden');
+                        icon.classList.toggle('rotate-180');
+                    });
+                });
+
+                document.querySelectorAll(".task-form").forEach(form => {
+                    form.addEventListener("submit", e => {
+                        e.preventDefault();
+                        const updateData = {
+                            taskId: form.dataset.taskId,
+                            status: form.querySelector("select[name='status']").value,
+                            notes: form.querySelector("textarea[name='notes']").value
+                        };
+                        postData({ action: "updateTask", updateData: updateData });
+                    });
+                });
+            }
+
+            // --- Initial Load ---
             displayMotivation();
+            fetchMyTasks(true); // Pass true for initial load to show loader
         });
     </script>
 </body>
