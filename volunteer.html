@@ -24,11 +24,24 @@
         #sidebar { 
             transition: transform 0.3s ease-in-out; 
             background-color: #1e3a8a; /* New menu color */
+            height: 100vh; /* Fallback for older browsers */
+            height: 100dvh; /* Fix for mobile browser UI */
         }
-        #sidebar.open { transform: translateX(0); }
-        .sidebar-link { transition: background-color 0.2s, color 0.2s; }
-        .sidebar-link:hover { background-color: #2563eb; color: white; } /* A lighter blue for hover */
-        .sidebar-link.active { background-color: #1d4ed8; color: white; font-weight: 600; } /* A slightly different blue for active */
+        #sidebar.open { 
+            transform: translateX(0); 
+        }
+        .sidebar-link { 
+            transition: background-color 0.2s, color 0.2s; 
+        }
+        .sidebar-link:hover { 
+            background-color: #2563eb; /* A lighter blue for hover */
+            color: white; 
+        }
+        .sidebar-link.active { 
+            background-color: #1d4ed8; /* A slightly different blue for active */
+            color: white; 
+            font-weight: 600; 
+        }
 
         /* Loader Styles */
         #loader-overlay {
@@ -54,7 +67,7 @@
         <p id="loader-motivation-text" class="loader-quote"></p>
     </div>
 
-    <aside id="sidebar" class="text-gray-100 w-64 min-h-screen p-4 flex flex-col fixed top-0 right-0 z-[60] translate-x-full lg:translate-x-0">
+    <aside id="sidebar" class="text-gray-100 w-64 p-4 flex flex-col fixed top-0 right-0 z-[60] translate-x-full lg:translate-x-0">
         <a href="index.html" class="flex items-center space-x-3 pb-4 border-b border-blue-500">
             <img src="IMG-20230327-WA0002.jpg" alt="Institute Logo" class="h-12 w-12 p-0.5 bg-white shadow-md rounded-md">
             <div class="text-left">
