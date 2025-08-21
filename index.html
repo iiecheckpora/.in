@@ -1118,9 +1118,7 @@
             </div>
         </section>
 
-        <!-- =================================================================== -->
-        <!-- ======================= DONATION SECTION START ====================== -->
-        <!-- =================================================================== -->
+        <!-- Donation Section -->
         <section id="donate" class="py-16 scroll-target bg-white">
             <div class="container mx-auto px-6">
                 
@@ -1143,9 +1141,9 @@
                                 <i class="fa-solid fa-landmark text-logo-blue mr-4"></i>
                                 Direct Bank Transfer
                             </span>
-                            <i class="fa-solid fa-chevron-down text-gray-500 transition-transform duration-300"></i>
+                            <i class="fa-solid fa-chevron-down text-logo-blue text-2xl transition-transform duration-300"></i>
                         </button>
-                        <div class="accordion-panel-donate" style="max-height: 0; overflow: hidden; transition: max-height 0.5s ease-in-out;">
+                        <div class="accordion-panel-donate overflow-hidden transition-all duration-300 ease-in-out" style="max-height: 0;">
                             <div class="p-6 border-t border-gray-200">
                                 <div class="bg-gray-50 p-6 rounded-lg">
                                     <div class="space-y-4 text-sm md:text-base">
@@ -1187,9 +1185,9 @@
                                 <i class="fa-solid fa-qrcode text-logo-green mr-4"></i>
                                 UPI / QR Code
                             </span>
-                            <i class="fa-solid fa-chevron-down text-gray-500 transition-transform duration-300"></i>
+                            <i class="fa-solid fa-chevron-down text-logo-blue text-2xl transition-transform duration-300"></i>
                         </button>
-                        <div class="accordion-panel-donate" style="max-height: 0; overflow: hidden; transition: max-height 0.5s ease-in-out;">
+                        <div class="accordion-panel-donate overflow-hidden transition-all duration-300 ease-in-out" style="max-height: 0;">
                             <div class="p-6 border-t border-gray-200 text-center">
                                 <div class="flex-grow flex flex-col items-center justify-center">
                                     <i class="fa-solid fa-hourglass-half fa-3x text-gray-400 mb-4"></i>
@@ -1203,52 +1201,42 @@
                     </div>
 
                 </div>
-            </div>
-        </section>
-    
-        <!-- ======================= DONATION SECTION END ======================== -->
 
-        <!-- =================================================================== -->
-        <!-- ================= INTEGRATED RECEIPT FORM SECTION START ================= -->
-        <!-- =================================================================== -->
-        <section id="request-receipt-section" class="py-16 bg-gray-50">
-            <div class="container mx-auto px-6">
-                <div class="max-w-3xl mx-auto">
-                    <!-- Toggle Button: This is the main button that the user will click. -->
-                    <button id="toggle-receipt-form" class="w-full bg-white p-6 rounded-lg shadow-lg flex justify-between items-center text-left transition duration-300 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-logo-blue">
-                        <span class="flex items-center">
-                            <i class="fa-solid fa-receipt text-logo-blue text-2xl mr-4"></i>
-                            <span class="text-xl font-bold text-logo-blue">Request a Donation Receipt</span>
-                        </span>
-                        <i id="toggle-icon" class="fa-solid fa-chevron-down text-logo-blue text-2xl transition-transform duration-300"></i>
-                    </button>
+                <div id="request-receipt-section" class="mt-8">
+                    <div class="max-w-3xl mx-auto">
+                        <button id="toggle-receipt-form" class="w-full bg-gray-50 p-6 rounded-lg shadow-lg flex justify-between items-center text-left transition duration-300 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-logo-blue">
+                            <span class="flex items-center">
+                                <i class="fa-solid fa-receipt text-logo-blue text-2xl mr-4"></i>
+                                <span class="text-xl font-bold text-logo-blue">Request a Donation Receipt</span>
+                            </span>
+                            <i id="toggle-icon" class="fa-solid fa-chevron-down text-logo-blue text-2xl transition-transform duration-300"></i>
+                        </button>
 
-                    <!-- Form Panel: This div is hidden by default and slides down. -->
-                    <div id="receipt-form-panel" class="overflow-hidden transition-all duration-500 ease-in-out" style="max-height: 0;">
-                        <div class="bg-white mt-2 p-8 rounded-b-lg shadow-lg border-t border-gray-200">
-                            <p class="text-center text-gray-600 mb-6">
-                                Please fill out the details below. We will verify your transaction and send the receipt to your WhatsApp within 24 hours.
-                            </p>
-                            <form id="receipt-form" name="receipt-form" enctype="multipart/form-data">
-                                <div class="space-y-6">
-                                    <div><label for="fullName" class="block text-sm font-medium text-gray-700">Full Name</label><input type="text" id="fullName" name="fullName" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-logo-green focus:border-logo-green" required></div>
-                                    <div><label for="whatsappNumber" class="block text-sm font-medium text-gray-700">WhatsApp Number (with country code)</label><input type="tel" id="whatsappNumber" name="whatsappNumber" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-logo-green focus:border-logo-green" required></div>
-                                    <div><label for="donationAmount" class="block text-sm font-medium text-gray-700">Donation Amount (e.g., 500 INR)</label><input type="text" id="donationAmount" name="donationAmount" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-logo-green focus:border-logo-green" required></div>
-                                    <div><label for="transactionId" class="block text-sm font-medium text-gray-700">Transaction ID / Reference Number</label><input type="text" id="transactionId" name="transactionId" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-logo-green focus:border-logo-green" required></div>
-                                    <div><label for="screenshot" class="block text-sm font-medium text-gray-700">Payment Screenshot</label><input type="file" id="screenshot" name="screenshot" accept="image/*,application/pdf" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-logo-blue hover:file:bg-blue-100" required></div>
-                                    <div class="text-center pt-4">
-                                        <button type="submit" id="submit-receipt-request" class="bg-logo-blue text-white font-bold px-8 py-3 rounded-full hover:bg-blue-800 transition duration-300 disabled:opacity-50">Send Request</button>
-                                        <p id="receipt-form-status" class="mt-4 text-sm"></p>
+                        <div id="receipt-form-panel" class="overflow-hidden transition-all duration-300 ease-in-out" style="max-height: 0;">
+                            <div class="bg-white mt-2 p-8 rounded-b-lg shadow-lg border-t border-gray-200">
+                                <p class="text-center text-gray-600 mb-6">
+                                    Please fill out the details below. We will verify your transaction and send the receipt to your WhatsApp within 24 hours.
+                                </p>
+                                <form id="receipt-form" name="receipt-form" enctype="multipart/form-data">
+                                    <div class="space-y-6">
+                                        <div><label for="fullName" class="block text-sm font-medium text-gray-700">Full Name</label><input type="text" id="fullName" name="fullName" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-logo-green focus:border-logo-green" required></div>
+                                        <div><label for="whatsappNumber" class="block text-sm font-medium text-gray-700">WhatsApp Number (with country code)</label><input type="tel" id="whatsappNumber" name="whatsappNumber" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-logo-green focus:border-logo-green" required></div>
+                                        <div><label for="donationAmount" class="block text-sm font-medium text-gray-700">Donation Amount (e.g., 500 INR)</label><input type="text" id="donationAmount" name="donationAmount" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-logo-green focus:border-logo-green" required></div>
+                                        <div><label for="transactionId" class="block text-sm font-medium text-gray-700">Transaction ID / Reference Number</label><input type="text" id="transactionId" name="transactionId" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-logo-green focus:border-logo-green" required></div>
+                                        <div><label for="screenshot" class="block text-sm font-medium text-gray-700">Payment Screenshot</label><input type="file" id="screenshot" name="screenshot" accept="image/*,application/pdf" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-logo-blue hover:file:bg-blue-100" required></div>
+                                        <div class="text-center pt-4">
+                                            <button type="submit" id="submit-receipt-request" class="bg-logo-blue text-white font-bold px-8 py-3 rounded-full hover:bg-blue-800 transition duration-300 disabled:opacity-50">Send Request</button>
+                                            <p id="receipt-form-status" class="mt-4 text-sm"></p>
+                                        </div>
                                     </div>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
+
             </div>
         </section>
-        <!-- ================== INTEGRATED RECEIPT FORM SECTION END ================== -->
-
 
     </main>
     <div id="form-loader" class="fixed inset-0 bg-white/80 backdrop-blur-sm flex-col items-center justify-center z-[9999] opacity-0 pointer-events-none transition-opacity duration-300 hidden">
