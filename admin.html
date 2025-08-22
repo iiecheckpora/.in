@@ -83,6 +83,7 @@
                 <li><a href="#management" class="sidebar-link flex items-center p-2 rounded-md"><i class="fa-solid fa-tasks fa-fw mr-3"></i>Management</a></li>
                 <li><a href="#all-tasks" class="sidebar-link flex items-center p-2 rounded-md"><i class="fa-solid fa-list-check fa-fw mr-3"></i>All Tasks</a></li>
                 <li><a href="#all-users" class="sidebar-link flex items-center p-2 rounded-md"><i class="fa-solid fa-users-cog fa-fw mr-3"></i>All Users</a></li>
+                <li><a href="#finance" class="sidebar-link flex items-center p-2 rounded-md"><i class="fa-solid fa-file-invoice-dollar fa-fw mr-3"></i>Finance</a></li>
             </ul>
         </nav>
         <div class="pt-4 border-t border-gray-600">
@@ -171,7 +172,37 @@
             </div>
 
             <div id="all-tasks" class="bg-white p-4 sm:p-6 rounded-lg shadow-md mb-6 scroll-target"><div class="flex justify-between items-center mb-4"><h2 class="text-lg font-semibold">All Tasks</h2><div><button id="refreshData" class="text-sm font-normal text-blue-500 hover:underline mr-4">(Refresh)</button><button id="exportTasksBtn" class="bg-green-500 text-white text-sm font-semibold px-3 py-1 rounded-md hover:bg-green-600 transition duration-200"><i class="fa-solid fa-file-csv mr-2"></i>Export</button></div></div><div class="overflow-x-auto"><div id="tasksTableContainer"></div></div></div>
-            <div id="all-users" class="bg-white p-4 sm:p-6 rounded-lg shadow-md scroll-target"><div class="flex justify-between items-center mb-4"><h2 class="text-lg font-semibold">All Users</h2><button id="exportUsersBtn" class="bg-green-500 text-white text-sm font-semibold px-3 py-1 rounded-md hover:bg-green-600 transition duration-200"><i class="fa-solid fa-file-csv mr-2"></i>Export</button></div><div class="overflow-x-auto"><div id="volunteersTableContainer"></div></div></div>
+            <div id="all-users" class="bg-white p-4 sm:p-6 rounded-lg shadow-md scroll-target mb-6"><div class="flex justify-between items-center mb-4"><h2 class="text-lg font-semibold">All Users</h2><button id="exportUsersBtn" class="bg-green-500 text-white text-sm font-semibold px-3 py-1 rounded-md hover:bg-green-600 transition duration-200"><i class="fa-solid fa-file-csv mr-2"></i>Export</button></div><div class="overflow-x-auto"><div id="volunteersTableContainer"></div></div></div>
+            
+            <section id="finance" class="scroll-target">
+                <div class="grid grid-cols-1 gap-6 mb-6">
+                    <div class="bg-white rounded-lg shadow-md">
+                        <button class="accordion-toggle flex justify-between items-center w-full p-6 text-left">
+                            <h2 class="text-lg font-semibold">Add Finance Member</h2>
+                            <svg class="accordion-icon w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div class="accordion-content p-6 border-t border-gray-200 hidden">
+                            <form id="addFinanceMemberForm" class="space-y-4">
+                                <div><label for="financeFullName" class="block text-sm font-medium text-gray-700">Full Name</label><input type="text" id="financeFullName" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></div>
+                                <div><label for="financeEmail" class="block text-sm font-medium text-gray-700">Email</label><input type="email" id="financeEmail" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></div>
+                                <div><label for="financePassword" class="block text-sm font-medium text-gray-700">Temporary Password</label><input type="password" id="financePassword" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></div>
+                                <div><label for="financeRole" class="block text-sm font-medium text-gray-700">Role</label><select id="financeRole" class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"><option value="Assistant">Assistant</option><option value="Manager">Manager</option></select></div>
+                                <button type="submit" class="w-full bg-indigo-600 text-white font-bold py-2 px-4 rounded-md hover:bg-indigo-700 transition duration-300">Add Finance Member</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-semibold">Finance Team</h2>
+                        <button id="exportFinanceBtn" class="bg-green-500 text-white text-sm font-semibold px-3 py-1 rounded-md hover:bg-green-600 transition duration-200"><i class="fa-solid fa-file-csv mr-2"></i>Export</button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <div id="financeTableContainer"></div>
+                    </div>
+                </div>
+            </section>
         </main>
     </div>
 
@@ -181,7 +212,7 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const API_URL = "https://script.google.com/macros/s/AKfycbxkINGK1zWCdjawXlUms-Ky5MqVoaQyt4QNf0gHc-FN4A356ePJEywy7S-zIgGMtp0xpQ/exec";
+            const API_URL = "https://script.google.com/macros/s/AKfycbx6T43AwXJvLYlYyzdASc_8ggtodiGe1yjmXw8RiyMtIUo_qbB2oJIrJfZOZS_wUlxuWQ/exec";
             const token = localStorage.getItem("sessionToken");
             const loaderOverlay = document.getElementById('loader-overlay'); 
 
@@ -232,6 +263,7 @@
 
             let allTasks = [];
             let allVolunteers = [];
+            let allFinanceUsers = [];
             let sortState = { column: -1, direction: 'asc' };
             let taskStatusChart = null;
             let leaderboardChart = null;
@@ -315,15 +347,18 @@
                 });
             }
 
+            // Event Listeners
             document.getElementById("logoutButton").addEventListener("click", logout);
             document.getElementById("refreshData").addEventListener("click", fetchAdminData);
             document.getElementById("assignTaskForm").addEventListener("submit", handleFormSubmit);
             document.getElementById("addVolunteerForm").addEventListener("submit", handleFormSubmit);
+            document.getElementById("addFinanceMemberForm").addEventListener("submit", handleFormSubmit);
             document.getElementById("editTaskForm").addEventListener("submit", handleTaskUpdate);
             document.getElementById("closeEditModalButton").addEventListener("click", () => document.getElementById('editTaskModal').classList.add('hidden'));
             document.getElementById("closeProfileModalButton").addEventListener("click", () => document.getElementById('volunteerProfileModal').classList.add('hidden'));
             document.getElementById("exportTasksBtn").addEventListener("click", () => exportToCsv('tasks-export.csv', allTasks));
             document.getElementById("exportUsersBtn").addEventListener("click", () => exportToCsv('users-export.csv', allVolunteers));
+            document.getElementById("exportFinanceBtn").addEventListener("click", () => exportToCsv('finance-users-export.csv', allFinanceUsers));
             document.getElementById('statusFilter').addEventListener('change', applyFiltersAndRender);
             document.getElementById('emailSearch').addEventListener('input', applyFiltersAndRender);
             document.getElementById('startDate').addEventListener('change', applyFiltersAndRender);
@@ -407,6 +442,7 @@
                 loaderOverlay.classList.remove('hidden'); 
                 showLoading(document.getElementById("tasksTableContainer"));
                 showLoading(document.getElementById("volunteersTableContainer"));
+                showLoading(document.getElementById("financeTableContainer"));
                 showLoading(document.getElementById("leaderboardContainer"));
                 showLoading(document.getElementById("chart-container"));
 
@@ -427,8 +463,14 @@
                     if (adminData.status === 'error') throw new Error(adminData.message);
                     allTasks = adminData.tasks ? [...adminData.tasks] : [];
                     allVolunteers = adminData.volunteers ? [...adminData.volunteers] : [];
+                    allFinanceUsers = adminData.financeUsers ? [...adminData.financeUsers] : [];
+                    
                     renderTable(allTasks, document.getElementById("tasksTableContainer"));
                     renderTable(allVolunteers, document.getElementById("volunteersTableContainer"));
+                    renderTable(allFinanceUsers, document.getElementById("financeTableContainer"));
+                    
+                    checkFinanceTeamStatus(); // New function call to check roles and update form
+                    
                     renderKPIs(allTasks, allVolunteers);
                     renderTaskStatusChart(allTasks);
                     generateAndRenderActivityFeed(allTasks, allVolunteers);
@@ -445,22 +487,91 @@
             function handleFormSubmit(e) {
                 e.preventDefault();
                 const formId = e.target.id;
-                let action, payloadData;
+                let action, payloadData, payloadKey;
+                
                 if (formId === 'assignTaskForm') {
                     action = "assignTask";
+                    payloadKey = 'taskData';
                     payloadData = {title: document.getElementById("taskTitle").value, description: document.getElementById("taskDesc").value, assignTo: document.getElementById("assignTo").value, dueDate: document.getElementById("dueDate").value};
                 } else if (formId === 'addVolunteerForm') {
                     action = "addVolunteer";
+                    payloadKey = 'volunteerData';
                     payloadData = {fullName: document.getElementById("fullName").value, email: document.getElementById("volEmail").value, password: document.getElementById("volPassword").value, role: document.getElementById("volRole").value};
+                } else if (formId === 'addFinanceMemberForm') {
+                    action = "addFinanceMember";
+                    payloadKey = 'financeUserData';
+                    payloadData = {fullName: document.getElementById("financeFullName").value, email: document.getElementById("financeEmail").value, password: document.getElementById("financePassword").value, role: document.getElementById("financeRole").value};
                 }
-                loaderOverlay.classList.remove('hidden');
-                postData({ action: action, [formId === 'assignTaskForm' ? 'taskData' : 'volunteerData']: payloadData });
-                e.target.reset();
+
+                if(action) {
+                    loaderOverlay.classList.remove('hidden');
+                    postData({ action: action, [payloadKey]: payloadData });
+                    e.target.reset();
+                }
             }
+            
+            /**
+             * NEW FUNCTION
+             * Checks the current finance team composition and updates the 'Add Member' form accordingly.
+             * Disables role options that are already filled.
+             * Hides the form completely if both roles (Manager and Assistant) are filled.
+             */
+            function checkFinanceTeamStatus() {
+                const form = document.getElementById('addFinanceMemberForm');
+                const roleSelect = document.getElementById('financeRole');
+                const formContainer = form.parentElement; // The .accordion-content div
+
+                // 1. Reset form to a default enabled state
+                form.style.display = 'block';
+                const existingMessage = formContainer.querySelector('.finance-full-message');
+                if (existingMessage) {
+                    existingMessage.remove();
+                }
+                Array.from(roleSelect.options).forEach(opt => {
+                    opt.disabled = false;
+                });
+                roleSelect.value = 'Assistant'; // Default selection
+
+                // 2. Check current roles if data exists
+                if (!allFinanceUsers || allFinanceUsers.length < 2) {
+                    return; // No members, form is fine as is
+                }
+
+                const headers = allFinanceUsers[0];
+                const roleIndex = headers.indexOf("Role");
+                if (roleIndex === -1) return; // Role column not found, can't proceed
+
+                const financeData = allFinanceUsers.slice(1);
+                const hasManager = financeData.some(user => user[roleIndex] === 'Manager');
+                const hasAssistant = financeData.some(user => user[roleIndex] === 'Assistant');
+
+                // 3. Update form based on roles found
+                if (hasManager) {
+                    roleSelect.querySelector('option[value="Manager"]').disabled = true;
+                }
+                if (hasAssistant) {
+                    roleSelect.querySelector('option[value="Assistant"]').disabled = true;
+                }
+
+                // If the default selected option is now disabled, switch to the other one
+                if (roleSelect.options[roleSelect.selectedIndex].disabled) {
+                    roleSelect.value = hasManager ? 'Assistant' : 'Manager';
+                }
+
+                // 4. If both roles are filled, hide form and show message
+                if (hasManager && hasAssistant) {
+                    form.style.display = 'none'; // Hide form
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = 'finance-full-message text-center p-4 bg-yellow-100 text-yellow-800 rounded-md';
+                    messageDiv.innerHTML = `<i class="fa-solid fa-circle-info mr-2"></i>Both finance roles are filled. To add a new member, please delete an existing one first.`;
+                    formContainer.appendChild(messageDiv);
+                }
+            }
+
 
             function renderTable(data, container) {
                 container.innerHTML = "";
-                if (!data || data.length < 2) { container.innerHTML = `<p class="text-gray-500 p-4">No data available.</p>`; return; }
+                if (!data || data.length < 2) { container.innerHTML = `<p class="text-gray-500 p-4 text-center">No data available.</p>`; return; }
                 const table = document.createElement('table');
                 table.className = "min-w-full divide-y divide-gray-200";
                 const thead = document.createElement('thead');
@@ -499,15 +610,22 @@
                     } else if (container.id === 'volunteersTableContainer') {
                         const userEmail = rowData[1];
                         actionsTd.innerHTML = `<button data-user-email="${userEmail}" class="delete-user-btn text-red-500 hover:text-red-700"><i class="fa-solid fa-trash"></i></button>`;
+                    } else if (container.id === 'financeTableContainer') {
+                        const emailIndex = data[0].indexOf("Email");
+                        const userEmail = rowData[emailIndex];
+                        actionsTd.innerHTML = `<button data-user-email="${userEmail}" class="delete-finance-user-btn text-red-500 hover:text-red-700"><i class="fa-solid fa-trash"></i></button>`;
                     }
                     tr.appendChild(actionsTd);
                     tbody.appendChild(tr);
                 });
                 table.appendChild(tbody);
                 container.appendChild(table);
+                // Attach event listeners
                 container.querySelectorAll('.edit-task-btn').forEach(btn => btn.addEventListener('click', (e) => openEditTaskModal(e.currentTarget.dataset.taskId)));
                 container.querySelectorAll('.delete-task-btn').forEach(btn => btn.addEventListener('click', (e) => handleDelete(e.currentTarget.dataset.taskId, 'task')));
                 container.querySelectorAll('.delete-user-btn').forEach(btn => btn.addEventListener('click', (e) => handleDelete(e.currentTarget.dataset.userEmail, 'user')));
+                container.querySelectorAll('.delete-finance-user-btn').forEach(btn => btn.addEventListener('click', (e) => handleDelete(e.currentTarget.dataset.userEmail, 'financeUser')));
+
                 if (container.id === 'volunteersTableContainer') {
                     tbody.querySelectorAll('tr').forEach((tr, rowIndex) => {
                         const nameCell = tr.querySelector('td:first-child');
@@ -591,11 +709,14 @@
             }
 
             function handleDelete(id, type) {
-                const item = type === 'task' ? 'task' : 'user';
+                let item, action, payload;
+                switch (type) {
+                    case 'task': item = 'task'; action = 'deleteTask'; payload = { action, taskId: id }; break;
+                    case 'user': item = 'user'; action = 'deleteUser'; payload = { action, email: id }; break;
+                    case 'financeUser': item = 'finance user'; action = 'deleteFinanceUser'; payload = { action, email: id }; break;
+                    default: return;
+                }
                 if (confirm(`Are you sure you want to delete this ${item}? This action cannot be undone.`)) {
-                    const action = type === 'task' ? 'deleteTask' : 'deleteUser';
-                    const payload = { action: action };
-                    if (type === 'task') { payload.taskId = id; } else { payload.email = id; }
                     loaderOverlay.classList.remove('hidden');
                     postData(payload);
                 }

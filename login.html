@@ -9,17 +9,42 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="IMG-20230327-WA0002.jpg">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f0f8ff; }
+        body {
+            font-family: 'Inter', sans-serif;
+            /* --- MODIFIED: Animation properties for the gradient --- */
+            background-size: 400% 400%;
+            animation: gradient-animation 15s ease infinite;
+        }
+
+        /* --- NEW: Keyframe animation for the background --- */
+        @keyframes gradient-animation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- MODIFIED: New multi-color gradient classes --- */
+        .body-bg-volunteer {
+            background: linear-gradient(-45deg, #fbc2eb, #a6c1ee, #e0c3fc, #8ec5fc);
+        }
+        .body-bg-finance {
+            background: linear-gradient(-45deg, #65eb51, #ded85a, #4f6e99, #a9c5e8);
+        }
+        .body-bg-admin {
+            background: linear-gradient(-45deg, #09203f, #537895, #809ebd, #3e7cb1);
+        }
+
+        /* --- General Styles (Unchanged) --- */
         .text-logo-blue { color: #1e3a8a; } .bg-logo-blue { background-color: #1e3a8a; }
         .hover\:bg-logo-blue-darker:hover { background-color: #1c347d; }
         .ring-logo-green:focus { --tw-ring-color: #16a34a; }
         .spinner { border: 2px solid rgba(255, 255, 255, 0.3); border-top-color: white; border-radius: 50%; width: 1rem; height: 1rem; animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
-        .tab { cursor: pointer; padding: 0.75rem 1.5rem; border-bottom: 2px solid transparent; }
+        .tab { cursor: pointer; padding: 0.75rem 1.5rem; border-bottom: 2px solid transparent; transition: all 0.2s; }
         .tab.active { border-color: #1e3a8a; color: #1e3a8a; font-weight: 600; }
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen p-4">
+<body class="flex items-center justify-center min-h-screen p-4 body-bg-volunteer">
     <main class="w-full max-w-md">
         <div class="bg-white p-8 rounded-2xl shadow-lg">
             <div class="text-center mb-6">
@@ -27,13 +52,15 @@
                     <img src="IMG-20230327-WA0002.jpg" alt="Institute Logo" class="h-12 w-12 p-0.5 bg-white shadow-md rounded-md">
                 </a>
                 <h1 id="login-title" class="text-2xl font-bold text-logo-blue">Ansari Login</h1>
-                <h1 id="login-title" class="text-2xl font-bold text-logo-blue">أَنْصَارِيّ</h1>
-                <p class="text-gray-500 mt-1">Access your dedicated dashboard.</p>
+                <p id="login-subtitle" class="text-gray-500 mt-1">Access your dedicated dashboard.</p>
             </div>
 
             <div class="flex justify-center border-b mb-6">
                 <div id="volunteer-tab" class="tab active" onclick="switchTab('volunteer')">
                     <i class="fa-solid fa-user mr-2"></i>Volunteer
+                </div>
+                <div id="finance-tab" class="tab" onclick="switchTab('finance')">
+                    <i class="fa-solid fa-wallet mr-2"></i>Finance
                 </div>
                 <div id="admin-tab" class="tab" onclick="switchTab('admin')">
                     <i class="fa-solid fa-user-shield mr-2"></i>Admin
@@ -41,7 +68,7 @@
             </div>
 
             <form id="loginForm" class="space-y-6">
-                 <div>
+                <div>
                     <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-3"><i class="fa-solid fa-envelope text-gray-400"></i></span>
@@ -72,7 +99,8 @@
     </main>
 
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbxO0V6dKowgCvrN3CwvnPoO2Le4Er6SHcxRkKCO3Cmw4f8CJGu5nSKikTen6VUkGDuy2A/exec";
+        // --- NO CHANGES NEEDED IN THE JAVASCRIPT ---
+        const API_URL = "https://script.google.com/macros/s/AKfycbx6T43AwXJvLYlYyzdASc_8ggtodiGe1yjmXw8RiyMtIUo_qbB2oJIrJfZOZS_wUlxuWQ/exec";
 
         const loginForm = document.getElementById("loginForm");
         const statusEl = document.getElementById("status");
@@ -81,19 +109,35 @@
         const buttonSpinner = document.getElementById("buttonSpinner");
         const passwordInput = document.getElementById("password");
         const togglePasswordBtn = document.getElementById("togglePassword");
+        
         const loginTitle = document.getElementById("login-title");
+        const loginSubtitle = document.getElementById("login-subtitle");
         const volunteerTab = document.getElementById("volunteer-tab");
         const adminTab = document.getElementById("admin-tab");
+        const financeTab = document.getElementById("finance-tab");
+        const body = document.body;
+        let currentTab = 'volunteer';
 
         function switchTab(tab) {
+            currentTab = tab;
+            [volunteerTab, adminTab, financeTab].forEach(t => t.classList.remove('active'));
+            body.classList.remove('body-bg-volunteer', 'body-bg-finance', 'body-bg-admin');
+            
             if (tab === 'admin') {
                 adminTab.classList.add('active');
-                volunteerTab.classList.remove('active');
+                body.classList.add('body-bg-admin');
                 loginTitle.textContent = "Admin Portal Login";
+                loginSubtitle.textContent = "Access the management dashboard.";
+            } else if (tab === 'finance') {
+                financeTab.classList.add('active');
+                body.classList.add('body-bg-finance');
+                loginTitle.textContent = "Finance Portal Login";
+                loginSubtitle.textContent = "Access the finance dashboard.";
             } else {
                 volunteerTab.classList.add('active');
-                adminTab.classList.remove('active');
+                body.classList.add('body-bg-volunteer');
                 loginTitle.textContent = "Ansari Login";
+                loginSubtitle.textContent = "Access your dedicated dashboard.";
             }
         }
 
@@ -106,7 +150,9 @@
 
             const formData = new FormData(loginForm);
             const data = Object.fromEntries(formData.entries());
+            
             data.action = "login";
+            data.loginType = currentTab;
 
             fetch(API_URL, {
                 method: 'POST', redirect: "follow", body: JSON.stringify(data),
@@ -114,12 +160,20 @@
             })
             .then(response => response.json())
             .then(data => {
-                if (data.status === "success" && data.token) {
+                if (data.status === 'success') {
                     localStorage.setItem("sessionToken", data.token);
-                    localStorage.setItem("userRole", data.role);
-                    window.location.href = data.role === "Admin" ? "admin.html" : "volunteer.html";
+
+                    if (data.role === 'Admin') {
+                        window.location.href = 'admin.html';
+                    } else if (data.role === 'Manager' || data.role === 'Assistant') {
+                        window.location.href = 'finance.html';
+                    } else if (data.role === 'Volunteer') {
+                        window.location.href = 'volunteer.html';
+                    } else {
+                        alert("Login successful, but your dashboard is not set up.");
+                    }
                 } else {
-                    throw new Error(data.message || "Invalid credentials.");
+                    alert(data.message);
                 }
             })
             .catch(error => {
