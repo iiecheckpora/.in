@@ -112,12 +112,12 @@
                     <div class="kpi-card bg-blue-600 text-white p-6 rounded-lg shadow-lg"><h2 class="text-lg font-semibold">Final Balance</h2><p id="total-balance" class="text-3xl font-bold mt-2">₹0.00</p></div>
                 </section>
         
-                <section class="bg-white p-4 rounded-lg shadow-md mb-8 flex flex-wrap justify-between items-center gap-4">
-                    <div class="flex items-center space-x-4">
+                <section class="bg-white p-4 rounded-lg shadow-md mb-8 flex flex-col sm:flex-row flex-wrap justify-center sm:justify-between items-center gap-4">
+                    <div class="flex flex-wrap justify-center items-center gap-4">
                         <button id="add-income-btn" class="bg-green-500 text-white font-bold py-2 px-4 rounded-md hover:bg-green-600 transition"><i class="fa-solid fa-plus mr-2"></i>Add Income</button>
                         <button id="add-expenditure-btn" class="bg-red-500 text-white font-bold py-2 px-4 rounded-md hover:bg-red-600 transition"><i class="fa-solid fa-minus mr-2"></i>Add Expenditure</button>
                     </div>
-                    <div class="flex items-center space-x-4">
+                    <div class="flex flex-wrap justify-center items-center gap-4">
                         <button id="close-ledger-btn" class="manager-only bg-purple-600 text-white font-bold py-2 px-4 rounded-md hover:bg-purple-700 transition"><i class="fa-solid fa-book-bookmark mr-2"></i>Ledger Close</button>
                         <button id="download-pdf-btn" class="bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-600 transition"><i class="fa-solid fa-file-pdf mr-2"></i>Download PDF</button>
                         <button id="send-report-btn" class="manager-only bg-gray-700 text-white font-bold py-2 px-4 rounded-md hover:bg-gray-800 transition"><i class="fa-solid fa-paper-plane mr-2"></i>Send Report</button>
@@ -206,7 +206,10 @@
             const body = document.body;
 
             const toggleSidebar = () => {
-                sidebar.classList.toggle('open');
+                // This correctly toggles the Tailwind CSS classes to slide the menu in and out
+                sidebar.classList.toggle('translate-x-full');
+                
+                // Also toggle the overlay and body scroll
                 sidebarOverlay.classList.toggle('hidden');
                 body.classList.toggle('body-no-scroll');
             };
