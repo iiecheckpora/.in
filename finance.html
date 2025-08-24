@@ -24,6 +24,11 @@
         [lang="ar"] { font-family: 'Mirza', serif; }
         .scroll-target { scroll-margin-top: 80px; }
 
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow-x: hidden; /* This also helps with the horizontal scroll issue */
+        }
         /* Sidebar Styles */
         #sidebar { 
             transition: transform 0.3s ease-in-out; 
@@ -89,7 +94,7 @@
 
     <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden lg:hidden"></div>
 
-    <div class="lg:mr-64">
+    <div class="lg:mr-64 overflow-x-hidden">
         <header class="bg-white shadow-md sticky top-0 z-40 lg:hidden">
             <div class="container mx-auto px-4 py-3 flex justify-between items-center">
                 <a href="index.html">
