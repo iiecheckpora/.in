@@ -9,6 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Mirza:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
     <style>
         html { scroll-behavior: smooth; }
         body { font-family: 'Inter', sans-serif; }
@@ -171,8 +173,8 @@
                 <div class="bg-white rounded-lg shadow-md"><button class="accordion-toggle flex justify-between items-center w-full p-6 text-left"><h2 class="text-lg font-semibold">Add New User</h2><svg class="accordion-icon w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button><div class="accordion-content p-6 border-t border-gray-200 hidden"><form id="addVolunteerForm" class="space-y-4"><div><label for="fullName" class="block text-sm font-medium text-gray-700">Full Name</label><input type="text" id="fullName" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></div><div><label for="volEmail" class="block text-sm font-medium text-gray-700">Email</label><input type="email" id="volEmail" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></div><div><label for="volPassword" class="block text-sm font-medium text-gray-700">Temporary Password</label><input type="password" id="volPassword" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></div><div><label for="volRole" class="block text-sm font-medium text-gray-700">Role</label><select id="volRole" class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"><option value="Volunteer">Volunteer</option><option value="Admin">Admin</option></select></div><button type="submit" class="w-full bg-green-600 text-white font-bold py-2 px-4 rounded-md hover:bg-green-700 transition duration-300">Add User</button></form></div></div>
             </div>
 
-            <div id="all-tasks" class="bg-white p-4 sm:p-6 rounded-lg shadow-md mb-6 scroll-target"><div class="flex justify-between items-center mb-4"><h2 class="text-lg font-semibold">All Tasks</h2><div><button id="refreshData" class="text-sm font-normal text-blue-500 hover:underline mr-4">(Refresh)</button><button id="exportTasksBtn" class="bg-green-500 text-white text-sm font-semibold px-3 py-1 rounded-md hover:bg-green-600 transition duration-200"><i class="fa-solid fa-file-csv mr-2"></i>Export</button></div></div><div class="overflow-x-auto"><div id="tasksTableContainer"></div></div></div>
-            <div id="all-users" class="bg-white p-4 sm:p-6 rounded-lg shadow-md scroll-target mb-6"><div class="flex justify-between items-center mb-4"><h2 class="text-lg font-semibold">All Users</h2><button id="exportUsersBtn" class="bg-green-500 text-white text-sm font-semibold px-3 py-1 rounded-md hover:bg-green-600 transition duration-200"><i class="fa-solid fa-file-csv mr-2"></i>Export</button></div><div class="overflow-x-auto"><div id="volunteersTableContainer"></div></div></div>
+            <div id="all-tasks" class="bg-white p-4 sm:p-6 rounded-lg shadow-md mb-6 scroll-target"><div class="flex justify-between items-center mb-4"><h2 class="text-lg font-semibold">All Tasks</h2><div><button id="refreshData" class="text-sm font-normal text-blue-500 hover:underline mr-4">(Refresh)</button><button id="exportTasksBtn" class="bg-red-500 text-white text-sm font-semibold px-3 py-1 rounded-md hover:bg-red-600 transition duration-200"><i class="fa-solid fa-file-pdf mr-2"></i>Export</button></div></div><div class="overflow-x-auto"><div id="tasksTableContainer"></div></div></div>
+            <div id="all-users" class="bg-white p-4 sm:p-6 rounded-lg shadow-md scroll-target mb-6"><div class="flex justify-between items-center mb-4"><h2 class="text-lg font-semibold">All Users</h2><button id="exportUsersBtn" class="bg-red-500 text-white text-sm font-semibold px-3 py-1 rounded-md hover:bg-red-600 transition duration-200"><i class="fa-solid fa-file-pdf mr-2"></i>Export</button></div><div class="overflow-x-auto"><div id="volunteersTableContainer"></div></div></div>
             
             <section id="finance" class="scroll-target">
                 <div class="grid grid-cols-1 gap-6 mb-6">
@@ -196,7 +198,7 @@
                 <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-semibold">Finance Team</h2>
-                        <button id="exportFinanceBtn" class="bg-green-500 text-white text-sm font-semibold px-3 py-1 rounded-md hover:bg-green-600 transition duration-200"><i class="fa-solid fa-file-csv mr-2"></i>Export</button>
+                        <button id="exportFinanceBtn" class="bg-red-500 text-white text-sm font-semibold px-3 py-1 rounded-md hover:bg-red-600 transition duration-200"><i class="fa-solid fa-file-pdf mr-2"></i>Export</button>
                     </div>
                     <div class="overflow-x-auto">
                         <div id="financeTableContainer"></div>
@@ -212,7 +214,7 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const API_URL = "https://script.google.com/macros/s/AKfycbxFGydevhe7BCMPmLcR6-F53QgdYfiMi5H_polqeamAyrN5g-7isQpjOfL4V7n8XkiJbA/exec";
+            const API_URL = "https://script.google.com/macros/s/AKfycbydsaGPqmfTil6_fc3dpEbwmyO291ru47HePDBxLr5VVIaARJzHP5Ar3r5fD_0dL9Mcqw/exec";
             const token = localStorage.getItem("sessionToken");
             const loaderOverlay = document.getElementById('loader-overlay'); 
 
@@ -286,7 +288,7 @@
 
             function generateAndRenderActivityFeed(tasks, volunteers) {
                 const activityFeedContainer = document.getElementById('activityFeed');
-                if (!activityFeedContainer || tasks.length < 2 || volunteers.length < 2) {
+                if (!activityFeedContainer || !tasks || tasks.length < 2 || !volunteers || volunteers.length < 2) {
                     activityFeedContainer.innerHTML = `<p class="text-gray-500 text-center p-4">No recent activity to display.</p>`;
                     return;
                 }
@@ -297,6 +299,8 @@
                 let activities = [];
                 const today = new Date();
                 today.setHours(0, 0, 0, 0);
+                const recentThreshold = new Date();
+                recentThreshold.setDate(today.getDate() - 7);
                 const findVolunteerName = (email) => {
                     const volunteer = volData.find(v => v[volHeaders.indexOf("Email")] === email);
                     return volunteer ? volunteer[volHeaders.indexOf("FullName")] : email;
@@ -306,17 +310,20 @@
                     const dueDate = new Date(task[taskHeaders.indexOf("DueDate")]);
                     const lastUpdated = new Date(task[taskHeaders.indexOf("LastUpdated")]);
                     const assignedTo = findVolunteerName(task[taskHeaders.indexOf("AssignedToEmail")]);
-                    if (status === 'Completed') {
-                        activities.push({type: 'task_completed', user: assignedTo, task: task[taskHeaders.indexOf("TaskTitle")], timestamp: lastUpdated});
-                    } else {
-                        activities.push({type: 'task_assigned', user: assignedTo, task: task[taskHeaders.indexOf("TaskTitle")], timestamp: new Date(task[taskHeaders.indexOf("Timestamp")])});
-                        if (dueDate < today) {
-                             activities.push({type: 'task_overdue', task: task[taskHeaders.indexOf("TaskTitle")], user: assignedTo, timestamp: dueDate});
+                    const taskTitle = task[taskHeaders.indexOf("TaskTitle")];
+                    if (lastUpdated >= recentThreshold) {
+                        if (status === 'Completed') {
+                            activities.push({ type: 'task_completed', user: assignedTo, task: taskTitle, timestamp: lastUpdated });
+                        } else {
+                            activities.push({ type: 'task_updated', user: assignedTo, task: taskTitle, status: status, timestamp: lastUpdated });
                         }
+                    }
+                    if (dueDate < today && status !== 'Completed') {
+                        activities.push({ type: 'task_overdue', task: taskTitle, user: assignedTo, timestamp: dueDate });
                     }
                 });
                 activities.sort((a, b) => b.timestamp - a.timestamp);
-                activityFeedContainer.innerHTML = ''; 
+                activityFeedContainer.innerHTML = '';
                 if (activities.length === 0) {
                     activityFeedContainer.innerHTML = `<p class="text-gray-500 text-center p-4">No recent activity to display.</p>`;
                     return;
@@ -326,16 +333,16 @@
                     activityElement.className = 'flex items-start p-2 border-b border-gray-100';
                     let icon = '';
                     let message = '';
-                    const timeAgo = Math.round((new Date() - activity.timestamp) / (1000 * 60)); 
+                    const timeAgo = Math.round((new Date() - activity.timestamp) / (1000 * 60));
                     const timeString = timeAgo < 60 ? `${timeAgo}m ago` : `${Math.round(timeAgo/60)}h ago`;
                     switch (activity.type) {
                         case 'task_completed':
                             icon = `<i class="fa-solid fa-check-circle text-green-500 mt-1 mr-4"></i>`;
                             message = `<div><span class="font-semibold">${activity.user}</span> completed <span class="text-gray-600 italic">"${activity.task}"</span><div class="text-xs text-gray-400">${timeString}</div></div>`;
                             break;
-                         case 'task_assigned':
-                            icon = `<i class="fa-solid fa-file-circle-plus text-blue-500 mt-1 mr-4"></i>`;
-                            message = `<div>A new task <span class="text-gray-600 italic">"${activity.task}"</span> was assigned to <span class="font-semibold">${activity.user}</span><div class="text-xs text-gray-400">${timeString}</div></div>`;
+                        case 'task_updated':
+                            icon = `<i class="fa-solid fa-pencil-alt text-blue-500 mt-1 mr-4"></i>`;
+                            message = `<div><span class="font-semibold">${activity.user}</span> updated the status of <span class="text-gray-600 italic">"${activity.task}"</span> to <span class="font-semibold">${activity.status}</span><div class="text-xs text-gray-400">${timeString}</div></div>`;
                             break;
                         case 'task_overdue':
                             icon = `<i class="fa-solid fa-exclamation-triangle text-red-500 mt-1 mr-4"></i>`;
@@ -356,9 +363,13 @@
             document.getElementById("editTaskForm").addEventListener("submit", handleTaskUpdate);
             document.getElementById("closeEditModalButton").addEventListener("click", () => document.getElementById('editTaskModal').classList.add('hidden'));
             document.getElementById("closeProfileModalButton").addEventListener("click", () => document.getElementById('volunteerProfileModal').classList.add('hidden'));
-            document.getElementById("exportTasksBtn").addEventListener("click", () => exportToCsv('tasks-export.csv', allTasks));
-            document.getElementById("exportUsersBtn").addEventListener("click", () => exportToCsv('users-export.csv', allVolunteers));
-            document.getElementById("exportFinanceBtn").addEventListener("click", () => exportToCsv('finance-users-export.csv', allFinanceUsers));
+            
+            // START: Updated Event Listeners for PDF Export
+            document.getElementById("exportTasksBtn").addEventListener("click", () => exportToPdf('tasks-export.pdf', allTasks));
+            document.getElementById("exportUsersBtn").addEventListener("click", () => exportToPdf('users-export.pdf', allVolunteers));
+            document.getElementById("exportFinanceBtn").addEventListener("click", () => exportToPdf('finance-users-export.pdf', allFinanceUsers));
+            // END: Updated Event Listeners for PDF Export
+
             document.getElementById('statusFilter').addEventListener('change', applyFiltersAndRender);
             document.getElementById('emailSearch').addEventListener('input', applyFiltersAndRender);
             document.getElementById('startDate').addEventListener('change', applyFiltersAndRender);
@@ -379,19 +390,44 @@
                 });
             });
 
-            function exportToCsv(filename, data) {
-                if (!data || data.length < 2) { showToast("No data available to export.", true); return; }
-                const csvContent = "data:text/csv;charset=utf-8," + data.map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')).join('\n');
-                const encodedUri = encodeURI(csvContent);
-                const link = document.createElement("a");
-                const today = new Date().toISOString().split('T')[0];
-                link.setAttribute("href", encodedUri);
-                link.setAttribute("download", `${filename.split('.')[0]}-${today}.csv`);
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                showToast("Data exported successfully!");
+            // START: New PDF Export Function
+            function exportToPdf(filename, data) {
+                if (!data || data.length < 2) {
+                    showToast("No data available to export.", true);
+                    return;
+                }
+                try {
+                    const { jsPDF } = window.jspdf;
+                    const doc = new jsPDF();
+                    const headers = data[0];
+                    const body = data.slice(1);
+                    const today = new Date().toISOString().split('T')[0];
+                    const finalFilename = `${filename.split('.')[0]}-${today}.pdf`;
+
+                    let title = "Data Export";
+                    if (filename.includes('tasks')) title = "All Tasks Report";
+                    if (filename.includes('users')) title = "All Users Report";
+                    if (filename.includes('finance')) title = "Finance Team Report";
+                    
+                    doc.text(title, 14, 15);
+                    
+                    doc.autoTable({
+                        head: [headers],
+                        body: body,
+                        startY: 22,
+                        theme: 'striped',
+                        styles: { fontSize: 8, cellPadding: 2 },
+                        headStyles: { fillColor: [28, 58, 138] }, // Dark blue color for header
+                    });
+                    
+                    doc.save(finalFilename);
+                    showToast("Data exported successfully as PDF!");
+                } catch (error) {
+                    console.error("Error exporting to PDF:", error);
+                    showToast("Failed to export PDF. Please try again.", true);
+                }
             }
+            // END: New PDF Export Function
 
             function showToast(message, isError = false) {
                 Toastify({ text: message, duration: 3000, close: true, gravity: "top", position: "right", style: { background: isError ? "linear-gradient(to right, #ef4444, #b91c1c)" : "linear-gradient(to right, #22c55e, #15803d)" } }).showToast();
@@ -469,14 +505,36 @@
                     renderTable(allVolunteers, document.getElementById("volunteersTableContainer"));
                     renderTable(allFinanceUsers, document.getElementById("financeTableContainer"));
                     
-                    checkFinanceTeamStatus(); // New function call to check roles and update form
+                    checkFinanceTeamStatus(); 
                     
                     renderKPIs(allTasks, allVolunteers);
                     renderTaskStatusChart(allTasks);
                     generateAndRenderActivityFeed(allTasks, allVolunteers);
 
                     if (leaderboardData.status === 'error') throw new Error(leaderboardData.message);
-                    renderLeaderboard(leaderboardData.leaderboard);
+                    
+                    let filteredLeaderboardData = [];
+                    if (allVolunteers.length > 1 && leaderboardData.leaderboard && leaderboardData.leaderboard.length > 1) {
+                        const volHeaders = allVolunteers[0];
+                        const volData = allVolunteers.slice(1);
+                        const roleIndex = volHeaders.indexOf("Role");
+                        const emailIndex = volHeaders.indexOf("Email");
+                        const volunteerEmails = new Set(
+                            volData
+                                .filter(user => user[roleIndex] && user[roleIndex].trim().toLowerCase() === 'volunteer')
+                                .map(user => user[emailIndex].trim().toLowerCase())
+                        );
+                        const leaderboardHeaders = leaderboardData.leaderboard[0];
+                        const leaderboardUsers = leaderboardData.leaderboard.slice(1);
+                        const volunteerScores = leaderboardUsers.filter(scoreRow => 
+                            scoreRow[0] && volunteerEmails.has(scoreRow[0].trim().toLowerCase())
+                        );
+                        filteredLeaderboardData = [leaderboardHeaders, ...volunteerScores];
+                    } else {
+                        filteredLeaderboardData = leaderboardData.leaderboard;
+                    }
+                    
+                    renderLeaderboard(filteredLeaderboardData);
                 })
                 .catch(handleAuthError)
                 .finally(() => {
@@ -510,18 +568,10 @@
                 }
             }
             
-            /**
-             * NEW FUNCTION
-             * Checks the current finance team composition and updates the 'Add Member' form accordingly.
-             * Disables role options that are already filled.
-             * Hides the form completely if both roles (Manager and Assistant) are filled.
-             */
             function checkFinanceTeamStatus() {
                 const form = document.getElementById('addFinanceMemberForm');
                 const roleSelect = document.getElementById('financeRole');
-                const formContainer = form.parentElement; // The .accordion-content div
-
-                // 1. Reset form to a default enabled state
+                const formContainer = form.parentElement; 
                 form.style.display = 'block';
                 const existingMessage = formContainer.querySelector('.finance-full-message');
                 if (existingMessage) {
@@ -530,37 +580,27 @@
                 Array.from(roleSelect.options).forEach(opt => {
                     opt.disabled = false;
                 });
-                roleSelect.value = 'Assistant'; // Default selection
-
-                // 2. Check current roles if data exists
+                roleSelect.value = 'Assistant';
                 if (!allFinanceUsers || allFinanceUsers.length < 2) {
-                    return; // No members, form is fine as is
+                    return;
                 }
-
                 const headers = allFinanceUsers[0];
                 const roleIndex = headers.indexOf("Role");
-                if (roleIndex === -1) return; // Role column not found, can't proceed
-
+                if (roleIndex === -1) return;
                 const financeData = allFinanceUsers.slice(1);
                 const hasManager = financeData.some(user => user[roleIndex] === 'Manager');
                 const hasAssistant = financeData.some(user => user[roleIndex] === 'Assistant');
-
-                // 3. Update form based on roles found
                 if (hasManager) {
                     roleSelect.querySelector('option[value="Manager"]').disabled = true;
                 }
                 if (hasAssistant) {
                     roleSelect.querySelector('option[value="Assistant"]').disabled = true;
                 }
-
-                // If the default selected option is now disabled, switch to the other one
                 if (roleSelect.options[roleSelect.selectedIndex].disabled) {
                     roleSelect.value = hasManager ? 'Assistant' : 'Manager';
                 }
-
-                // 4. If both roles are filled, hide form and show message
                 if (hasManager && hasAssistant) {
-                    form.style.display = 'none'; // Hide form
+                    form.style.display = 'none';
                     const messageDiv = document.createElement('div');
                     messageDiv.className = 'finance-full-message text-center p-4 bg-yellow-100 text-yellow-800 rounded-md';
                     messageDiv.innerHTML = `<i class="fa-solid fa-circle-info mr-2"></i>Both finance roles are filled. To add a new member, please delete an existing one first.`;
@@ -620,7 +660,6 @@
                 });
                 table.appendChild(tbody);
                 container.appendChild(table);
-                // Attach event listeners
                 container.querySelectorAll('.edit-task-btn').forEach(btn => btn.addEventListener('click', (e) => openEditTaskModal(e.currentTarget.dataset.taskId)));
                 container.querySelectorAll('.delete-task-btn').forEach(btn => btn.addEventListener('click', (e) => handleDelete(e.currentTarget.dataset.taskId, 'task')));
                 container.querySelectorAll('.delete-user-btn').forEach(btn => btn.addEventListener('click', (e) => handleDelete(e.currentTarget.dataset.userEmail, 'user')));
@@ -775,41 +814,53 @@
 
             function renderKPIs(tasks, volunteers) {
                 if (!tasks || tasks.length < 2) {
-                    document.getElementById('kpi-total-volunteers').textContent = (volunteers && volunteers.length > 1) ? volunteers.length - 1 : 0;
                     document.getElementById('kpi-tasks-in-progress').textContent = 0;
                     document.getElementById('kpi-tasks-completed').textContent = 0;
                     document.getElementById('kpi-overdue-tasks').textContent = 0;
                     document.getElementById('kpi-tasks-assigned').textContent = 0;
                     document.getElementById('kpi-tasks-blocked').textContent = 0;
                     document.getElementById('kpi-completed-overdue').textContent = 0;
-                    return;
+                } else {
+                    const headers = tasks[0];
+                    const data = tasks.slice(1);
+                    const statusIndex = headers.indexOf("Status");
+                    const dueDateIndex = headers.indexOf("DueDate");
+                    const lastUpdatedIndex = headers.indexOf("LastUpdated");
+                    let inProgress = 0, completed = 0, overdue = 0, assigned = 0, blocked = 0, completedOverdue = 0;
+                    const today = new Date();
+                    today.setHours(0,0,0,0);
+                    data.forEach(row => {
+                        const status = row[statusIndex];
+                        const dueDate = new Date(row[dueDateIndex]);
+                        const lastUpdatedDate = new Date(row[lastUpdatedIndex]);
+                        if (status === 'In Progress') inProgress++;
+                        if (status === 'Completed') completed++;
+                        if (status === 'Assigned') assigned++;
+                        if (status === 'Blocked') blocked++;
+                        if (status !== 'Completed' && dueDate < today) { overdue++; }
+                        if (status === 'Completed' && lastUpdatedDate > dueDate) { completedOverdue++; }
+                    });
+                    document.getElementById('kpi-tasks-in-progress').textContent = inProgress;
+                    document.getElementById('kpi-tasks-completed').textContent = completed;
+                    document.getElementById('kpi-overdue-tasks').textContent = overdue;
+                    document.getElementById('kpi-tasks-assigned').textContent = assigned;
+                    document.getElementById('kpi-tasks-blocked').textContent = blocked;
+                    document.getElementById('kpi-completed-overdue').textContent = completedOverdue;
                 }
-                const headers = tasks[0];
-                const data = tasks.slice(1);
-                const statusIndex = headers.indexOf("Status");
-                const dueDateIndex = headers.indexOf("DueDate");
-                const lastUpdatedIndex = headers.indexOf("LastUpdated");
-                let inProgress = 0, completed = 0, overdue = 0, assigned = 0, blocked = 0, completedOverdue = 0;
-                const today = new Date();
-                today.setHours(0,0,0,0);
-                data.forEach(row => {
-                    const status = row[statusIndex];
-                    const dueDate = new Date(row[dueDateIndex]);
-                    const lastUpdatedDate = new Date(row[lastUpdatedIndex]);
-                    if (status === 'In Progress') inProgress++;
-                    if (status === 'Completed') completed++;
-                    if (status === 'Assigned') assigned++;
-                    if (status === 'Blocked') blocked++;
-                    if (status !== 'Completed' && dueDate < today) { overdue++; }
-                    if (status === 'Completed' && lastUpdatedDate > dueDate) { completedOverdue++; }
-                });
-                document.getElementById('kpi-total-volunteers').textContent = (volunteers && volunteers.length > 1) ? volunteers.length - 1 : 0;
-                document.getElementById('kpi-tasks-in-progress').textContent = inProgress;
-                document.getElementById('kpi-tasks-completed').textContent = completed;
-                document.getElementById('kpi-overdue-tasks').textContent = overdue;
-                document.getElementById('kpi-tasks-assigned').textContent = assigned;
-                document.getElementById('kpi-tasks-blocked').textContent = blocked;
-                document.getElementById('kpi-completed-overdue').textContent = completedOverdue;
+                
+                let volunteerOnlyCount = 0;
+                if (volunteers && volunteers.length > 1) {
+                    const volHeaders = volunteers[0];
+                    const volData = volunteers.slice(1);
+                    const roleIndex = volHeaders.indexOf("Role"); 
+
+                    if (roleIndex > -1) {
+                        volunteerOnlyCount = volData.filter(row => row[roleIndex] === 'Volunteer').length;
+                    } else {
+                        volunteerOnlyCount = volData.length;
+                    }
+                }
+                document.getElementById('kpi-total-volunteers').textContent = volunteerOnlyCount;
             }
 
             function renderLeaderboard(data) {
@@ -820,15 +871,17 @@
                 const canvas = document.getElementById("leaderboardCanvas");
                 const headers = data.shift();
                 const topVolunteers = data.slice(0, 10);
-                const names = topVolunteers.map(row => row[0]);
-                const scores = topVolunteers.map(row => row[1]);
+                
+                const names = topVolunteers.map(row => row[1]); 
+                const scores = topVolunteers.map(row => row[2]);
+
                 const rankColors = ['#FFD700', '#C0C0C0', '#CD7F32'];
                 const barColors = topVolunteers.map((_, index) => rankColors[index] || '#3b82f6');
                 const ctx = canvas.getContext('2d');
                 leaderboardChart = new Chart(ctx, {
                     type: 'bar',
                     data: { labels: names, datasets: [{ label: 'Volunteer Score', data: scores, backgroundColor: barColors, borderColor: barColors, borderWidth: 1, borderRadius: 4 }] },
-                    options: { indexAxis: 'x', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(context) { let label = context.dataset.label || ''; if (label) label += ': '; if (context.parsed.y !== null) label += context.parsed.y; const tasksCompleted = topVolunteers[context.dataIndex][2]; return [label, `Tasks Completed: ${tasksCompleted}`]; } } } }, scales: { y: { beginAtZero: true, title: { display: true, text: 'Performance Score' } }, x: { ticks: { font: { weight: 'bold' } } } } }
+                    options: { indexAxis: 'x', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(context) { let label = context.dataset.label || ''; if (label) label += ': '; if (context.parsed.y !== null) label += context.parsed.y; const tasksCompleted = topVolunteers[context.dataIndex][3]; return [label, `Tasks Completed: ${tasksCompleted}`]; } } } }, scales: { y: { beginAtZero: true, title: { display: true, text: 'Performance Score' } }, x: { ticks: { font: { weight: 'bold' } } } } }
                 });
             }
 
