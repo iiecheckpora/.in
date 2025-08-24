@@ -40,7 +40,7 @@
         .sidebar-link { transition: background-color 0.2s, color 0.2s; }
         .sidebar-link:hover { background-color: #2563eb; color: white; }
         .sidebar-link.active { background-color: #1d4ed8; color: white; font-weight: 600; }
-
+        
         /* Loader Animation Styles (from admin.html) */
         #loader-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -65,7 +65,7 @@
         <p id="loader-motivation-text" class="loader-quote"></p>
     </div>
 
-    <aside id="sidebar" class="text-gray-100 w-64 p-4 flex flex-col fixed top-0 right-0 z-[60] translate-x-full lg:translate-x-0">
+    <aside id="sidebar" class="text-gray-100 w-64 p-4 flex flex-col fixed top-0 right-0 bottom-0 z-[60] translate-x-full lg:translate-x-0">
         <a href="index.html" class="flex items-center space-x-3 pb-4 border-b border-blue-500">
             <img src="IMG-20230327-WA0002.jpg" alt="Institute Logo" class="h-12 w-12 p-0.5 bg-white shadow-md rounded-md">
             <div class="text-left">
@@ -93,19 +93,18 @@
     </aside>
 
     <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden lg:hidden"></div>
-
+    <header class="bg-white shadow-md sticky top-0 z-40 lg:hidden">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html">
+                <img src="IMG-20230327-WA0002.jpg" alt="Institute Logo" class="h-12 w-12 p-0.5 bg-white shadow-md rounded-md">
+            </a>
+            <span class="text-lg font-bold text-blue-800">Finance Portal</span>
+            <button id="menu-toggle-btn" class="text-gray-700">
+                <i class="fa-solid fa-bars fa-lg"></i>
+            </button>
+        </div>
+    </header>
     <div class="lg:mr-64 overflow-x-hidden">
-        <header class="bg-white shadow-md sticky top-0 z-40 lg:hidden">
-            <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-                <a href="index.html">
-                    <img src="IMG-20230327-WA0002.jpg" alt="Institute Logo" class="h-12 w-12 p-0.5 bg-white shadow-md rounded-md">
-                </a>
-                <span class="text-lg font-bold text-blue-800">Finance Portal</span>
-                <button id="menu-toggle-btn" class="text-gray-700">
-                    <i class="fa-solid fa-bars fa-lg"></i>
-                </button>
-            </div>
-        </header>
 
         <main class="container mx-auto p-4 sm:p-6">
             <section id="dashboard" class="scroll-target">
