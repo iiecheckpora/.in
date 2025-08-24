@@ -108,18 +108,34 @@
 
         <main class="container mx-auto p-4 sm:p-6">
             <section id="dashboard" class="scroll-target">
-                <section id="kpi-section" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
-                    <div class="kpi-card bg-gray-600 text-white p-6 rounded-lg shadow-lg"><h2 class="text-lg font-semibold">Balance B/F</h2><p id="balance-bf" class="text-3xl font-bold mt-2">₹0.00</p></div>
-                    <div class="kpi-card bg-green-600 text-white p-6 rounded-lg shadow-lg"><h2 class="text-lg font-semibold">Total Income</h2><p id="total-income" class="text-3xl font-bold mt-2">₹0.00</p></div>
-                    <div class="kpi-card bg-red-600 text-white p-6 rounded-lg shadow-lg"><h2 class="text-lg font-semibold">Total Expenditure</h2><p id="total-expenditure" class="text-3xl font-bold mt-2">₹0.00</p></div>
-                    <div class="kpi-card bg-yellow-500 text-white p-6 rounded-lg shadow-lg"><h2 class="text-lg font-semibold">Net Flow</h2><p id="net-flow" class="text-3xl font-bold mt-2">₹0.00</p></div>
-                    <div class="kpi-card bg-blue-600 text-white p-6 rounded-lg shadow-lg"><h2 class="text-lg font-semibold">Final Balance</h2><p id="total-balance" class="text-3xl font-bold mt-2">₹0.00</p></div>
+                <section id="kpi-section" class="flex flex-row-reverse flex-wrap justify-end gap-6 mb-8">
+                    <div class="kpi-card flex-grow min-w-[180px] bg-gray-600 text-white p-6 rounded-lg shadow-lg">
+                        <h2 class="text-lg font-semibold">Balance B/F</h2>
+                        <p id="balance-bf" class="text-3xl font-bold mt-2 break-all">₹0.00</p>
+                    </div>
+                    <div class="kpi-card flex-grow min-w-[180px] bg-green-600 text-white p-6 rounded-lg shadow-lg">
+                        <h2 class="text-lg font-semibold">Total Income</h2>
+                        <p id="total-income" class="text-3xl font-bold mt-2 break-all">₹0.00</p>
+                    </div>
+                    <div class="kpi-card flex-grow min-w-[180px] bg-red-600 text-white p-6 rounded-lg shadow-lg">
+                        <h2 class="text-lg font-semibold">Total Expenditure</h2>
+                        <p id="total-expenditure" class="text-3xl font-bold mt-2 break-all">₹0.00</p>
+                    </div>
+                    <div class="kpi-card flex-grow min-w-[180px] bg-yellow-500 text-white p-6 rounded-lg shadow-lg">
+                        <h2 class="text-lg font-semibold">Net Flow</h2>
+                        <p id="net-flow" class="text-3xl font-bold mt-2 break-all">₹0.00</p>
+                    </div>
+                    <div class="kpi-card flex-grow min-w-[180px] bg-blue-600 text-white p-6 rounded-lg shadow-lg">
+                        <h2 class="text-lg font-semibold">Final Balance</h2>
+                        <p id="total-balance" class="text-3xl font-bold mt-2 break-all">₹0.00</p>
+                    </div>
                 </section>
         
                 <section class="bg-white p-4 rounded-lg shadow-md mb-8 flex flex-col sm:flex-row flex-wrap justify-center sm:justify-between items-center gap-4">
                     <div class="flex flex-wrap justify-center items-center gap-4">
                         <button id="add-income-btn" class="bg-green-500 text-white font-bold py-2 px-4 rounded-md hover:bg-green-600 transition"><i class="fa-solid fa-plus mr-2"></i>Add Income</button>
                         <button id="add-expenditure-btn" class="bg-red-500 text-white font-bold py-2 px-4 rounded-md hover:bg-red-600 transition"><i class="fa-solid fa-minus mr-2"></i>Add Expenditure</button>
+                        <a href="invoice.html" class="bg-indigo-500 text-white font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition"><i class="fa-solid fa-file-invoice mr-2"></i>Create Invoice</a>
                     </div>
                     <div class="flex flex-wrap justify-center items-center gap-4">
                         <button id="close-ledger-btn" class="manager-only bg-purple-600 text-white font-bold py-2 px-4 rounded-md hover:bg-purple-700 transition"><i class="fa-solid fa-book-bookmark mr-2"></i>Ledger Close</button>
@@ -132,23 +148,16 @@
             <section id="records" class="scroll-target grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div class="bg-white p-6 rounded-lg shadow-md"><h2 class="text-2xl font-bold mb-4 text-green-700">Income Records</h2><div class="overflow-x-auto"><table class="min-w-full divide-y divide-gray-200"><thead class="bg-gray-50"><tr><th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Description</th><th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Amount</th><th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th><th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Added By</th><th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase manager-only">Actions</th></tr></thead><tbody id="income-table-body" class="bg-white divide-y divide-gray-200"></tbody></table></div></div>
                 <div class="bg-white p-6 rounded-lg shadow-md"><h2 class="text-2xl font-bold mb-4 text-red-700">Expenditure Records</h2><div class="overflow-x-auto"><table class="min-w-full divide-y divide-gray-200"><thead class="bg-gray-50"><tr><th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Description</th><th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Amount</th><th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th><th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Added By</th><th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase manager-only">Actions</th></tr></thead><tbody id="expenditure-table-body" class="bg-white divide-y divide-gray-200"></tbody></table></div></div>
+                <section id="team" class="scroll-target mt-8 manager-only">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-2xl font-bold mb-4 text-gray-800">Finance Team Members</h2>
+                        <div id="finance-team-container" class="space-y-3">
+                            </div>
+                    </div>
+                </section>
             </section>
             
-            <section id="team" class="scroll-target mt-8 manager-only bg-white p-6 rounded-lg shadow-md">
-                <h2 class="text-2xl font-bold mb-4 text-gray-800">Finance Team Members</h2>
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Full Name</th>
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Role</th>
-                            </tr>
-                        </thead>
-                        <tbody id="finance-team-table-body" class="bg-white divide-y divide-gray-200"></tbody>
-                    </table>
-                </div>
-            </section>
+            
         </main>
     </div>
 
@@ -340,11 +349,52 @@
                 if (userRole === 'Manager') { tbody.querySelectorAll('.manager-only').forEach(el => el.style.display = 'table-cell'); }
             };
             const renderFinanceTeam = (teamData) => {
-                const tbody = document.getElementById('finance-team-table-body');
-                tbody.innerHTML = '';
-                if (!teamData || teamData.length <= 1) { tbody.innerHTML = `<tr><td colspan="3" class="text-center text-gray-500 py-4">No team data found.</td></tr>`; return; }
+                const container = document.getElementById('finance-team-container');
+                container.innerHTML = '';
+                if (!teamData || teamData.length <= 1) {
+                    container.innerHTML = `<p class="text-center text-gray-500 py-4">No team data found.</p>`;
+                    return;
+                }
+
+                const headers = teamData[0];
                 const teamRows = teamData.slice(1);
-                teamRows.forEach(row => { const tr = document.createElement('tr'); tr.innerHTML = `<td class="px-4 py-3 text-sm font-medium text-gray-900">${row[1]}</td><td class="px-4 py-3 text-sm text-gray-700">${row[2]}</td><td class="px-4 py-3 text-sm text-gray-700">${row[3]}</td>`; tbody.appendChild(tr); });
+
+                teamRows.forEach(row => {
+                    const fullName = row[headers.indexOf("FullName")];
+                    const email = row[headers.indexOf("Email")];
+                    const role = row[headers.indexOf("Role")];
+
+                    const accordionItem = document.createElement('div');
+                    accordionItem.className = 'border rounded-lg overflow-hidden';
+                    accordionItem.innerHTML = `
+                        <button class="accordion-toggle-team w-full p-4 flex justify-between items-center text-left hover:bg-gray-50 transition">
+                            <span class="font-semibold text-gray-800">${fullName}</span>
+                            <i class="fa-solid fa-chevron-down text-gray-500 transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-panel-team overflow-hidden" style="max-height: 0; transition: max-height 0.4s ease-out;">
+                            <div class="p-4 border-t bg-gray-50 text-sm">
+                                <p class="mb-2"><strong class="text-gray-600">Email:</strong> ${email}</p>
+                                <p><strong class="text-gray-600">Role:</strong> <span class="font-medium text-blue-700">${role}</span></p>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(accordionItem);
+                });
+
+                // Add event listeners for the new accordions
+                document.querySelectorAll('.accordion-toggle-team').forEach(button => {
+                    button.addEventListener('click', () => {
+                        const panel = button.nextElementSibling;
+                        const icon = button.querySelector('i');
+                        if (panel.style.maxHeight === '0px' || !panel.style.maxHeight) {
+                            panel.style.maxHeight = panel.scrollHeight + 'px';
+                            icon.classList.add('rotate-180');
+                        } else {
+                            panel.style.maxHeight = '0';
+                            icon.classList.remove('rotate-180');
+                        }
+                    });
+                });
             };
             const fetchFinanceData = () => { showLoader('Loading Finance Data...'); postData({ action: 'getFinanceData' }, (data) => { renderDashboard(data); hideLoader(); }); };
             document.getElementById('logoutButton').addEventListener('click', () => { showLoader('Logging out...'); localStorage.removeItem('sessionToken'); window.location.href = 'login.html'; });
