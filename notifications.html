@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notification Center</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .recipient-tag {
+            background-color: #e0e7ff; /* bg-indigo-100 */
+            color: #4338ca; /* text-indigo-800 */
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem; /* rounded-md */
+            margin: 0.125rem; /* a small margin */
+            display: inline-flex;
+            align-items: center;
+            font-size: 0.875rem; /* text-sm */
+            font-weight: 500; /* font-medium */
+        }
+        .recipient-tag button {
+            margin-left: 0.5rem; /* ml-2 */
+            color: #4f46e5; /* text-indigo-600 */
+            background: transparent;
+            border: none;
+            cursor: pointer;
+        }
+        .recipient-tag button:hover {
+            color: #c7d2fe; /* text-indigo-200 */
+        }
+    </style>
+</head>
+<body>
+    <div class="space-y-6">
+        <div>
+            <div class="border-b border-gray-200">
+                <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+                    <a href="#" id="compose-tab" class="border-indigo-500 text-indigo-600 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">Compose New</a>
+                    <a href="#" id="inbox-tab" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">Sent Messages</a>
+                </nav>
+            </div>
+        </div>
+
+        <div id="compose-section">
+            <form id="notification-form" class="space-y-4">
+                <div>
+                    <label for="recipients" class="block text-sm font-medium text-gray-700">Recipients</label>
+                    <div class="mt-1 flex flex-wrap gap-2">
+                        <button type="button" id="add-all-volunteers" class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold hover:bg-blue-200">
+                            <i class="fa-solid fa-users mr-2"></i>All Volunteers
+                        </button>
+                        <button type="button" id="add-all-finance" class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold hover:bg-green-200">
+                            <i class="fa-solid fa-wallet mr-2"></i>All Finance Team
+                        </button>
+                    </div>
+                    <div class="relative mt-2">
+                        <input type="text" id="recipient-search" placeholder="Type name or email to add specific users..." class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                        <div id="recipient-suggestions" class="absolute z-10 w-full bg-white border border-gray-300 rounded-md mt-1 shadow-lg"></div>
+                    </div>
+                    <div id="recipient-tags" class="mt-2 p-2 border rounded-md min-h-[40px] bg-gray-50">
+                        </div>
+                </div>
+                <div>
+                    <label for="subject" class="block text-sm font-medium text-gray-700">Subject</label>
+                    <input type="text" id="subject" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+                <div>
+                    <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
+                    <textarea id="message" rows="5" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-indigo-600 text-white font-bold py-2 px-4 rounded-md hover:bg-indigo-700 transition-colors flex items-center justify-center">
+                    <i class="fa-solid fa-paper-plane mr-2"></i>Send Notification
+                </button>
+            </form>
+        </div>
+
+        <div id="inbox-section" class="hidden">
+            <div id="notification-list" class="space-y-4">
+                <p class="text-gray-500">Loading sent messages...</p>
+            </div>
+        </div>
+    </div>
+    <div id="conversation-modal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-[100] hidden">
+        <div class="bg-white p-6 rounded-lg shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col">
+            <div class="flex justify-between items-center mb-4 pb-4 border-b">
+                <h2 id="modal-subject" class="text-xl font-bold text-gray-800">Conversation Details</h2>
+                <button id="close-modal-btn" class="text-gray-500 hover:text-red-600 text-2xl">&times;</button>
+            </div>
+            <div class="flex-grow overflow-y-auto pr-2">
+                <h3 class="font-semibold text-gray-700">Original Message:</h3>
+                <p id="modal-body" class="mt-1 mb-4 p-3 bg-gray-50 rounded-md whitespace-pre-wrap"></p>
+                <h3 class="font-semibold text-gray-700">Replies:</h3>
+                <div id="modal-replies" class="mt-2 space-y-3">
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Group Selection Modal -->
+    <div id="group-select-modal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-[100] hidden">
+      <div class="bg-white p-6 rounded-lg shadow-2xl max-w-md w-full">
+        <h2 class="text-xl font-bold mb-2" id="group-select-title"></h2>
+        <div id="group-select-list" class="mb-4 max-h-64 overflow-y-auto"></div>
+        <div class="flex justify-end gap-2">
+          <button type="button" id="group-select-cancel" class="bg-gray-200 px-4 py-2 rounded-md hover:bg-gray-300">Cancel</button>
+          <button type="button" id="group-select-confirm" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Add Selected</button>
+        </div>
+      </div>
+    </div>
+</body>
+</html>

@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Mirza:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
     <style>
         html { scroll-behavior: smooth; }
         body { font-family: 'Inter', sans-serif; }
@@ -57,6 +58,62 @@
         .loader-quote { margin-top: 1.5rem; font-size: 1rem; font-style: italic; color: #4b5563; max-width: 90vw; width: 500px; padding: 0 1rem; }
         @keyframes pulse-zoom { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.8; } }
         @keyframes text-fade { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+
+        /* 3D Cube Loader for Notification Section */
+        .notification-loader {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 120px;
+        }
+        .cube {
+            width: 40px;
+            height: 40px;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: spin-cube 1.2s infinite linear;
+        }
+        .cube-face {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: #3b82f6;
+            opacity: 0.8;
+            border: 2px solid #2563eb;
+        }
+        .cube-face.front  { transform: rotateY(  0deg) translateZ(20px); }
+        .cube-face.back   { transform: rotateY(180deg) translateZ(20px); }
+        .cube-face.right  { transform: rotateY( 90deg) translateZ(20px); }
+        .cube-face.left   { transform: rotateY(-90deg) translateZ(20px); }
+        .cube-face.top    { transform: rotateX( 90deg) translateZ(20px); }
+        .cube-face.bottom { transform: rotateX(-90deg) translateZ(20px); }
+
+        @keyframes spin-cube {
+            0%   { transform: rotateX(0deg) rotateY(0deg); }
+            100% { transform: rotateX(360deg) rotateY(360deg); }
+        }
+
+        /* Bell swing animation */
+        .bell-animate {
+            animation: bell-swing 0.7s infinite cubic-bezier(0.4,0,0.6,1);
+            transform-origin: top center;
+        }
+        @keyframes bell-swing {
+            0%   { transform: rotate(0deg);}
+            20%  { transform: rotate(-20deg);}
+            40%  { transform: rotate(15deg);}
+            60%  { transform: rotate(-10deg);}
+            80%  { transform: rotate(5deg);}
+            100% { transform: rotate(0deg);}
+        }
+        select {
+    border-radius: 0.75rem !important; /* More pronounced rounding */
+}
+.choices__list--dropdown, .choices__list[role="listbox"] {
+    border-radius: 0.75rem !important;
+    overflow: hidden;
+}
     </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
@@ -80,6 +137,13 @@
                 <li><a href="#personal-dashboard" class="sidebar-link flex items-center p-2 rounded-md"><i class="fa-solid fa-tachometer-alt fa-fw mr-3"></i>Dashboard</a></li>
                 <li><a href="#tasksContainer" class="sidebar-link flex items-center p-2 rounded-md"><i class="fa-solid fa-tasks fa-fw mr-3"></i>My Tasks</a></li>
                 <li><a href="profile.html" class="sidebar-link flex items-center p-2 rounded-md"><i class="fa-solid fa-user fa-fw mr-3"></i>My Profile</a></li>
+                <li>
+    <a href="#notifications" class="sidebar-link flex items-center p-2 rounded-md relative">
+        <i class="fa-solid fa-bell fa-fw mr-3"></i>
+        Notifications
+        <span id="sidebar-notification-count" class="absolute right-2 top-2 bg-red-500 text-white text-xs rounded-full px-2 py-0.5 hidden"></span>
+    </a>
+</li>
             </ul>
         </nav>
         <div class="pt-4 border-t border-blue-500">
@@ -102,9 +166,20 @@
                     <img src="IMG-20230327-WA0002.jpg" alt="Institute Logo" class="h-12 w-12 p-0.5 bg-white shadow-md rounded-md">
                 </a>
                 <span class="text-lg font-bold text-blue-800">Volunteer Portal</span>
-                <button id="menu-toggle-btn" class="text-gray-700">
-                    <i class="fa-solid fa-bars fa-lg"></i>
-                </button>
+                <div class="flex items-center space-x-4">
+                    <button id="notification-bell" class="relative text-gray-700 focus:outline-none">
+                        <i class="fa-solid fa-bell fa-lg"></i>
+                        <span id="notification-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-2 py-0.5 hidden"></span>
+                    </button>
+                    <button id="menu-toggle-btn" class="text-gray-700">
+                        <i class="fa-solid fa-bars fa-lg"></i>
+                    </button>
+                </div>
+            </div>
+            <div id="notification-dropdown" class="absolute right-4 mt-2 w-80 bg-white rounded-lg shadow-lg border z-50 hidden">
+                <div class="p-4 border-b font-bold text-gray-700">Notifications</div>
+                <div id="dropdown-notification-list" class="max-h-80 overflow-y-auto"></div>
+                <div class="p-2 text-center text-sm text-gray-400">End of notifications</div>
             </div>
         </header>
 
@@ -147,24 +222,28 @@
                 </div>
             </section>
 
-            <section class="bg-white p-4 rounded-lg shadow-md mb-6">
-                <div class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4">
-                    <div>
-                        <label for="statusFilter" class="block text-sm font-medium text-gray-700">Filter by Status</label>
-                        <select id="statusFilter" class="mt-1 block w-full sm:w-auto border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                            <option value="All">All Active</option>
-                            <option value="In Progress">In Progress</option>
-                            <option value="Assigned">Assigned</option>
-                            <option value="Blocked">Blocked</option>
-                            <option value="Completed">Completed</option>
-                        </select>
+            <section class="bg-white p-4 rounded-xl shadow-lg mb-6">
+                <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+                    <div class="flex-1">
+                        <label for="statusFilter" class="block text-sm font-semibold text-blue-700 mb-1">Filter by Status</label>
+                        <div class="relative">
+                            <select id="statusFilter" class="block w-full border border-blue-200 rounded-lg py-2 pl-3 pr-10 text-sm focus:ring-blue-500 focus:border-blue-500 bg-blue-50 font-medium transition">
+                                <option value="All">All Active</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Assigned">Assigned</option>
+                                <option value="Blocked">Blocked</option>
+                                <option value="Completed">Completed</option>
+                            </select>
+                        </div>
                     </div>
-                    <div>
-                        <label for="sortOrder" class="block text-sm font-medium text-gray-700">Sort by Due Date</label>
-                        <select id="sortOrder" class="mt-1 block w-full sm:w-auto border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                            <option value="asc">Nearest First</option>
-                            <option value="desc">Farthest First</option>
-                        </select>
+                    <div class="flex-1">
+                        <label for="sortOrder" class="block text-sm font-semibold text-blue-700 mb-1">Sort by Due Date</label>
+                        <div class="relative">
+                            <select id="sortOrder" class="block w-full border border-blue-200 rounded-lg py-2 pl-3 pr-10 text-sm focus:ring-blue-500 focus:border-blue-500 bg-blue-50 font-medium transition">
+                                <option value="asc">Nearest First</option>
+                                <option value="desc">Farthest First</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -172,13 +251,26 @@
             <h2 class="text-xl font-semibold mb-4 text-gray-700">Your Assigned Tasks</h2>
             <div id="tasksContainer" class="space-y-6 scroll-target">
             </div>
+            <section id="notifications" class="scroll-target mt-8">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-2xl font-bold text-gray-800">Notifications</h2>
+                        <i class="fa-solid fa-bell text-gray-400 fa-lg"></i>
+                    </div>
+                    <div id="user-notification-list" class="space-y-4 max-h-[260px] overflow-y-auto pr-2">
+                        <!-- Notifications will be rendered here -->
+                    </div>
+                </div>
+            </section>
         </main>
     </div>
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const API_URL = "https://script.google.com/macros/s/AKfycbydsaGPqmfTil6_fc3dpEbwmyO291ru47HePDBxLr5VVIaARJzHP5Ar3r5fD_0dL9Mcqw/exec";
+            const API_URL = "https://script.google.com/macros/s/AKfycby9QZWN-en_zcdhr2uBmhxLQEUGrvRAhVrerIZPBFzX2PuUS43T-Y_Vir0OWHgqgqhlaw/exec";
             const token = localStorage.getItem("sessionToken");
             const loaderOverlay = document.getElementById('loader-overlay'); 
 
@@ -205,6 +297,9 @@
                     if (window.innerWidth < 1024) {
                         toggleSidebar();
                     }
+                    if (link.getAttribute('href') === '#notifications') {
+                        document.getElementById('notifications').scrollIntoView({ behavior: 'smooth' });
+                    }
                 });
             });
 
@@ -213,32 +308,57 @@
             document.getElementById('sortOrder').addEventListener('change', applyFiltersAndSort);
             document.getElementById("logoutButton").addEventListener("click", logout);
 
+            const bellBtn = document.getElementById('notification-bell');
+            const dropdown = document.getElementById('notification-dropdown');
+
+            if (bellBtn) {
+                bellBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    dropdown.classList.toggle('hidden');
+                });
+                // Hide dropdown when clicking outside
+                document.addEventListener('click', () => {
+                    dropdown.classList.add('hidden');
+                });
+                dropdown.addEventListener('click', (e) => e.stopPropagation());
+            }
+
             // --- Core Functions ---
             function showToast(message, isError = false) {
                 Toastify({
-                    text: message, duration: 3000, close: true, gravity: "top", position: "right",
-                    style: { background: isError ? "linear-gradient(to right, #ef4444, #b91c1c)" : "linear-gradient(to right, #22c55e, #15803d)" }
+                    text: message,
+                    duration: 3500,
+                    close: true,
+                    gravity: "top", // Show at top
+                    position: "center", // Centered horizontally
+                    style: {
+                        background: isError 
+                            ? "linear-gradient(to right, #ef4444, #b91c1c)" 
+                            : "linear-gradient(90deg, #3b82f6 0%, #16a34a 100%)",
+                        color: "#fff",
+                        fontWeight: "600",
+                        fontSize: "1rem",
+                        borderRadius: "0.75rem",
+                        boxShadow: "0 4px 16px rgba(59,130,246,0.15)",
+                        padding: "1rem 2rem"
+                    }
                 }).showToast();
             }
 
             const motivationalQuotes = [
                 { text: "Verily, actions are but by intentions, and every man shall have only that which he intended.", source: "Hadith (Bukhari & Muslim)" },
-                { text: "So whoever does an atom's weight of good will see it.", source: "Quran (99:7)" },
-                { text: "The best of people are those who are most beneficial to people.", source: "Hadith (Al-Mu’jam al-Awsat)" },
-                { text: "And whatever you do of good - indeed, Allah is Knowing of it.", source: "Quran (2:215)" },
-                { text: "The upper hand is better than the lower hand. The upper hand is the one that gives, and the lower hand is the one that takes.", source: "Hadith (Muslim)" }
+                { text: "So whoever does an atom's weight of good will see it.", source: "Quran (99:7)" }
             ];
 
             function displayMotivation() {
-                const randomIndex = Math.floor(Math.random() * motivationalQuotes.length);
-                const quote = motivationalQuotes[randomIndex];
+                const quote = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
                 document.getElementById('motivation-text').textContent = `"${quote.text}"`;
                 document.getElementById('motivation-source').textContent = `- ${quote.source}`;
                 document.getElementById('loader-motivation-text').textContent = quote.text;
             }
 
             function handleAuthError(error) {
-               console.error("Auth Error:", error);
+            console.error("Auth Error:", error);
                 if (error.message.includes("Unauthorized")) {
                     showToast("Session expired. Please log in again.", true);
                     setTimeout(() => {
@@ -250,11 +370,7 @@
 
             function postData(payload, callback) {
                 payload.token = token;
-                
-                // Show loader only for task updates, as initial load is handled by fetchMyTasks
-                if (payload.action === 'updateTask') {
-                    loaderOverlay.classList.remove('hidden');
-                }
+                if (payload.action === 'updateTask') loaderOverlay.classList.remove('hidden');
 
                 fetch(API_URL, {
                     method: 'POST', redirect: 'follow', body: JSON.stringify(payload),
@@ -264,22 +380,13 @@
                 .then(data => {
                     if (data.status === 'error') throw new Error(data.message);
                     if(data.message) showToast(data.message);
-                    
-                    // If the action was to update a task, re-fetch all tasks to refresh the UI
-                    if (payload.action === 'updateTask') {
-                        // The fetchMyTasks function will handle hiding the loader
-                        fetchMyTasks(false); // Pass false to prevent showing loader again
-                    }
-
+                    if (payload.action === 'updateTask') fetchMyTasks(false);
                     if (callback) callback(data);
                 })
                 .catch(err => {
                     showToast(err.message, true);
                     handleAuthError(err);
-                    // Hide loader on error if it was a task update
-                    if (payload.action === 'updateTask') {
-                        loaderOverlay.classList.add('hidden');
-                    }
+                    if (payload.action === 'updateTask') loaderOverlay.classList.add('hidden');
                 });
             }
             
@@ -291,13 +398,10 @@
             }
 
             function fetchMyTasks(showLoader = true) {
-                if (showLoader) {
-                    loaderOverlay.classList.remove('hidden');
-                }
+                if (showLoader) loaderOverlay.classList.remove('hidden');
                 
                 const tasksPromise = fetch(`${API_URL}?action=getVolunteerTasks&token=${token}`).then(res => res.json());
                 
-                // Fetch profile only on initial load
                 if (showLoader) {
                     postData({ action: "getUserProfile" }, (profileData) => {
                         if (profileData.status === 'success') {
@@ -315,11 +419,189 @@
                 .catch(handleAuthError)
                 .finally(() => {
                     loaderOverlay.classList.add('hidden');
+                    fetchUserNotifications(); // <-- THIS IS THE NEW, IMPORTANT LINE
+                });
+            }
+            
+            // =======================================================
+            // --- NEW NOTIFICATION FUNCTIONS (Paste the entire block)---
+            // =======================================================
+            
+            function fetchUserNotifications() {
+                const userNotificationList = document.getElementById('user-notification-list');
+                const dropdownList = document.getElementById('dropdown-notification-list');
+                const bellIcon = document.querySelector('#notification-bell i');
+                // Show loader and animate bell
+                if (userNotificationList) userNotificationList.innerHTML = `
+        <div class="notification-loader">
+            <div class="cube">
+                <div class="cube-face front"></div>
+                <div class="cube-face back"></div>
+                <div class="cube-face right"></div>
+                <div class="cube-face left"></div>
+                <div class="cube-face top"></div>
+                <div class="cube-face bottom"></div>
+            </div>
+            <div class="mt-4 text-blue-700 font-semibold">Loading notifications...</div>
+        </div>
+    `;
+                if (dropdownList) dropdownList.innerHTML = '<p class="text-gray-500 p-4">Loading...</p>';
+                if (bellIcon) bellIcon.classList.add('bell-animate');
+                fetch(`${API_URL}?action=getNotifications&token=${token}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            renderNotifications(data.notifications);
+                            renderDropdownNotifications(data.notifications);
+                            updateNotificationCount(data.notifications);
+                        } else throw new Error(data.message);
+                    })
+                    .catch(err => {
+                        if (userNotificationList) userNotificationList.innerHTML = '<p class="text-red-500">Could not load notifications.</p>';
+                        if (dropdownList) dropdownList.innerHTML = '<p class="text-red-500 p-4">Could not load notifications.</p>';
+                        console.error("Error fetching notifications:", err);
+                    })
+                    .finally(() => {
+                        if (bellIcon) bellIcon.classList.remove('bell-animate');
+                    });
+            }
+
+            function renderDropdownNotifications(notifications) {
+                const dropdownList = document.getElementById('dropdown-notification-list');
+                if (!dropdownList) return;
+                dropdownList.innerHTML = '';
+                if (!notifications || notifications.length === 0) {
+                    dropdownList.innerHTML = '<p class="text-gray-500 p-4">No notifications.</p>';
+                    return;
+                }
+                notifications.slice(0, 10).forEach(notif => {
+                    const isRead = notif.status === 'Read';
+                    const notifItem = document.createElement('div');
+                    notifItem.className = `p-3 border-b last:border-b-0 cursor-pointer hover:bg-gray-50 ${isRead ? 'bg-gray-50' : 'bg-white'}`;
+                    notifItem.innerHTML = `
+                        <div class="flex justify-between items-center">
+                            <span class="font-semibold text-gray-800">${notif.subject}</span>
+                            <span class="text-xs text-gray-500">${new Date(notif.timestamp).toLocaleDateString()}</span>
+                        </div>
+                        <div class="text-sm text-gray-600 mt-1">${notif.body}</div>
+                        ${!isRead ? `<span class="inline-block mt-2 px-2 py-0.5 text-xs font-semibold bg-blue-100 text-blue-700 rounded-full">New</span>` : ''}
+                    `;
+                    notifItem.addEventListener('click', () => {
+                        dropdown.classList.add('hidden');
+                        document.getElementById('notifications').scrollIntoView({ behavior: 'smooth' });
+                    });
+                    dropdownList.appendChild(notifItem);
                 });
             }
 
+            function updateNotificationCount(notifications) {
+                const count = notifications.filter(n => n.status !== 'Read').length;
+                const countEl = document.getElementById('notification-count');
+                const sidebarCountEl = document.getElementById('sidebar-notification-count');
+                if (count > 0) {
+                    countEl.textContent = count;
+                    countEl.classList.remove('hidden');
+                    if (sidebarCountEl) {
+                        sidebarCountEl.textContent = count;
+                        sidebarCountEl.classList.remove('hidden');
+                    }
+                } else {
+                    countEl.classList.add('hidden');
+                    if (sidebarCountEl) sidebarCountEl.classList.add('hidden');
+                }
+            }
+            
+            function renderNotifications(notifications) {
+                const userNotificationList = document.getElementById('user-notification-list');
+                userNotificationList.innerHTML = '';
+                if (!notifications || notifications.length === 0) {
+                    userNotificationList.innerHTML = '<p class="text-gray-500">No notifications.</p>';
+                    return;
+                }
+                notifications.forEach((notif, idx) => {
+                    const isRead = notif.status === 'Read';
+                    const notifEl = document.createElement('div');
+                    notifEl.className = `p-4 border-l-4 rounded-md mb-6 shadow-sm ${isRead ? 'border-gray-200 bg-gray-50' : 'border-blue-500 bg-white'}`;
+                    notifEl.innerHTML = `
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-gray-800">${notif.subject}</h3>
+                            <span class="text-xs text-gray-500">${new Date(notif.timestamp).toLocaleString()}</span>
+                        </div>
+                        <p class="mt-2 text-gray-600">${notif.body}</p>
+                        <div class="replies-container mt-3 space-y-2">
+                            ${notif.reply ? `<div class="text-sm p-2 bg-gray-200 rounded-md whitespace-pre-wrap">${notif.reply}</div>` : ''}
+                        </div>
+                        ${isRead 
+                            ? `<span class="inline-block mt-2 px-3 py-1 text-xs font-semibold bg-green-100 text-green-700 rounded-full">Message Seen</span>` 
+                            : `<button class="mark-read-btn mt-2 px-3 py-1 text-xs font-semibold bg-blue-100 text-blue-700 rounded-full">Mark as Read</button>`
+                        }
+                        <form class="reply-form mt-4 space-y-2" data-message-id="${notif.messageId}">
+                            <textarea rows="2" placeholder="Type your reply..." required class="block w-full border-blue-100 bg-blue-50 rounded-md shadow-sm text-sm p-2 focus:bg-blue-100"></textarea>
+                            <button type="submit" class="bg-blue-600 text-white font-semibold py-1 px-3 text-sm rounded-md hover:bg-blue-700">Send Reply</button>
+                        </form>
+                        ${idx < notifications.length - 1 ? '<hr class="my-6 border-gray-300">' : ''}
+                    `;
+                    userNotificationList.appendChild(notifEl);
+
+                    // Mark as Read button handler
+                    if (!isRead) {
+                        const markReadBtn = notifEl.querySelector('.mark-read-btn');
+                        markReadBtn.addEventListener('click', () => {
+                            loaderOverlay.classList.remove('hidden'); // Show loader animation
+                            postData({ action: 'markAsRead', messageId: notif.messageId }, (response) => {
+                                loaderOverlay.classList.add('hidden'); // Hide loader animation
+                                if (response.status === 'success') {
+                                    markReadBtn.remove();
+                                    notifEl.classList.remove('border-blue-500', 'bg-white');
+                                    notifEl.classList.add('border-gray-200', 'bg-gray-50');
+                                    const seenBadge = document.createElement('span');
+                                    seenBadge.className = 'inline-block mt-2 px-3 py-1 text-xs font-semibold bg-green-100 text-green-700 rounded-full';
+                                    seenBadge.textContent = 'Message Seen';
+                                    notifEl.insertBefore(seenBadge, notifEl.querySelector('.replies-container').nextSibling);
+                                    fetchUserNotifications(); // Refresh notification count and dropdown
+                                }
+                            });
+                        });
+                    }
+
+                    // Reply form handler
+                    const replyForm = notifEl.querySelector('.reply-form');
+                    replyForm.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        loaderOverlay.classList.remove('hidden'); // Show loader animation
+                        const replyText = replyForm.querySelector('textarea').value;
+
+                        // If not already read, mark as read first, then send reply
+                        if (!isRead) {
+                            postData({ action: 'markAsRead', messageId: notif.messageId }, (markResponse) => {
+                                // Now send the reply
+                                postData({ action: 'replyToNotification', replyData: { messageId: notif.messageId, replyText } }, (response) => {
+                                    loaderOverlay.classList.add('hidden'); // Hide loader animation
+                                    if (response.status === 'success') {
+                                        replyForm.querySelector('textarea').value = '';
+                                        fetchUserNotifications(); // Refresh notifications after reply
+                                    }
+                                });
+                            });
+                        } else {
+                            // Already read, just send reply
+                            postData({ action: 'replyToNotification', replyData: { messageId: notif.messageId, replyText } }, (response) => {
+                                loaderOverlay.classList.add('hidden'); // Hide loader animation
+                                if (response.status === 'success') {
+                                    replyForm.querySelector('textarea').value = '';
+                                    fetchUserNotifications(); // Refresh notifications after reply
+                                }
+                            });
+                        }
+                    });
+                });
+            }
+            
+            // --- ALL OTHER FUNCTIONS (renderDashboard, applyFiltersAndSort, etc.) ---
+            // (No changes needed to the rest of your functions, just make sure they are here)
+
             function renderDashboard(data) {
-               if (!data || data.length < 2) {
+            if (!data || data.length < 2) {
                     document.getElementById('kpi-in-progress').textContent = 0;
                     document.getElementById('kpi-completed').textContent = 0;
                     document.getElementById('kpi-next-due').textContent = 'N/A';
@@ -375,7 +657,7 @@
                 if (statusFilter !== 'All') {
                     tasks = tasks.filter(row => row[headers.indexOf("Status")] === statusFilter);
                 } else {
-                    tasks = tasks.filter(row => row[headers.indexOf("Status")] !== 'Completed');
+                    tasks = tasks.filter((row) => row[headers.indexOf("Status")] !== 'Completed');
                 }
                 
                 const dueDateIndex = headers.indexOf("DueDate");
@@ -393,8 +675,8 @@
                 container.innerHTML = "";
                 
                 if (!data || data.length < 2) {
-                     container.innerHTML = `<div class="bg-white p-6 rounded-lg shadow-md text-center text-gray-500">No tasks match the current filter.</div>`;
-                     return;
+                    container.innerHTML = `<div class="bg-white p-6 rounded-lg shadow-md text-center text-gray-500">No tasks match the current filter.</div>`;
+                    return;
                 }
 
                 const headers = data[0];
@@ -472,9 +754,14 @@
                 });
             }
 
+
+            new Choices('#statusFilter', { searchEnabled: false, itemSelectText: '', classNames: { containerInner: 'rounded-xl' } });
+            new Choices('#sortOrder', { searchEnabled: false, itemSelectText: '', classNames: { containerInner: 'rounded-xl' } });
+
+
             // --- Initial Load ---
             displayMotivation();
-            fetchMyTasks(true); // Pass true for initial load to show loader
+            fetchMyTasks(true); 
         });
     </script>
 </body>

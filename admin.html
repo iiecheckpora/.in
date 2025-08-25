@@ -60,6 +60,25 @@
         .loader-quote { margin-top: 1.5rem; font-size: 1rem; font-style: italic; color: #4b5563; max-width: 90vw; width: 500px; padding: 0 1rem; }
         @keyframes pulse-zoom { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.8; } }
         @keyframes text-fade { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+
+        #custom-toast {
+            position: fixed;
+            top: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            min-width: 220px;
+            max-width: 90vw;
+            text-align: center;
+            transition: opacity 0.4s, transform 0.4s;
+            opacity: 0;
+            pointer-events: none;
+        }
+        #custom-toast.show {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateX(-50%) scale(1.05);
+        }
     </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
@@ -86,6 +105,7 @@
                 <li><a href="#all-tasks" class="sidebar-link flex items-center p-2 rounded-md"><i class="fa-solid fa-list-check fa-fw mr-3"></i>All Tasks</a></li>
                 <li><a href="#all-users" class="sidebar-link flex items-center p-2 rounded-md"><i class="fa-solid fa-users-cog fa-fw mr-3"></i>All Users</a></li>
                 <li><a href="#finance" class="sidebar-link flex items-center p-2 rounded-md"><i class="fa-solid fa-file-invoice-dollar fa-fw mr-3"></i>Finance</a></li>
+                <li><a href="#notifications" class="sidebar-link flex items-center p-2 rounded-md"><i class="fa-solid fa-bell fa-fw mr-3"></i>Notifications</a></li>
             </ul>
         </nav>
         <div class="pt-4 border-t border-gray-600">
@@ -205,16 +225,32 @@
                     </div>
                 </div>
             </section>
+            <section id="notifications" class="scroll-target mt-8">
+                <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+                    <button id="notificationDropdownBtn" class="flex justify-between items-center w-full text-left text-2xl font-bold mb-4 text-gray-800 focus:outline-none">
+                        Notification Center
+                        <svg id="notificationDropdownIcon" class="w-6 h-6 ml-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div id="notificationDropdownContent" class="">
+                        <div id="notification-center-content"></div>
+                    </div>
+                </div>
+            </section>
+
         </main>
     </div>
 
     <div id="editTaskModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-[100] hidden"><div class="bg-white p-8 rounded-lg shadow-2xl max-w-md w-full"><h2 class="text-2xl font-bold mb-4">Edit Task</h2><form id="editTaskForm" class="space-y-4"><input type="hidden" id="editTaskId"><div><label for="editTaskTitle" class="block text-sm font-medium text-gray-700">Task Title</label><input type="text" id="editTaskTitle" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></div><div><label for="editAssignTo" class="block text-sm font-medium text-gray-700">Assign to (User Email)</label><input type="email" id="editAssignTo" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></div><div><label for="editDueDate" class="block text-sm font-medium text-gray-700">Due Date</label><input type="date" id="editDueDate" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></div><div><label for="editTaskDesc" class="block text-sm font-medium text-gray-700">Description</label><textarea id="editTaskDesc" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></textarea></div><div class="mt-6 flex justify-end space-x-4"><button type="button" id="closeEditModalButton" class="bg-gray-200 px-4 py-2 rounded-md hover:bg-gray-300">Cancel</button><button type="submit" class="bg-blue-600 text-white font-bold px-4 py-2 rounded-md hover:bg-blue-700">Save Changes</button></div></form></div></div>
     <div id="volunteerProfileModal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-[100] hidden"><div class="bg-white p-6 md:p-8 rounded-lg shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col"><div class="flex justify-between items-center mb-4 pb-4 border-b"><h2 class="text-2xl font-bold text-gray-800">Volunteer Profile</h2><button id="closeProfileModalButton" class="text-gray-500 hover:text-red-600 text-2xl">&times;</button></div><div class="flex-grow overflow-y-auto"><div class="mb-6"><h3 id="profileName" class="text-xl font-bold text-blue-800"></h3><p id="profileEmail" class="text-gray-600"></p></div><div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 text-center"><div class="bg-gray-100 p-3 rounded-lg"><p class="text-sm text-gray-500">Total Tasks</p><p id="profileTotalTasks" class="text-xl font-bold"></p></div><div class="bg-green-100 p-3 rounded-lg"><p class="text-sm text-green-700">Completed</p><p id="profileCompletedTasks" class="text-xl font-bold"></p></div><div class="bg-red-100 p-3 rounded-lg"><p class="text-sm text-red-700">Overdue</p><p id="profileOverdueTasks" class="text-xl font-bold"></p></div><div class="bg-blue-100 p-3 rounded-lg"><p class="text-sm text-blue-700">Completion Rate</p><p id="profileCompletionRate" class="text-xl font-bold"></p></div></div><div><h3 class="text-lg font-semibold mb-2 text-gray-700">Assigned Tasks</h3><div id="profileTaskList" class="space-y-3"></div></div></div></div></div>
 
+    <div id="custom-toast" class="fixed top-6 right-6 z-[9999] px-6 py-3 rounded-lg shadow-lg text-white font-semibold hidden"></div>
+
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const API_URL = "https://script.google.com/macros/s/AKfycbydsaGPqmfTil6_fc3dpEbwmyO291ru47HePDBxLr5VVIaARJzHP5Ar3r5fD_0dL9Mcqw/exec";
+            const API_URL = "https://script.google.com/macros/s/AKfycby9QZWN-en_zcdhr2uBmhxLQEUGrvRAhVrerIZPBFzX2PuUS43T-Y_Vir0OWHgqgqhlaw/exec";
             const token = localStorage.getItem("sessionToken");
             const loaderOverlay = document.getElementById('loader-overlay'); 
 
@@ -242,6 +278,17 @@
                     }
                 });
             });
+            const btn = document.getElementById('notificationDropdownBtn');
+                    const content = document.getElementById('notificationDropdownContent');
+                    const icon = document.getElementById('notificationDropdownIcon');
+                    if (btn && content && icon) {
+                        btn.addEventListener('click', function() {
+                            content.classList.toggle('hidden');
+                            icon.classList.toggle('rotate-180');
+                        });
+                        // Start hidden by default
+                        content.classList.add('hidden');
+                    }
 
             const sections = document.querySelectorAll('.scroll-target');
             const navLinks = document.querySelectorAll('#sidebar-nav a');
@@ -389,6 +436,12 @@
                     icon.classList.toggle('rotate-180');
                 });
             });
+            document.querySelectorAll('.format-btn').forEach(btn => btn.addEventListener('click', () => { document.execCommand(btn.dataset.cmd, false, null); }));
+            const messageEditor = document.getElementById('message-editor');
+            const messageInput = document.getElementById('message');
+            if (messageEditor && messageInput) {
+                messageEditor.addEventListener('input', () => { messageInput.value = messageEditor.innerHTML; });
+            }
 
             // START: New PDF Export Function
             function exportToPdf(filename, data) {
@@ -429,8 +482,30 @@
             }
             // END: New PDF Export Function
 
-            function showToast(message, isError = false) {
-                Toastify({ text: message, duration: 3000, close: true, gravity: "top", position: "right", style: { background: isError ? "linear-gradient(to right, #ef4444, #b91c1c)" : "linear-gradient(to right, #22c55e, #15803d)" } }).showToast();
+            function showToast(message, type = "success") {
+                const toast = document.getElementById('custom-toast');
+                toast.textContent = message;
+                let bg;
+                switch (type) {
+                    case "error":
+                        bg = "linear-gradient(to right, #ef4444, #b91c1c)"; // red
+                        break;
+                    case "warning":
+                        bg = "linear-gradient(to right, #f59e42, #d97706)"; // orange
+                        break;
+                    case "info":
+                        bg = "linear-gradient(to right, #38bdf8, #2563eb)"; // blue
+                        break;
+                    default:
+                        bg = "linear-gradient(to right, #22c55e, #15803d)"; // green (success)
+                }
+                toast.style.background = bg;
+                toast.classList.add('show');
+                toast.classList.remove('hidden');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    toast.classList.add('hidden');
+                }, 3000);
             }
 
             function showLoading(container) {
@@ -498,8 +573,12 @@
                 .then(([adminData, leaderboardData]) => {
                     if (adminData.status === 'error') throw new Error(adminData.message);
                     allTasks = adminData.tasks ? [...adminData.tasks] : [];
-                    allVolunteers = adminData.volunteers ? [...adminData.volunteers] : [];
-                    allFinanceUsers = adminData.financeUsers ? [...adminData.financeUsers] : [];
+                allVolunteers = adminData.volunteers ? [...adminData.volunteers] : [];
+                allFinanceUsers = adminData.financeUsers ? [...adminData.financeUsers] : [];
+                window.allVolunteers = allVolunteers;
+                window.allFinanceUsers = allFinanceUsers;
+                adminDataLoaded = true;
+                tryInitNotificationCenter();
                     
                     renderTable(allTasks, document.getElementById("tasksTableContainer"));
                     renderTable(allVolunteers, document.getElementById("volunteersTableContainer"));
@@ -904,6 +983,274 @@
                     data: { labels: Object.keys(statusCounts), datasets: [{ label: 'Task Status', data: Object.values(statusCounts), backgroundColor: [ 'rgba(255, 206, 86, 0.7)', 'rgba(54, 162, 235, 0.7)', 'rgba(75, 192, 192, 0.7)', 'rgba(255, 99, 132, 0.7)' ], borderColor: [ 'rgba(255, 206, 86, 1)', 'rgba(54, 162, 235, 1)', 'rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)' ], borderWidth: 1 }] },
                     options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top', } } }
                 });
+            }
+
+
+            const notificationCenterContent = document.getElementById('notification-center-content');
+    
+            if (notificationCenterContent) {
+                fetch('notifications.html')
+                    .then(response => response.ok ? response.text() : Promise.reject('notifications.html not found'))
+                    .then(html => {
+                        notificationCenterContent.innerHTML = html;
+                        notificationCenterHtmlLoaded = true;
+                        tryInitNotificationCenter();
+                    })
+                    .catch(error => {
+                        console.error('Error loading notification center:', error);
+                        notificationCenterContent.innerHTML = '<p class="text-red-500">Could not load the notification center.</p>';
+                    });
+            }
+
+            function initializeNotificationCenter() {
+                // --- Element Hooks ---
+                const composeTab = document.getElementById('compose-tab');
+                const inboxTab = document.getElementById('inbox-tab');
+                const composeSection = document.getElementById('compose-section');
+                const inboxSection = document.getElementById('inbox-section');
+                const notificationForm = document.getElementById('notification-form');
+                const recipientSearch = document.getElementById('recipient-search');
+                const recipientSuggestions = document.getElementById('recipient-suggestions');
+                const recipientTags = document.getElementById('recipient-tags');
+                const addAllVolunteersBtn = document.getElementById('add-all-volunteers');
+                const addAllFinanceBtn = document.getElementById('add-all-finance');
+                const notificationList = document.getElementById('notification-list');
+                
+                // --- NEW: Modal Hooks ---
+                const conversationModal = document.getElementById('conversation-modal');
+                const closeModalBtn = document.getElementById('close-modal-btn');
+                const modalSubject = document.getElementById('modal-subject');
+                const modalBody = document.getElementById('modal-body');
+                const modalReplies = document.getElementById('modal-replies');
+                const groupSelectModal = document.getElementById('group-select-modal');
+                const groupSelectTitle = document.getElementById('group-select-title');
+                const groupSelectList = document.getElementById('group-select-list');
+                const groupSelectCancel = document.getElementById('group-select-cancel');
+                const groupSelectConfirm = document.getElementById('group-select-confirm');
+
+                let allUsers = []; 
+                let selectedRecipients = new Set();
+                let sentMessagesCache = []; // Cache for conversation details
+                
+                // --- Main Functions ---
+                
+                function populateAllUsers() {
+                    allUsers = [];
+                    if (window.allVolunteers && window.allVolunteers.length > 1) {
+                        const headers = window.allVolunteers[0];
+                        const emailIndex = headers.indexOf("Email");
+                        const nameIndex = headers.indexOf("FullName");
+                        const roleIndex = headers.indexOf("Role");
+                        window.allVolunteers.slice(1).forEach(userRow => {
+                            allUsers.push({
+                                email: userRow[emailIndex],
+                                name: userRow[nameIndex],
+                                role: userRow[roleIndex]
+                            });
+                        });
+                    }
+                }
+
+                function sendNotification(e) {
+                    e.preventDefault();
+                    loaderOverlay.classList.remove('hidden'); // Show loader
+                    const scheduleTime = document.getElementById('scheduleTime') ? document.getElementById('scheduleTime').value : null;
+                    const notificationData = {
+                        recipients: Array.from(selectedRecipients),
+                        subject: document.getElementById('subject').value,
+                        body: document.getElementById('message').value,
+                        scheduleTime: scheduleTime || null,
+                        tags: ''
+                    };
+                    if (notificationData.recipients.length === 0) {
+                        showToast("Please add at least one recipient.", true);
+                        loaderOverlay.classList.add('hidden'); // Hide loader on error
+                        return;
+                    }
+                    postData({ action: 'sendNotification', notificationData: notificationData }, (response) => {
+                        showToast(response.message);
+                        loaderOverlay.classList.add('hidden'); // Hide loader after response
+                        if (response.status === 'success') {
+                            notificationForm.reset();
+                            selectedRecipients.clear();
+                            renderRecipientTags();
+                        }
+                    });
+                }
+                
+                function fetchAdminNotifications() {
+                    loaderOverlay.classList.remove('hidden'); // Show loader
+                    notificationList.innerHTML = '<p class="text-gray-500">Loading sent messages...</p>';
+                    const adminDataUrl = `${API_URL}?action=getNotifications&token=${token}`;
+                    fetch(adminDataUrl)
+                        .then(res => res.json())
+                        .then(data => {
+                            loaderOverlay.classList.add('hidden'); // Hide loader after response
+                            if (data.status === 'success') {
+                                sentMessagesCache = data.notifications;
+                                renderAdminInbox(sentMessagesCache);
+                            } else {
+                                showToast('Could not load inbox.', true);
+                            }
+                        })
+                        .catch(err => {
+                            loaderOverlay.classList.add('hidden'); // Hide loader on error
+                            showToast('Error loading inbox: ' + err.message, true);
+                        });
+                }
+
+                function renderAdminInbox(notifications) {
+                    notificationList.innerHTML = '';
+                    if (notifications.length === 0) {
+                        notificationList.innerHTML = '<p class="text-gray-500">You have not sent any messages yet.</p>';
+                        return;
+                    }
+                    notifications.forEach(notif => {
+                        const unreadRepliesCount = notif.replies.length;
+                        const notifEl = document.createElement('div');
+                        notifEl.className = 'p-4 border rounded-md cursor-pointer hover:bg-gray-50';
+                        notifEl.dataset.messageId = notif.messageId;
+                        notifEl.innerHTML = `
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold">${notif.subject}</span>
+                                <div class="flex items-center space-x-4">
+                                    ${unreadRepliesCount > 0 ? `<span class="bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full">${unreadRepliesCount} ${unreadRepliesCount > 1 ? 'Replies' : 'Reply'}</span>` : ''}
+                                    <span class="text-sm text-gray-500">${new Date(notif.timestamp).toLocaleString()}</span>
+                                </div>
+                            </div>
+                        `;
+                        notifEl.addEventListener('click', () => viewConversation(notif.messageId));
+                        notificationList.appendChild(notifEl);
+                    });
+                }
+
+                function viewConversation(messageId) {
+                    const conversation = sentMessagesCache.find(m => m.messageId === messageId);
+                    if (!conversation) return;
+
+                    modalSubject.textContent = conversation.subject;
+                    modalBody.textContent = conversation.body;
+                    modalReplies.innerHTML = '';
+
+                    if (conversation.replies.length > 0) {
+                        conversation.replies.forEach(reply => {
+                            const replyEl = document.createElement('div');
+                            replyEl.className = 'p-3 bg-gray-100 rounded-md';
+                            const user = allUsers.find(u => u.email === reply.from) || { name: reply.from };
+                            replyEl.innerHTML = `
+                                <p class="text-sm font-semibold text-gray-700">${user.name} (${reply.from}) replied:</p>
+                                <p class="mt-1 whitespace-pre-wrap">${reply.message}</p>
+                            `;
+                            modalReplies.appendChild(replyEl);
+                        });
+                    } else {
+                        modalReplies.innerHTML = '<p class="text-gray-500">No replies yet.</p>';
+                    }
+
+                    conversationModal.classList.remove('hidden');
+                }
+                
+                const openGroupSelectModal = (group) => {
+                    groupSelectTitle.textContent = group === "Volunteers" ? "Select Volunteers" : "Select Finance Team Members";
+                    groupSelectList.innerHTML = "";
+                    let groupMembers = [];
+                    if (group === "Volunteers") {
+                        groupMembers = allUsers.filter(u => u.role === "Volunteer");
+                    } else if (group === "Finance Team") {
+                        groupMembers = allUsers.filter(u => u.role === "Manager" || u.role === "Assistant");
+                    }
+                    groupMembers.forEach(user => {
+                        const item = document.createElement('div');
+                        item.className = "flex items-center gap-2 mb-2";
+                        item.innerHTML = `
+                            <input type="checkbox" class="group-member-checkbox" value="${user.email}" id="group-member-${user.email}">
+                            <label for="group-member-${user.email}" class="text-gray-700">${user.name} (${user.email})</label>
+                        `;
+                        groupSelectList.appendChild(item);
+                    });
+                    groupSelectModal.classList.remove('hidden');
+                }
+
+                groupSelectCancel.addEventListener('click', () => groupSelectModal.classList.add('hidden'));
+
+                groupSelectConfirm.addEventListener('click', () => {
+                    const checked = groupSelectList.querySelectorAll('.group-member-checkbox:checked');
+                    checked.forEach(cb => addRecipient(cb.value));
+                    groupSelectModal.classList.add('hidden');
+                    renderRecipientTags();
+                });
+
+                // --- Event Listeners ---
+                composeTab.addEventListener('click', (e) => { e.preventDefault(); composeSection.classList.remove('hidden'); inboxSection.classList.add('hidden'); composeTab.classList.add('border-indigo-500', 'text-indigo-600'); inboxTab.classList.remove('border-indigo-500', 'text-indigo-600'); });
+                inboxTab.addEventListener('click', (e) => { e.preventDefault(); inboxSection.classList.remove('hidden'); composeSection.classList.add('hidden'); inboxTab.classList.add('border-indigo-500', 'text-indigo-600'); composeTab.classList.remove('border-indigo-500', 'text-indigo-600'); fetchAdminNotifications(); });
+                closeModalBtn.addEventListener('click', () => conversationModal.classList.add('hidden'));
+                recipientSearch.addEventListener('input', () => renderSuggestions(recipientSearch.value));
+                addAllVolunteersBtn.addEventListener('click', () => openGroupSelectModal("Volunteers"));
+                addAllFinanceBtn.addEventListener('click', () => openGroupSelectModal("Finance Team"));
+                notificationForm.addEventListener('submit', sendNotification);
+                
+                populateAllUsers();
+                console.log("allUsers", allUsers); // Add after populateAllUsers()
+
+                // Helper to add a recipient by email
+                function addRecipient(email) {
+                    selectedRecipients.add(email);
+                    renderRecipientTags();
+                }
+
+                // Render recipient tags UI
+                function renderRecipientTags() {
+                    if (!recipientTags) return;
+                    recipientTags.innerHTML = '';
+                    Array.from(selectedRecipients).forEach(email => {
+                        const user = allUsers.find(u => u.email === email);
+                        const tag = document.createElement('span');
+                        tag.className = 'recipient-tag';
+                        tag.innerHTML = `${user ? user.name : email} <button type="button" aria-label="Remove" class="remove-recipient-btn" data-email="${email}">&times;</button>`;
+                        recipientTags.appendChild(tag);
+                    });
+                    recipientTags.querySelectorAll('.remove-recipient-btn').forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            selectedRecipients.delete(this.dataset.email);
+                            renderRecipientTags();
+                        });
+                    });
+                }
+
+                // Render recipient suggestions as you type
+                function renderSuggestions(query) {
+                    if (!recipientSuggestions) return;
+                    recipientSuggestions.innerHTML = '';
+                    if (!query) return;
+                    const matches = allUsers.filter(u => u.name.toLowerCase().includes(query.toLowerCase()) || u.email.toLowerCase().includes(query.toLowerCase()));
+                    matches.forEach(user => {
+                        const item = document.createElement('div');
+                        item.className = 'cursor-pointer px-2 py-1 hover:bg-indigo-100';
+                        item.textContent = `${user.name} (${user.email})`;
+                        item.onclick = () => {
+                            addRecipient(user.email);
+                            recipientSuggestions.innerHTML = '';
+                            recipientSearch.value = '';
+                        };
+                        recipientSuggestions.appendChild(item);
+                    });
+                }
+            }
+
+            let notificationCenterInitialized = false;
+let notificationCenterHtmlLoaded = false;
+let adminDataLoaded = false;
+
+            function tryInitNotificationCenter() {
+                if (
+                    notificationCenterHtmlLoaded &&
+                    adminDataLoaded &&
+                    !notificationCenterInitialized &&
+                    document.getElementById('notification-center-content')?.innerHTML
+                ) {
+                    initializeNotificationCenter();
+                    notificationCenterInitialized = true;
+                }
             }
 
             displayMotivation();
