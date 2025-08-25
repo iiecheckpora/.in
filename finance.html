@@ -230,6 +230,64 @@
                     </div>
                 </div>
             </section>
+            <section id="archive-records" class="scroll-target mt-8">
+    <div class="bg-white p-4 sm:p-6 rounded-xl shadow-lg mb-6 border border-gray-200">
+        <div class="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
+            <div>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">Financial Records</h2>
+                <p class="text-sm text-gray-500 mt-1">View and download income and expenditure records.</p>
+            </div>
+            <button id="download-archive-pdf-btn" class="bg-blue-700 hover:bg-blue-800 transition text-white font-semibold px-5 py-2 rounded-lg shadow flex items-center gap-2 w-full sm:w-auto">
+                <i class="fa-solid fa-file-pdf"></i>
+                Download Archive PDF
+            </button>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Income Archive Card -->
+            <div class="bg-gradient-to-br from-green-50 via-white to-green-100 rounded-xl shadow border border-green-200 p-5 flex flex-col">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="text-lg sm:text-xl font-bold text-green-700 flex items-center gap-2">
+                        <i class="fa-solid fa-arrow-down-long"></i>
+                        Income Records
+                    </h3>
+                </div>
+                <div class="flex flex-wrap gap-2 mb-3">
+                    <input type="date" id="incomeArchiveStartDate" class="border border-green-300 rounded-lg px-3 py-2 text-sm focus:ring-green-500 focus:border-green-500 transition w-full sm:w-auto" placeholder="Start Date">
+                    <span class="text-gray-400 text-sm">to</span>
+                    <input type="date" id="incomeArchiveEndDate" class="border border-green-300 rounded-lg px-3 py-2 text-sm focus:ring-green-500 focus:border-green-500 transition w-full sm:w-auto" placeholder="End Date">
+                </div>
+                <div class="overflow-x-auto rounded-lg border border-green-100 bg-white">
+                    <table class="min-w-full divide-y divide-green-100 text-sm">
+                        <thead id="income-archive-head" class="bg-green-50"></thead>
+                        <tbody id="income-archive-body"></tbody>
+                    </table>
+                </div>
+                <div id="income-archive-total" class="mt-3 font-bold text-right text-green-700 text-base"></div>
+            </div>
+            <!-- Expenditure Archive Card -->
+            <div class="bg-gradient-to-br from-red-50 via-white to-red-100 rounded-xl shadow border border-red-200 p-5 flex flex-col">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="text-lg sm:text-xl font-bold text-red-700 flex items-center gap-2">
+                        <i class="fa-solid fa-arrow-up-long"></i>
+                        Expenditure Records
+                    </h3>
+                </div>
+                <div class="flex flex-wrap gap-2 mb-3">
+                    <input type="date" id="expenditureArchiveStartDate" class="border border-red-300 rounded-lg px-3 py-2 text-sm focus:ring-red-500 focus:border-red-500 transition w-full sm:w-auto" placeholder="Start Date">
+                    <span class="text-gray-400 text-sm">to</span>
+                    <input type="date" id="expenditureArchiveEndDate" class="border border-red-300 rounded-lg px-3 py-2 text-sm focus:ring-red-500 focus:border-red-500 transition w-full sm:w-auto" placeholder="End Date">
+                </div>
+                <div class="overflow-x-auto rounded-lg border border-red-100 bg-white">
+                    <table class="min-w-full divide-y divide-red-100 text-sm">
+                        <thead id="expenditure-archive-head" class="bg-red-50"></thead>
+                        <tbody id="expenditure-archive-body"></tbody>
+                    </table>
+                </div>
+                <div id="expenditure-archive-total" class="mt-3 font-bold text-right text-red-700 text-base"></div>
+            </div>
+        </div>
+    </div>
+</section>
             
             
         </main>
@@ -272,12 +330,14 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const API_URL = "https://script.google.com/macros/s/AKfycby9QZWN-en_zcdhr2uBmhxLQEUGrvRAhVrerIZPBFzX2PuUS43T-Y_Vir0OWHgqgqhlaw/exec";
+            const API_URL = "https://script.google.com/macros/s/AKfycbyZUu0bV3qDbdHW3k18Mi46yEcn2jYT8NcPAPe3LG6G8uWLlWYGr8TXmcVV5N5kQSeXYw/exec";
             const token = localStorage.getItem("sessionToken");
             let userRole = '';
             let allIncome = [];
             let allExpenditure = [];
             let latestTeamData = [];
+            let allIncomeArchive = [];
+            let allExpenditureArchive = [];
 
             if (!token) { window.location.href = "login.html"; return; }
 
@@ -935,7 +995,148 @@
             teamModal.addEventListener('click', (e) => { if (e.target === teamModal) closeTeamModalBtn.click(); });
             fetchFinanceDataAndNotifications();
 
-            
+            function filterArchiveRows(data, type) {
+                if (!data || data.length < 2) return [];
+                const headers = data[0];
+                // Find the "Date" column (should be index 6 for archive: ["Date Archived", "Archived By", ...original columns])
+                let dateIndex = headers.indexOf("Date");
+                if (dateIndex === -1) dateIndex = headers.findIndex(h => h.toLowerCase().includes("date"));
+                let start = document.getElementById(type + "ArchiveStartDate").value;
+                let end = document.getElementById(type + "ArchiveEndDate").value;
+                let rows = data.slice(1);
+                if (start) {
+                    const startDate = new Date(start);
+                    rows = rows.filter(row => new Date(row[dateIndex]) >= startDate);
+                }
+                if (end) {
+                    const endDate = new Date(end);
+                    rows = rows.filter(row => new Date(row[dateIndex]) <= endDate);
+                }
+                return rows;
+            }
+
+            function renderArchiveTable(data, headId, bodyId, totalId, type) {
+                const head = document.getElementById(headId);
+                const body = document.getElementById(bodyId);
+                const totalDiv = document.getElementById(totalId);
+                head.innerHTML = "";
+                body.innerHTML = "";
+                totalDiv.textContent = "";
+                if (!data || data.length < 2) {
+                    body.innerHTML = `<tr><td colspan="8" class="text-center text-gray-500 py-4">No archived records.</td></tr>`;
+                    return;
+                }
+                const headers = data[0];
+                head.innerHTML = `<tr>${headers.map(h => `<th class="px-4 py-2">${h}</th>`).join("")}</tr>`;
+                const rows = filterArchiveRows(data, type);
+                let total = 0;
+                const amountIndex = headers.indexOf("Amount");
+                rows.forEach(row => { total += parseFloat(row[amountIndex]) || 0; });
+                rows.forEach(row => {
+                    body.innerHTML += `<tr>${row.map(cell => `<td class="px-4 py-2">${cell instanceof Date ? cell.toLocaleDateString() : cell}</td>`).join("")}</tr>`;
+                });
+                totalDiv.textContent = `Total: ₹${total.toFixed(2)}`;
+            }
+
+            function updateArchiveTables() {
+                renderArchiveTable(allIncomeArchive, "income-archive-head", "income-archive-body", "income-archive-total", "income");
+                renderArchiveTable(allExpenditureArchive, "expenditure-archive-head", "expenditure-archive-body", "expenditure-archive-total", "expenditure");
+            }
+
+            document.getElementById("incomeArchiveStartDate").addEventListener("change", updateArchiveTables);
+            document.getElementById("incomeArchiveEndDate").addEventListener("change", updateArchiveTables);
+            document.getElementById("expenditureArchiveStartDate").addEventListener("change", updateArchiveTables);
+            document.getElementById("expenditureArchiveEndDate").addEventListener("change", updateArchiveTables);
+
+            function fetchArchiveRecords() {
+                postData({ action: "getArchiveRecords" }, (data) => {
+                    if (data.status === "success") {
+                        allIncomeArchive = data.incomeArchive || [];
+                        allExpenditureArchive = data.expenditureArchive || [];
+                        updateArchiveTables();
+                    }
+                });
+            }
+
+            document.getElementById("download-archive-pdf-btn").addEventListener("click", () => {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF({ format: "a4", orientation: "landscape" });
+
+                let y = 15;
+                doc.setFontSize(18);
+                doc.setFont("times", "bold");
+                doc.text("Institute of Islamic Education - Finance Records", 14, y);
+                y += 10;
+
+                // Filtered Income Archive
+                doc.setFontSize(14);
+                doc.setFont("times", "normal");
+                doc.setTextColor(22, 163, 74);
+                doc.text("Income Records", 14, y);
+                y += 6;
+                const filteredIncome = filterArchiveRows(allIncomeArchive, "income");
+                if (filteredIncome.length > 0) {
+                    doc.autoTable({
+                        head: [allIncomeArchive[0]],
+                        body: filteredIncome,
+                        startY: y,
+                        theme: 'striped',
+                        styles: { fontSize: 8, cellPadding: 2 },
+                        headStyles: { fillColor: [28, 58, 138] },
+                        tableWidth: 'auto'
+                    });
+                    y = doc.lastAutoTable.finalY + 10;
+                    let total = 0;
+                    const amountIndex = allIncomeArchive[0].indexOf("Amount");
+                    filteredIncome.forEach(row => { total += parseFloat(row[amountIndex]) || 0; });
+                    doc.setFont("times", "normal");
+                    doc.setFontSize(14);
+                    doc.setTextColor(22, 163, 74);
+                    doc.text("Total: Rs. " + total.toFixed(2), 14, y);
+                    y += 8;
+                } else {
+                    doc.setFontSize(12);
+                    doc.setTextColor(150, 0, 0);
+                    doc.text("No records found for selected dates.", 14, y);
+                    y += 8;
+                }
+
+                // Filtered Expenditure Archive
+                doc.setFontSize(14);
+                doc.setFont("times", "normal");
+                doc.setTextColor(220, 38, 38);
+                doc.text("Expenditure Records", 14, y);
+                y += 6;
+                const filteredExpenditure = filterArchiveRows(allExpenditureArchive, "expenditure");
+                if (filteredExpenditure.length > 0) {
+                    doc.autoTable({
+                        head: [allExpenditureArchive[0]],
+                        body: filteredExpenditure,
+                        startY: y,
+                        theme: 'striped',
+                        styles: { fontSize: 8, cellPadding: 2 },
+                        headStyles: { fillColor: [192, 28, 28] },
+                        tableWidth: 'auto'
+                    });
+                    y = doc.lastAutoTable.finalY + 10;
+                    let total = 0;
+                    const amountIndex = allExpenditureArchive[0].indexOf("Amount");
+                    filteredExpenditure.forEach(row => { total += parseFloat(row[amountIndex]) || 0; });
+                    doc.setFont("times", "normal");
+                    doc.setFontSize(14);
+                    doc.setTextColor(220, 38, 38);
+                    doc.text("Total: Rs. " + total.toFixed(2), 14, y);
+                } else {
+                    doc.setFontSize(12);
+                    doc.setTextColor(150, 0, 0);
+                    doc.text("No records found for selected dates.", 14, y);
+                }
+
+                doc.save("filtered-archived-records.pdf");
+            });
+
+            // Call this after login and finance data fetch
+            fetchArchiveRecords();
         });
     </script>
 </body>
