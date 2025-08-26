@@ -79,6 +79,56 @@
             pointer-events: auto;
             transform: translateX(-50%) scale(1.05);
         }
+        .kpi-card {
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .kpi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+        }
+        .pagination-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            background-color: white;
+            transition: background-color 0.2s;
+        }
+        .pagination-btn:hover {
+            background-color: #f3f4f6;
+        }
+        .pagination-btn.active {
+            background-color: #1e3a8a;
+            color: white;
+            border-color: #1e3a8a;
+        }
+        .pagination-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Elegant Filter Button Styles */
+        .dashboard-filter-btn {
+            padding: 0.375rem 0.875rem; /* 6px 14px */
+            border-radius: 0.375rem; /* 6px */
+            border: none;
+            background-color: transparent;
+            color: #4b5563; /* text-gray-600 */
+            font-size: 0.875rem; /* 14px */
+            font-weight: 500;
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+        }
+
+        .dashboard-filter-btn:hover {
+            background-color: #e5e7eb; /* bg-gray-200 for non-active buttons */
+        }
+
+        .dashboard-filter-btn.filter-active {
+            background-color: white;
+            color: #1e3a8a; /* text-blue-800 */
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
     </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
@@ -149,15 +199,23 @@
             </section>
             
             <section id="dashboard" class="mb-6 scroll-target">
-                <h2 class="text-xl font-semibold mb-4 text-gray-700">Dashboard</h2>
+                <div class="flex flex-wrap justify-between items-center mb-4 gap-3">
+                    <h2 class="text-xl font-semibold text-gray-700">Dashboard</h2>
+                    <div id="dashboard-filter-group" class="flex items-center bg-gray-200 p-1 rounded-lg shadow-inner">
+                        <button data-filter="all" class="dashboard-filter-btn filter-active">All Time</button>
+                        <button data-filter="today" class="dashboard-filter-btn">Today</button>
+                        <button data-filter="week" class="dashboard-filter-btn">This Week</button>
+                        <button data-filter="month" class="dashboard-filter-btn">Last 30 Days</button>
+                    </div>
+                </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-                    <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md flex items-center"><i class="fa-solid fa-users fa-2x text-blue-500 mr-4"></i><div><p class="text-gray-500 text-sm">Total Volunteers</p><p id="kpi-total-volunteers" class="text-2xl font-bold">0</p></div></div>
-                    <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md flex items-center"><i class="fa-solid fa-triangle-exclamation fa-2x text-red-500 mr-4"></i><div><p class="text-gray-500 text-sm">Tasks Overdue</p><p id="kpi-overdue-tasks" class="text-2xl font-bold">0</p></div></div>
-                    <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md flex items-center"><i class="fa-solid fa-file-alt fa-2x text-gray-500 mr-4"></i><div><p class="text-gray-500 text-sm">Tasks Assigned</p><p id="kpi-tasks-assigned" class="text-2xl font-bold">0</p></div></div>
-                    <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md flex items-center"><i class="fa-solid fa-check-double fa-2x text-green-500 mr-4"></i><div><p class="text-gray-500 text-sm">Tasks Completed</p><p id="kpi-tasks-completed" class="text-2xl font-bold">0</p></div></div>
-                    <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md flex items-center"><i class="fa-solid fa-ban fa-2x text-orange-500 mr-4"></i><div><p class="text-gray-500 text-sm">Tasks Blocked</p><p id="kpi-tasks-blocked" class="text-2xl font-bold">0</p></div></div>
-                    <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md flex items-center"><i class="fa-solid fa-bars-progress fa-2x text-yellow-500 mr-4"></i><div><p class="text-gray-500 text-sm">Tasks In Progress</p><p id="kpi-tasks-in-progress" class="text-2xl font-bold">0</p></div></div>
-                    <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md flex items-center"><i class="fa-solid fa-calendar-check fa-2x text-purple-500 mr-4"></i><div><p class="text-gray-500 text-sm">Completed (Overdue)</p><p id="kpi-completed-overdue" class="text-2xl font-bold">0</p></div></div>
+                    <div id="kpi-volunteers-card" class="kpi-card bg-white p-4 sm:p-6 rounded-lg shadow-md flex items-center"><i class="fa-solid fa-users fa-2x text-blue-500 mr-4"></i><div><p class="text-gray-500 text-sm">Total Volunteers</p><p id="kpi-total-volunteers" class="text-2xl font-bold">0</p></div></div>
+                    <div id="kpi-overdue-card" class="kpi-card bg-white p-4 sm:p-6 rounded-lg shadow-md flex items-center"><i class="fa-solid fa-triangle-exclamation fa-2x text-red-500 mr-4"></i><div><p class="text-gray-500 text-sm">Tasks Overdue</p><p id="kpi-overdue-tasks" class="text-2xl font-bold">0</p></div></div>
+                    <div id="kpi-assigned-card" class="kpi-card bg-white p-4 sm:p-6 rounded-lg shadow-md flex items-center"><i class="fa-solid fa-file-alt fa-2x text-gray-500 mr-4"></i><div><p class="text-gray-500 text-sm">Tasks Assigned</p><p id="kpi-tasks-assigned" class="text-2xl font-bold">0</p></div></div>
+                    <div id="kpi-completed-card" class="kpi-card bg-white p-4 sm:p-6 rounded-lg shadow-md flex items-center"><i class="fa-solid fa-check-double fa-2x text-green-500 mr-4"></i><div><p class="text-gray-500 text-sm">Tasks Completed</p><p id="kpi-tasks-completed" class="text-2xl font-bold">0</p></div></div>
+                    <div id="kpi-blocked-card" class="kpi-card bg-white p-4 sm:p-6 rounded-lg shadow-md flex items-center"><i class="fa-solid fa-ban fa-2x text-orange-500 mr-4"></i><div><p class="text-gray-500 text-sm">Tasks Blocked</p><p id="kpi-tasks-blocked" class="text-2xl font-bold">0</p></div></div>
+                    <div id="kpi-inprogress-card" class="kpi-card bg-white p-4 sm:p-6 rounded-lg shadow-md flex items-center"><i class="fa-solid fa-bars-progress fa-2x text-yellow-500 mr-4"></i><div><p class="text-gray-500 text-sm">Tasks In Progress</p><p id="kpi-tasks-in-progress" class="text-2xl font-bold">0</p></div></div>
+                    <div id="kpi-completed-overdue-card" class="kpi-card bg-white p-4 sm:p-6 rounded-lg shadow-md flex items-center"><i class="fa-solid fa-calendar-check fa-2x text-purple-500 mr-4"></i><div><p class="text-gray-500 text-sm">Completed (Overdue)</p><p id="kpi-completed-overdue" class="text-2xl font-bold">0</p></div></div>
                 </div>
             </section>
 
@@ -193,8 +251,44 @@
                 <div class="bg-white rounded-lg shadow-md"><button class="accordion-toggle flex justify-between items-center w-full p-6 text-left"><h2 class="text-lg font-semibold">Add New User</h2><svg class="accordion-icon w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button><div class="accordion-content p-6 border-t border-gray-200 hidden"><form id="addVolunteerForm" class="space-y-4"><div><label for="fullName" class="block text-sm font-medium text-gray-700">Full Name</label><input type="text" id="fullName" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></div><div><label for="volEmail" class="block text-sm font-medium text-gray-700">Email</label><input type="email" id="volEmail" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></div><div><label for="volPassword" class="block text-sm font-medium text-gray-700">Temporary Password</label><input type="password" id="volPassword" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></div><div><label for="volRole" class="block text-sm font-medium text-gray-700">Role</label><select id="volRole" class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"><option value="Volunteer">Volunteer</option><option value="Admin">Admin</option></select></div><button type="submit" class="w-full bg-green-600 text-white font-bold py-2 px-4 rounded-md hover:bg-green-700 transition duration-300">Add User</button></form></div></div>
             </div>
 
-            <div id="all-tasks" class="bg-white p-4 sm:p-6 rounded-lg shadow-md mb-6 scroll-target"><div class="flex justify-between items-center mb-4"><h2 class="text-lg font-semibold">All Tasks</h2><div><button id="refreshData" class="text-sm font-normal text-blue-500 hover:underline mr-4">(Refresh)</button><button id="exportTasksBtn" class="bg-red-500 text-white text-sm font-semibold px-3 py-1 rounded-md hover:bg-red-600 transition duration-200"><i class="fa-solid fa-file-pdf mr-2"></i>Export</button></div></div><div class="overflow-x-auto"><div id="tasksTableContainer"></div></div></div>
-            <div id="all-users" class="bg-white p-4 sm:p-6 rounded-lg shadow-md scroll-target mb-6"><div class="flex justify-between items-center mb-4"><h2 class="text-lg font-semibold">All Users</h2><button id="exportUsersBtn" class="bg-red-500 text-white text-sm font-semibold px-3 py-1 rounded-md hover:bg-red-600 transition duration-200"><i class="fa-solid fa-file-pdf mr-2"></i>Export</button></div><div class="overflow-x-auto"><div id="volunteersTableContainer"></div></div></div>
+            <div id="all-tasks" class="bg-white p-4 sm:p-6 rounded-lg shadow-md mb-6 scroll-target">
+                <div class="flex flex-wrap justify-between items-center mb-4 gap-4">
+                    <h2 class="text-lg font-semibold">All Tasks</h2>
+                    <div id="tasks-bulk-actions-container" class="hidden">
+                        <select id="tasks-bulk-action" class="border-gray-300 rounded-md shadow-sm text-sm">
+                            <option value="">Bulk Actions</option>
+                            <option value="delete">Delete Selected</option>
+                        </select>
+                        <button id="tasks-bulk-apply-btn" class="ml-2 bg-blue-600 text-white text-sm font-semibold px-3 py-1 rounded-md hover:bg-blue-700">Apply</button>
+                    </div>
+                    <div>
+                        <button id="refreshData" class="text-sm font-normal text-blue-500 hover:underline mr-4">(Refresh)</button>
+                        <button id="exportTasksBtn" class="bg-red-500 text-white text-sm font-semibold px-3 py-1 rounded-md hover:bg-red-600 transition duration-200"><i class="fa-solid fa-file-pdf mr-2"></i>Export</button>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <div id="tasksTableContainer"></div>
+                </div>
+                <div id="tasks-pagination-container" class="mt-4 flex justify-between items-center"></div>
+            </div>
+            
+            <div id="all-users" class="bg-white p-4 sm:p-6 rounded-lg shadow-md scroll-target mb-6">
+                <div class="flex flex-wrap justify-between items-center mb-4 gap-4">
+                    <h2 class="text-lg font-semibold">All Users</h2>
+                    <div id="users-bulk-actions-container" class="hidden">
+                        <select id="users-bulk-action" class="border-gray-300 rounded-md shadow-sm text-sm">
+                            <option value="">Bulk Actions</option>
+                            <option value="delete">Delete Selected</option>
+                        </select>
+                        <button id="users-bulk-apply-btn" class="ml-2 bg-blue-600 text-white text-sm font-semibold px-3 py-1 rounded-md hover:bg-blue-700">Apply</button>
+                    </div>
+                    <button id="exportUsersBtn" class="bg-red-500 text-white text-sm font-semibold px-3 py-1 rounded-md hover:bg-red-600 transition duration-200"><i class="fa-solid fa-file-pdf mr-2"></i>Export</button>
+                </div>
+                <div class="overflow-x-auto">
+                    <div id="volunteersTableContainer"></div>
+                </div>
+                <div id="users-pagination-container" class="mt-4 flex justify-between items-center"></div>
+            </div>
             
             <section id="finance" class="scroll-target">
                 <div class="grid grid-cols-1 gap-6 mb-6">
@@ -243,9 +337,61 @@
     </div>
 
     <div id="editTaskModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-[100] hidden"><div class="bg-white p-8 rounded-lg shadow-2xl max-w-md w-full"><h2 class="text-2xl font-bold mb-4">Edit Task</h2><form id="editTaskForm" class="space-y-4"><input type="hidden" id="editTaskId"><div><label for="editTaskTitle" class="block text-sm font-medium text-gray-700">Task Title</label><input type="text" id="editTaskTitle" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></div><div><label for="editAssignTo" class="block text-sm font-medium text-gray-700">Assign to (User Email)</label><input type="email" id="editAssignTo" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></div><div><label for="editDueDate" class="block text-sm font-medium text-gray-700">Due Date</label><input type="date" id="editDueDate" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></div><div><label for="editTaskDesc" class="block text-sm font-medium text-gray-700">Description</label><textarea id="editTaskDesc" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></textarea></div><div class="mt-6 flex justify-end space-x-4"><button type="button" id="closeEditModalButton" class="bg-gray-200 px-4 py-2 rounded-md hover:bg-gray-300">Cancel</button><button type="submit" class="bg-blue-600 text-white font-bold px-4 py-2 rounded-md hover:bg-blue-700">Save Changes</button></div></form></div></div>
-    <div id="volunteerProfileModal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-[100] hidden"><div class="bg-white p-6 md:p-8 rounded-lg shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col"><div class="flex justify-between items-center mb-4 pb-4 border-b"><h2 class="text-2xl font-bold text-gray-800">Volunteer Profile</h2><button id="closeProfileModalButton" class="text-gray-500 hover:text-red-600 text-2xl">&times;</button></div><div class="flex-grow overflow-y-auto"><div class="mb-6"><h3 id="profileName" class="text-xl font-bold text-blue-800"></h3><p id="profileEmail" class="text-gray-600"></p></div><div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 text-center"><div class="bg-gray-100 p-3 rounded-lg"><p class="text-sm text-gray-500">Total Tasks</p><p id="profileTotalTasks" class="text-xl font-bold"></p></div><div class="bg-green-100 p-3 rounded-lg"><p class="text-sm text-green-700">Completed</p><p id="profileCompletedTasks" class="text-xl font-bold"></p></div><div class="bg-red-100 p-3 rounded-lg"><p class="text-sm text-red-700">Overdue</p><p id="profileOverdueTasks" class="text-xl font-bold"></p></div><div class="bg-blue-100 p-3 rounded-lg"><p class="text-sm text-blue-700">Completion Rate</p><p id="profileCompletionRate" class="text-xl font-bold"></p></div></div><div><h3 class="text-lg font-semibold mb-2 text-gray-700">Assigned Tasks</h3><div id="profileTaskList" class="space-y-3"></div></div></div></div></div>
+    
+    <div id="userProfileModal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-[100] hidden">
+        <div class="bg-white p-6 md:p-8 rounded-lg shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col">
+            <div class="flex justify-between items-center mb-4 pb-4 border-b">
+                <h2 class="text-2xl font-bold text-gray-800">User Profile</h2>
+                <button id="closeProfileModalButton" class="text-gray-500 hover:text-red-600 text-2xl">&times;</button>
+            </div>
+            <div class="flex-grow overflow-y-auto">
+                <div class="mb-6">
+                    <h3 id="profileName" class="text-xl font-bold text-blue-800"></h3>
+                    <p id="profileEmail" class="text-gray-600"></p>
+                    <p id="profileRole" class="text-sm text-gray-500 mt-1 font-semibold"></p>
+                </div>
+                <div id="volunteer-details" class="hidden">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 text-center">
+                        <div class="bg-gray-100 p-3 rounded-lg"><p class="text-sm text-gray-500">Total Tasks</p><p id="profileTotalTasks" class="text-xl font-bold"></p></div>
+                        <div class="bg-green-100 p-3 rounded-lg"><p class="text-sm text-green-700">Completed</p><p id="profileCompletedTasks" class="text-xl font-bold"></p></div>
+                        <div class="bg-red-100 p-3 rounded-lg"><p class="text-sm text-red-700">Overdue</p><p id="profileOverdueTasks" class="text-xl font-bold"></p></div>
+                        <div class="bg-blue-100 p-3 rounded-lg"><p class="text-sm text-blue-700">Completion Rate</p><p id="profileCompletionRate" class="text-xl font-bold"></p></div>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold mb-2 text-gray-700">Assigned Tasks</h3>
+                        <div id="profileTaskList" class="space-y-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <div id="custom-toast" class="fixed top-6 right-6 z-[9999] px-6 py-3 rounded-lg shadow-lg text-white font-semibold hidden"></div>
+
+    <div id="kpi-details-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-[100] hidden">
+        <div class="bg-white p-6 rounded-lg shadow-2xl max-w-lg w-full max-h-[80vh] flex flex-col">
+            <div class="flex justify-between items-center mb-4 pb-4 border-b">
+                <h2 id="kpi-modal-title" class="text-xl font-bold text-gray-800">Details</h2>
+                <button id="close-kpi-modal-btn" class="text-gray-500 hover:text-red-600 text-2xl">&times;</button>
+            </div>
+            <div id="kpi-modal-content" class="flex-grow overflow-y-auto">
+                </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmation-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-[101] hidden">
+        <div class="bg-white p-8 rounded-lg shadow-2xl max-w-sm w-full text-center">
+            <h2 id="confirmation-title" class="text-xl font-bold mb-4 text-gray-800">Confirm Action</h2>
+            <p id="confirmation-message" class="text-gray-600 mb-6">Are you sure?</p>
+            <div class="flex justify-center space-x-4">
+                <button id="confirm-cancel-btn" class="bg-gray-200 px-6 py-2 rounded-md hover:bg-gray-300 font-semibold">Cancel</button>
+                <button id="confirm-action-btn" class="bg-red-600 text-white font-bold px-6 py-2 rounded-md hover:bg-red-700">Confirm</button>
+            </div>
+        </div>
+    </div>
+
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script>
@@ -316,6 +462,9 @@
             let sortState = { column: -1, direction: 'asc' };
             let taskStatusChart = null;
             let leaderboardChart = null;
+            let currentTasksPage = 1;
+            let currentUsersPage = 1;
+            const ROWS_PER_PAGE = 10;
 
             const motivationalQuotes = [
                 { text: `"And cooperate in righteousness and piety, but do not cooperate in sin and aggression."`, source: "Qur'an (5:2)" },
@@ -401,21 +550,47 @@
                 });
             }
 
+            // --- Confirmation Modal Logic ---
+            const confirmationModal = document.getElementById('confirmation-modal');
+            let confirmCallback = null;
+
+            function showConfirmationModal(title, message, onConfirm) {
+                document.getElementById('confirmation-title').textContent = title;
+                document.getElementById('confirmation-message').textContent = message;
+                confirmCallback = onConfirm;
+                confirmationModal.classList.remove('hidden');
+            }
+
+            document.getElementById('confirm-cancel-btn').addEventListener('click', () => {
+                confirmationModal.classList.add('hidden');
+                confirmCallback = null;
+            });
+
+            document.getElementById('confirm-action-btn').addEventListener('click', () => {
+                if (typeof confirmCallback === 'function') {
+                    confirmCallback();
+                }
+                confirmationModal.classList.add('hidden');
+                confirmCallback = null;
+            });
+
+
             // Event Listeners
-            document.getElementById("logoutButton").addEventListener("click", logout);
+            document.getElementById("logoutButton").addEventListener("click", () => {
+                showConfirmationModal('Confirm Logout', 'Are you sure you want to logout?', logout);
+            });
+
             document.getElementById("refreshData").addEventListener("click", fetchAdminData);
             document.getElementById("assignTaskForm").addEventListener("submit", handleFormSubmit);
             document.getElementById("addVolunteerForm").addEventListener("submit", handleFormSubmit);
             document.getElementById("addFinanceMemberForm").addEventListener("submit", handleFormSubmit);
             document.getElementById("editTaskForm").addEventListener("submit", handleTaskUpdate);
             document.getElementById("closeEditModalButton").addEventListener("click", () => document.getElementById('editTaskModal').classList.add('hidden'));
-            document.getElementById("closeProfileModalButton").addEventListener("click", () => document.getElementById('volunteerProfileModal').classList.add('hidden'));
+            document.getElementById("closeProfileModalButton").addEventListener("click", () => document.getElementById('userProfileModal').classList.add('hidden'));
             
-            // START: Updated Event Listeners for PDF Export
             document.getElementById("exportTasksBtn").addEventListener("click", () => exportToPdf('tasks-export.pdf', allTasks));
             document.getElementById("exportUsersBtn").addEventListener("click", () => exportToPdf('users-export.pdf', allVolunteers));
             document.getElementById("exportFinanceBtn").addEventListener("click", () => exportToPdf('finance-users-export.pdf', allFinanceUsers));
-            // END: Updated Event Listeners for PDF Export
 
             document.getElementById('statusFilter').addEventListener('change', applyFiltersAndRender);
             document.getElementById('emailSearch').addEventListener('input', applyFiltersAndRender);
@@ -443,44 +618,63 @@
                 messageEditor.addEventListener('input', () => { messageInput.value = messageEditor.innerHTML; });
             }
 
-            // START: New PDF Export Function
             function exportToPdf(filename, data) {
                 if (!data || data.length < 2) {
-                    showToast("No data available to export.", true);
+                    showToast("No data available to export.", "warning");
                     return;
                 }
                 try {
                     const { jsPDF } = window.jspdf;
-                    const doc = new jsPDF();
+
+                    // 1. Initialize jsPDF with A4 landscape orientation
+                    const doc = new jsPDF({
+                        orientation: 'landscape',
+                        unit: 'mm',
+                        format: 'a4'
+                    });
+
                     const headers = data[0];
                     const body = data.slice(1);
                     const today = new Date().toISOString().split('T')[0];
                     const finalFilename = `${filename.split('.')[0]}-${today}.pdf`;
 
-                    let title = "Data Export";
-                    if (filename.includes('tasks')) title = "All Tasks Report";
-                    if (filename.includes('users')) title = "All Users Report";
-                    if (filename.includes('finance')) title = "Finance Team Report";
+                    // Determine the specific report title
+                    let reportTitle = "Data Export";
+                    if (filename.includes('tasks')) reportTitle = "All Tasks Report";
+                    if (filename.includes('users')) reportTitle = "All Users Report";
+                    if (filename.includes('finance')) reportTitle = "Finance Team Report";
                     
-                    doc.text(title, 14, 15);
+                    // 2. Get page dimensions and add centered titles
+                    const pageWidth = doc.internal.pageSize.getWidth();
+                    const pageCenter = pageWidth / 2;
+
+                    // Main Header: Institute Name
+                    doc.setFontSize(16);
+                    doc.setFont('helvetica', 'bold');
+                    doc.text("Institute of Islamic Education", pageCenter, 15, { align: 'center' });
                     
+                    // Sub-header: Report Title
+                    doc.setFontSize(12);
+                    doc.setFont('helvetica', 'normal');
+                    doc.text(reportTitle, pageCenter, 22, { align: 'center' });
+
+                    // 3. Generate the table with an adjusted start position
                     doc.autoTable({
                         head: [headers],
                         body: body,
-                        startY: 22,
+                        startY: 30, // Adjusted Y position to be below the titles
                         theme: 'striped',
                         styles: { fontSize: 8, cellPadding: 2 },
-                        headStyles: { fillColor: [28, 58, 138] }, // Dark blue color for header
+                        headStyles: { fillColor: [30, 58, 138] }, 
                     });
                     
                     doc.save(finalFilename);
                     showToast("Data exported successfully as PDF!");
                 } catch (error) {
                     console.error("Error exporting to PDF:", error);
-                    showToast("Failed to export PDF. Please try again.", true);
+                    showToast("Failed to export PDF. Please try again.", "error");
                 }
             }
-            // END: New PDF Export Function
 
             function showToast(message, type = "success") {
                 const toast = document.getElementById('custom-toast');
@@ -488,16 +682,16 @@
                 let bg;
                 switch (type) {
                     case "error":
-                        bg = "linear-gradient(to right, #ef4444, #b91c1c)"; // red
+                        bg = "linear-gradient(to right, #ef4444, #b91c1c)"; 
                         break;
                     case "warning":
-                        bg = "linear-gradient(to right, #f59e42, #d97706)"; // orange
+                        bg = "linear-gradient(to right, #f59e42, #d97706)"; 
                         break;
                     case "info":
-                        bg = "linear-gradient(to right, #38bdf8, #2563eb)"; // blue
+                        bg = "linear-gradient(to right, #38bdf8, #2563eb)"; 
                         break;
                     default:
-                        bg = "linear-gradient(to right, #22c55e, #15803d)"; // green (success)
+                        bg = "linear-gradient(to right, #22c55e, #15803d)"; 
                 }
                 toast.style.background = bg;
                 toast.classList.add('show');
@@ -543,10 +737,8 @@
             }
             
             function logout() {
-                if (confirm("Are you sure you want to logout?")) {
-                    localStorage.clear();
-                    window.location.href = "./login.html";
-                }
+                localStorage.clear();
+                window.location.href = "./login.html";
             }
 
             function fetchAdminData() {
@@ -573,16 +765,15 @@
                 .then(([adminData, leaderboardData]) => {
                     if (adminData.status === 'error') throw new Error(adminData.message);
                     allTasks = adminData.tasks ? [...adminData.tasks] : [];
-                allVolunteers = adminData.volunteers ? [...adminData.volunteers] : [];
-                allFinanceUsers = adminData.financeUsers ? [...adminData.financeUsers] : [];
-                window.allVolunteers = allVolunteers;
-                window.allFinanceUsers = allFinanceUsers;
-                adminDataLoaded = true;
-                tryInitNotificationCenter();
+                    allVolunteers = adminData.volunteers ? [...adminData.volunteers] : [];
+                    allFinanceUsers = adminData.financeUsers ? [...adminData.financeUsers] : [];
+                    window.allVolunteers = allVolunteers;
+                    window.allFinanceUsers = allFinanceUsers;
+                    adminDataLoaded = true;
+                    tryInitNotificationCenter();
                     
-                    renderTable(allTasks, document.getElementById("tasksTableContainer"));
-                    renderTable(allVolunteers, document.getElementById("volunteersTableContainer"));
-                    renderTable(allFinanceUsers, document.getElementById("financeTableContainer"));
+                    applyFiltersAndRender(); 
+                    renderTable(allFinanceUsers, document.getElementById("financeTableContainer"), 'financeUser', 1, 10);
                     
                     checkFinanceTeamStatus(); 
                     
@@ -614,6 +805,7 @@
                     }
                     
                     renderLeaderboard(filteredLeaderboardData);
+                    addKpiCardListeners();
                 })
                 .catch(handleAuthError)
                 .finally(() => {
@@ -688,15 +880,43 @@
             }
 
 
-            function renderTable(data, container) {
+            function renderTable(data, container, tableType, currentPage, rowsPerPage) {
                 container.innerHTML = "";
-                if (!data || data.length < 2) { container.innerHTML = `<p class="text-gray-500 p-4 text-center">No data available.</p>`; return; }
+                if (!data || data.length < 2) { 
+                    container.innerHTML = `<p class="text-gray-500 p-4 text-center">No data available.</p>`; 
+                    if (tableType === 'task') document.getElementById('tasks-pagination-container').innerHTML = '';
+                    if (tableType === 'user') document.getElementById('users-pagination-container').innerHTML = '';
+                    return; 
+                }
+
                 const table = document.createElement('table');
                 table.className = "min-w-full divide-y divide-gray-200";
                 const thead = document.createElement('thead');
                 thead.className = "bg-gray-50";
                 const headerRow = document.createElement('tr');
-                const headers = [...data[0]];
+                
+                let headers = [...data[0]];
+                let passwordHashIndex = -1;
+
+                if (tableType === 'user' || tableType === 'financeUser') {
+                    passwordHashIndex = headers.indexOf('PasswordHash');
+                    if (passwordHashIndex > -1) {
+                        headers.splice(passwordHashIndex, 1);
+                    }
+                }
+
+                const lastUpdatedIndex = headers.indexOf('LastUpdated');
+                const assignedToEmailIndex = headers.indexOf('AssignedToEmail');
+
+                const thCheckbox = document.createElement('th');
+                thCheckbox.className = "px-6 py-3";
+                const selectAllCheckbox = document.createElement('input');
+                selectAllCheckbox.type = 'checkbox';
+                selectAllCheckbox.id = `${tableType}-select-all`;
+                selectAllCheckbox.className = 'rounded';
+                thCheckbox.appendChild(selectAllCheckbox);
+                headerRow.appendChild(thCheckbox);
+
                 headers.push("Actions");
                 headers.forEach((headerText, index) => {
                     const th = document.createElement('th');
@@ -710,15 +930,48 @@
                 });
                 thead.appendChild(headerRow);
                 table.appendChild(thead);
+                
                 const tbody = document.createElement('tbody');
                 tbody.className = "bg-white divide-y divide-gray-200";
+                
                 const dataRows = data.slice(1);
-                dataRows.forEach((rowData, rowIndex) => {
+                const start = (currentPage - 1) * rowsPerPage;
+                const end = start + rowsPerPage;
+                const paginatedRows = dataRows.slice(start, end);
+
+                paginatedRows.forEach((rowData, rowIndex) => {
                     const tr = document.createElement('tr');
-                    rowData.forEach((cellData) => {
+
+                    let cleanRowData = [...rowData];
+                    if (passwordHashIndex > -1) {
+                        cleanRowData.splice(passwordHashIndex, 1);
+                    }
+
+                    const tdCheckbox = document.createElement('td');
+                    tdCheckbox.className = 'px-6 py-4';
+                    const rowCheckbox = document.createElement('input');
+                    rowCheckbox.type = 'checkbox';
+                    rowCheckbox.className = `${tableType}-row-checkbox rounded`;
+                    const rowId = (tableType === 'task') ? rowData[0] : rowData[1]; 
+                    rowCheckbox.value = rowId;
+                    tdCheckbox.appendChild(rowCheckbox);
+                    tr.appendChild(tdCheckbox);
+                    
+                    cleanRowData.forEach((cellData, cellIndex) => {
                         const td = document.createElement('td');
                         td.className = "px-6 py-4 whitespace-nowrap text-sm text-gray-700";
-                        td.textContent = cellData;
+                        
+                        // FIX: Check against original headers array index
+                        if (headers[cellIndex] === 'LastUpdated' && tableType === 'task') {
+                            const date = new Date(cellData);
+                            td.textContent = !isNaN(date) ? date.toLocaleString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'N/A';
+                        } else if (headers[cellIndex] === 'AssignedToEmail' && tableType === 'task') {
+                            const email = cellData;
+                            const user = allVolunteers.slice(1).find(v => v[1] === email);
+                            td.textContent = user ? user[0] : email; 
+                        } else {
+                            td.textContent = cellData;
+                        }
                         tr.appendChild(td);
                     });
                     const actionsTd = document.createElement('td');
@@ -739,6 +992,12 @@
                 });
                 table.appendChild(tbody);
                 container.appendChild(table);
+
+                if (tableType === 'task' || tableType === 'user') {
+                    setupPagination(dataRows.length, currentPage, rowsPerPage, tableType);
+                    setupBulkActions(tableType);
+                }
+
                 container.querySelectorAll('.edit-task-btn').forEach(btn => btn.addEventListener('click', (e) => openEditTaskModal(e.currentTarget.dataset.taskId)));
                 container.querySelectorAll('.delete-task-btn').forEach(btn => btn.addEventListener('click', (e) => handleDelete(e.currentTarget.dataset.taskId, 'task')));
                 container.querySelectorAll('.delete-user-btn').forEach(btn => btn.addEventListener('click', (e) => handleDelete(e.currentTarget.dataset.userEmail, 'user')));
@@ -746,11 +1005,11 @@
 
                 if (container.id === 'volunteersTableContainer') {
                     tbody.querySelectorAll('tr').forEach((tr, rowIndex) => {
-                        const nameCell = tr.querySelector('td:first-child');
+                        const nameCell = tr.querySelector('td:nth-child(2)'); 
                         if (nameCell) {
-                            const userEmail = dataRows[rowIndex][1];
+                            const userEmail = paginatedRows[rowIndex][1];
                             nameCell.innerHTML = `<button class="text-blue-600 hover:underline font-semibold">${nameCell.textContent}</button>`;
-                            nameCell.querySelector('button').addEventListener('click', () => openVolunteerProfileModal(userEmail));
+                            nameCell.querySelector('button').addEventListener('click', () => openUserProfileModal(userEmail));
                         }
                     });
                 }
@@ -772,51 +1031,85 @@
                 }
             }
             
-            function openVolunteerProfileModal(email) {
-                if (allVolunteers.length < 2 || allTasks.length < 2) { showToast("Data not fully loaded. Please wait a moment and try again.", true); return; }
-                const volHeaders = allVolunteers[0];
-                const volunteer = allVolunteers.slice(1).find(v => v[volHeaders.indexOf("Email")] === email);
-                if (!volunteer) { showToast("Could not find volunteer data.", true); return; }
-                const taskHeaders = allTasks[0];
-                const volunteerTasks = allTasks.slice(1).filter(t => t[taskHeaders.indexOf("AssignedToEmail")] === email);
-                let completed = 0;
-                let overdue = 0;
-                const today = new Date();
-                today.setHours(0,0,0,0);
-                volunteerTasks.forEach(task => {
-                    if (task[taskHeaders.indexOf("Status")] === 'Completed') { completed++; }
-                    const dueDate = new Date(task[taskHeaders.indexOf("DueDate")]);
-                    if (task[taskHeaders.indexOf("Status")] !== 'Completed' && dueDate < today) { overdue++; }
-                });
-                const totalTasks = volunteerTasks.length;
-                const completionRate = totalTasks > 0 ? Math.round((completed / totalTasks) * 100) : 0;
-                document.getElementById('profileName').textContent = volunteer[volHeaders.indexOf("FullName")];
-                document.getElementById('profileEmail').textContent = volunteer[volHeaders.indexOf("Email")];
-                document.getElementById('profileTotalTasks').textContent = totalTasks;
-                document.getElementById('profileCompletedTasks').textContent = completed;
-                document.getElementById('profileOverdueTasks').textContent = overdue;
-                document.getElementById('profileCompletionRate').textContent = `${completionRate}%`;
-                const taskListContainer = document.getElementById('profileTaskList');
-                taskListContainer.innerHTML = ''; 
-                if (volunteerTasks.length === 0) {
-                    taskListContainer.innerHTML = `<p class="text-gray-500 text-center">No tasks assigned to this volunteer.</p>`;
-                } else {
-                    volunteerTasks.forEach(task => {
-                        const status = task[taskHeaders.indexOf("Status")];
-                        const dueDate = new Date(task[taskHeaders.indexOf("DueDate")]);
-                        const isOverdue = status !== 'Completed' && dueDate < today;
-                        let statusColor = 'bg-blue-100 text-blue-800';
-                        if (status === 'In Progress') statusColor = 'bg-yellow-100 text-yellow-800';
-                        if (status === 'Completed') statusColor = 'bg-green-100 text-green-800';
-                        if (status === 'Blocked') statusColor = 'bg-red-100 text-red-800';
-                        const taskElement = document.createElement('div');
-                        taskElement.className = `p-3 rounded-md flex justify-between items-center ${isOverdue ? 'bg-red-50 border-l-4 border-red-400' : 'bg-gray-50'}`;
-                        taskElement.innerHTML = `<div><p class="font-semibold text-gray-800">${task[taskHeaders.indexOf("TaskTitle")]}</p><p class="text-sm text-gray-500">Due: ${dueDate.toLocaleDateString()}</p></div><span class="text-xs font-bold px-2 py-1 rounded-full ${statusColor}">${status}</span>`;
-                        taskListContainer.appendChild(taskElement);
-                    });
+            function openUserProfileModal(email) {
+                if (allVolunteers.length < 2) { 
+                    showToast("User data not fully loaded. Please wait a moment and try again.", "warning"); 
+                    return; 
                 }
-                document.getElementById('volunteerProfileModal').classList.remove('hidden');
+
+                const volHeaders = allVolunteers[0];
+                const user = allVolunteers.slice(1).find(v => v[volHeaders.indexOf("Email")] === email);
+                if (!user) { 
+                    showToast("Could not find user data.", "error"); 
+                    return; 
+                }
+
+                const userRole = user[volHeaders.indexOf("Role")];
+                const volunteerDetailsContainer = document.getElementById('volunteer-details');
+
+                document.getElementById('profileName').textContent = user[volHeaders.indexOf("FullName")];
+                document.getElementById('profileEmail').textContent = user[volHeaders.indexOf("Email")];
+                document.getElementById('profileRole').textContent = `Role: ${userRole}`;
+
+                if (userRole === 'Volunteer') {
+                    volunteerDetailsContainer.classList.remove('hidden');
+
+                    if (allTasks.length < 2) {
+                        document.getElementById('profileTotalTasks').textContent = '...';
+                        document.getElementById('profileCompletedTasks').textContent = '...';
+                        document.getElementById('profileOverdueTasks').textContent = '...';
+                        document.getElementById('profileCompletionRate').textContent = '...';
+                        document.getElementById('profileTaskList').innerHTML = '<p class="text-gray-500">Loading tasks...</p>';
+                    } else {
+                        const taskHeaders = allTasks[0];
+                        const volunteerTasks = allTasks.slice(1).filter(t => t[taskHeaders.indexOf("AssignedToEmail")] === email);
+                        
+                        let completed = 0;
+                        let overdue = 0;
+                        const today = new Date();
+                        today.setHours(0, 0, 0, 0);
+
+                        volunteerTasks.forEach(task => {
+                            if (task[taskHeaders.indexOf("Status")] === 'Completed') completed++;
+                            const dueDate = new Date(task[taskHeaders.indexOf("DueDate")]);
+                            if (task[taskHeaders.indexOf("Status")] !== 'Completed' && dueDate < today) overdue++;
+                        });
+                        
+                        const totalTasks = volunteerTasks.length;
+                        const completionRate = totalTasks > 0 ? Math.round((completed / totalTasks) * 100) : 0;
+
+                        document.getElementById('profileTotalTasks').textContent = totalTasks;
+                        document.getElementById('profileCompletedTasks').textContent = completed;
+                        document.getElementById('profileOverdueTasks').textContent = overdue;
+                        document.getElementById('profileCompletionRate').textContent = `${completionRate}%`;
+
+                        const taskListContainer = document.getElementById('profileTaskList');
+                        taskListContainer.innerHTML = ''; 
+                        if (volunteerTasks.length === 0) {
+                            taskListContainer.innerHTML = `<p class="text-gray-500 text-center">No tasks assigned to this volunteer.</p>`;
+                        } else {
+                            volunteerTasks.forEach(task => {
+                                const status = task[taskHeaders.indexOf("Status")];
+                                const dueDate = new Date(task[taskHeaders.indexOf("DueDate")]);
+                                const isOverdue = status !== 'Completed' && dueDate < today;
+                                let statusColor = 'bg-blue-100 text-blue-800';
+                                if (status === 'In Progress') statusColor = 'bg-yellow-100 text-yellow-800';
+                                if (status === 'Completed') statusColor = 'bg-green-100 text-green-800';
+                                if (status === 'Blocked') statusColor = 'bg-red-100 text-red-800';
+                                const taskElement = document.createElement('div');
+                                taskElement.className = `p-3 rounded-md flex justify-between items-center ${isOverdue ? 'bg-red-50 border-l-4 border-red-400' : 'bg-gray-50'}`;
+                                taskElement.innerHTML = `<div><p class="font-semibold text-gray-800">${task[taskHeaders.indexOf("TaskTitle")]}</p><p class="text-sm text-gray-500">Due: ${dueDate.toLocaleDateString()}</p></div><span class="text-xs font-bold px-2 py-1 rounded-full ${statusColor}">${status}</span>`;
+                                taskListContainer.appendChild(taskElement);
+                            });
+                        }
+                    }
+                } else {
+                    volunteerDetailsContainer.classList.add('hidden');
+                }
+
+                document.getElementById('userProfileModal').classList.remove('hidden');
             }
+
 
             function handleTaskUpdate(e) {
                 e.preventDefault();
@@ -827,48 +1120,65 @@
             }
 
             function handleDelete(id, type) {
-                let item, action, payload;
+                let item;
                 switch (type) {
-                    case 'task': item = 'task'; action = 'deleteTask'; payload = { action, taskId: id }; break;
-                    case 'user': item = 'user'; action = 'deleteUser'; payload = { action, email: id }; break;
-                    case 'financeUser': item = 'finance user'; action = 'deleteFinanceUser'; payload = { action, email: id }; break;
+                    case 'task': item = 'task'; break;
+                    case 'user': item = 'user'; break;
+                    case 'financeUser': item = 'finance user'; break;
                     default: return;
                 }
-                if (confirm(`Are you sure you want to delete this ${item}? This action cannot be undone.`)) {
-                    loaderOverlay.classList.remove('hidden');
-                    postData(payload);
-                }
+                showConfirmationModal(
+                    `Confirm Deletion`,
+                    `Are you sure you want to delete this ${item}? This action cannot be undone.`,
+                    () => {
+                        let action, payload;
+                        if (type === 'task') {
+                            action = 'deleteTask';
+                            payload = { action, taskId: id };
+                        } else if (type === 'user') {
+                            action = 'deleteUser';
+                            payload = { action, email: id };
+                        } else if (type === 'financeUser') {
+                            action = 'deleteFinanceUser';
+                            payload = { action, email: id };
+                        }
+                        loaderOverlay.classList.remove('hidden');
+                        postData(payload);
+                    }
+                );
             }
 
             function applyFiltersAndRender() {
-                if (!allTasks || allTasks.length < 2) return;
-                const headers = allTasks[0];
-                let dataRows = allTasks.slice(1);
-                const statusValue = document.getElementById('statusFilter').value;
-                const emailValue = document.getElementById('emailSearch').value.toLowerCase();
-                const startDateValue = document.getElementById('startDate').value;
-                const endDateValue = document.getElementById('endDate').value;
-                if (statusValue !== 'All') {
-                    const statusIndex = headers.indexOf('Status');
-                    if(statusIndex > -1) dataRows = dataRows.filter(row => row[statusIndex] === statusValue);
-                }
-                if (emailValue) {
-                    const emailIndex = headers.indexOf('AssignedToEmail');
-                    if(emailIndex > -1) dataRows = dataRows.filter(row => row[emailIndex].toLowerCase().includes(emailValue));
-                }
-                const dueDateIndex = headers.indexOf('DueDate');
-                if (dueDateIndex > -1) {
-                    if (startDateValue) {
-                        const startDate = new Date(startDateValue);
-                        dataRows = dataRows.filter(row => new Date(row[dueDateIndex]) >= startDate);
+                let filteredTaskRows = allTasks ? allTasks.slice(1) : [];
+                if (allTasks && allTasks.length > 1) {
+                    const taskHeaders = allTasks[0];
+                    const statusValue = document.getElementById('statusFilter').value;
+                    const emailValue = document.getElementById('emailSearch').value.toLowerCase();
+                    const startDateValue = document.getElementById('startDate').value;
+                    const endDateValue = document.getElementById('endDate').value;
+                    if (statusValue !== 'All') {
+                        const statusIndex = taskHeaders.indexOf('Status');
+                        if(statusIndex > -1) filteredTaskRows = filteredTaskRows.filter(row => row[statusIndex] === statusValue);
                     }
-                    if (endDateValue) {
-                        const endDate = new Date(endDateValue);
-                        endDate.setDate(endDate.getDate() + 1);
-                        dataRows = dataRows.filter(row => new Date(row[dueDateIndex]) < endDate);
+                    if (emailValue) {
+                        const emailIndex = taskHeaders.indexOf('AssignedToEmail');
+                        if(emailIndex > -1) filteredTaskRows = filteredTaskRows.filter(row => row[emailIndex].toLowerCase().includes(emailValue));
+                    }
+                    const dueDateIndex = taskHeaders.indexOf('DueDate');
+                    if (dueDateIndex > -1) {
+                        if (startDateValue) {
+                            const startDate = new Date(startDateValue);
+                            filteredTaskRows = filteredTaskRows.filter(row => new Date(row[dueDateIndex]) >= startDate);
+                        }
+                        if (endDateValue) {
+                            const endDate = new Date(endDateValue);
+                            endDate.setDate(endDate.getDate() + 1);
+                            filteredTaskRows = filteredTaskRows.filter(row => new Date(row[dueDateIndex]) < endDate);
+                        }
                     }
                 }
-                renderTable([headers, ...dataRows], document.getElementById("tasksTableContainer"));
+                renderTable(allTasks ? [allTasks[0], ...filteredTaskRows] : [], document.getElementById("tasksTableContainer"), 'task', currentTasksPage, ROWS_PER_PAGE);
+                renderTable(allVolunteers, document.getElementById("volunteersTableContainer"), 'user', currentUsersPage, ROWS_PER_PAGE);
             }
 
             function handleHeaderClick(headerEl, colIndex) {
@@ -888,11 +1198,31 @@
                     if (valA > valB) return sortState.direction === 'asc' ? 1 : -1;
                     return 0;
                 });
-                renderTable([headers, ...dataRows], document.getElementById("tasksTableContainer"));
+                renderTable([headers, ...dataRows], document.getElementById("tasksTableContainer"), 'task', currentTasksPage, ROWS_PER_PAGE);
             }
 
-            function renderKPIs(tasks, volunteers) {
-                if (!tasks || tasks.length < 2) {
+            function renderKPIs(tasks, volunteers, filter = 'all') {
+                let filteredTasks = tasks ? tasks.slice(1) : [];
+
+                if (filter !== 'all') {
+                    const now = new Date();
+                    let startDate;
+
+                    if (filter === 'today') {
+                        startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                    } else if (filter === 'week') {
+                        startDate = new Date(now.setDate(now.getDate() - now.getDay()));
+                    } else if (filter === 'month') {
+                        startDate = new Date(now.setDate(now.getDate() - 30));
+                    }
+                    
+                    if(tasks.length > 1) {
+                        const lastUpdatedIndex = tasks[0].indexOf("LastUpdated");
+                        filteredTasks = filteredTasks.filter(task => new Date(task[lastUpdatedIndex]) >= startDate);
+                    }
+                }
+
+                if (filteredTasks.length === 0) {
                     document.getElementById('kpi-tasks-in-progress').textContent = 0;
                     document.getElementById('kpi-tasks-completed').textContent = 0;
                     document.getElementById('kpi-overdue-tasks').textContent = 0;
@@ -901,14 +1231,13 @@
                     document.getElementById('kpi-completed-overdue').textContent = 0;
                 } else {
                     const headers = tasks[0];
-                    const data = tasks.slice(1);
                     const statusIndex = headers.indexOf("Status");
                     const dueDateIndex = headers.indexOf("DueDate");
                     const lastUpdatedIndex = headers.indexOf("LastUpdated");
                     let inProgress = 0, completed = 0, overdue = 0, assigned = 0, blocked = 0, completedOverdue = 0;
                     const today = new Date();
                     today.setHours(0,0,0,0);
-                    data.forEach(row => {
+                    filteredTasks.forEach(row => {
                         const status = row[statusIndex];
                         const dueDate = new Date(row[dueDateIndex]);
                         const lastUpdatedDate = new Date(row[lastUpdatedIndex]);
@@ -964,15 +1293,36 @@
                 });
             }
 
-            function renderTaskStatusChart(tasks) {
+            function renderTaskStatusChart(tasks, filter = 'all') {
                 const chartContainer = document.getElementById('chart-container');
                 if (taskStatusChart) { taskStatusChart.destroy(); }
-                if (!tasks || tasks.length < 2) { chartContainer.innerHTML = `<p class="text-gray-500 p-4 text-center">No task data to display.</p>`; return; }
+                
+                let filteredTasks = tasks ? tasks.slice(1) : [];
+
+                if (filter !== 'all') {
+                    const now = new Date();
+                    let startDate;
+
+                    if (filter === 'today') {
+                        startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                    } else if (filter === 'week') {
+                        startDate = new Date(now.setDate(now.getDate() - now.getDay()));
+                    } else if (filter === 'month') {
+                        startDate = new Date(now.setDate(now.getDate() - 30));
+                    }
+                    
+                    if(tasks.length > 1) {
+                        const lastUpdatedIndex = tasks[0].indexOf("LastUpdated");
+                        filteredTasks = filteredTasks.filter(task => new Date(task[lastUpdatedIndex]) >= startDate);
+                    }
+                }
+
+                if (filteredTasks.length === 0) { chartContainer.innerHTML = `<p class="text-gray-500 p-4 text-center">No task data to display for this period.</p>`; return; }
+                
                 chartContainer.innerHTML = `<canvas id="taskStatusChart"></canvas>`;
                 const headers = tasks[0];
-                const data = tasks.slice(1);
                 const statusIndex = headers.indexOf("Status");
-                const statusCounts = data.reduce((acc, row) => {
+                const statusCounts = filteredTasks.reduce((acc, row) => {
                     const status = row[statusIndex];
                     acc[status] = (acc[status] || 0) + 1;
                     return acc;
@@ -985,6 +1335,86 @@
                 });
             }
 
+            // --- KPI Modal Logic ---
+            const kpiModal = document.getElementById('kpi-details-modal');
+            const kpiModalTitle = document.getElementById('kpi-modal-title');
+            const kpiModalContent = document.getElementById('kpi-modal-content');
+            const closeKpiModalBtn = document.getElementById('close-kpi-modal-btn');
+
+            function showKpiDetailsModal(title, items) {
+                kpiModalTitle.textContent = title;
+                kpiModalContent.innerHTML = '';
+
+                if (items.length === 0) {
+                    kpiModalContent.innerHTML = '<p class="text-gray-500 text-center">No items to display.</p>';
+                } else {
+                    const list = document.createElement('ul');
+                    list.className = 'list-disc list-inside space-y-2';
+                    items.forEach(item => {
+                        const li = document.createElement('li');
+                        li.textContent = item;
+                        list.appendChild(li);
+                    });
+                    kpiModalContent.appendChild(list);
+                }
+                kpiModal.classList.remove('hidden');
+            }
+
+            closeKpiModalBtn.addEventListener('click', () => kpiModal.classList.add('hidden'));
+            kpiModal.addEventListener('click', (e) => {
+                if (e.target === kpiModal) {
+                    kpiModal.classList.add('hidden');
+                }
+            });
+
+            function addKpiCardListeners() {
+                document.getElementById('kpi-volunteers-card').addEventListener('click', () => {
+                    if (allVolunteers.length > 1) {
+                        const headers = allVolunteers[0];
+                        const nameIndex = headers.indexOf("FullName");
+                        const roleIndex = headers.indexOf("Role");
+                        const volunteerNames = allVolunteers.slice(1)
+                            .filter(v => v[roleIndex] === 'Volunteer')
+                            .map(v => v[nameIndex]);
+                        showKpiDetailsModal('All Volunteers', volunteerNames);
+                    }
+                });
+
+                const taskKpiCards = [
+                    { id: 'kpi-overdue-card', status: 'Overdue' },
+                    { id: 'kpi-assigned-card', status: 'Assigned' },
+                    { id: 'kpi-completed-card', status: 'Completed' },
+                    { id: 'kpi-blocked-card', status: 'Blocked' },
+                    { id: 'kpi-inprogress-card', status: 'In Progress' },
+                    { id: 'kpi-completed-overdue-card', status: 'Completed Overdue' }
+                ];
+                
+                taskKpiCards.forEach(card => {
+                    document.getElementById(card.id).addEventListener('click', () => {
+                        if (allTasks.length > 1) {
+                            const headers = allTasks[0];
+                            const titleIndex = headers.indexOf("TaskTitle");
+                            const statusIndex = headers.indexOf("Status");
+                            const dueDateIndex = headers.indexOf("DueDate");
+                            const lastUpdatedIndex = headers.indexOf("LastUpdated");
+                            const today = new Date();
+                            today.setHours(0,0,0,0);
+                            
+                            let filteredTasks;
+                            if(card.status === 'Overdue') {
+                                filteredTasks = allTasks.slice(1).filter(t => t[statusIndex] !== 'Completed' && new Date(t[dueDateIndex]) < today);
+                            } else if (card.status === 'Completed Overdue') {
+                                filteredTasks = allTasks.slice(1).filter(t => t[statusIndex] === 'Completed' && new Date(t[lastUpdatedIndex]) > new Date(t[dueDateIndex]));
+                            } else {
+                                filteredTasks = allTasks.slice(1).filter(t => t[statusIndex] === card.status);
+                            }
+                            
+                            const taskTitles = filteredTasks.map(t => t[titleIndex]);
+                            showKpiDetailsModal(`${card.status} Tasks`, taskTitles);
+                        }
+                    });
+                });
+            }
 
             const notificationCenterContent = document.getElementById('notification-center-content');
     
@@ -1016,7 +1446,6 @@
                 const addAllFinanceBtn = document.getElementById('add-all-finance');
                 const notificationList = document.getElementById('notification-list');
                 
-                // --- NEW: Modal Hooks ---
                 const conversationModal = document.getElementById('conversation-modal');
                 const closeModalBtn = document.getElementById('close-modal-btn');
                 const modalSubject = document.getElementById('modal-subject');
@@ -1030,9 +1459,7 @@
 
                 let allUsers = []; 
                 let selectedRecipients = new Set();
-                let sentMessagesCache = []; // Cache for conversation details
-                
-                // --- Main Functions ---
+                let sentMessagesCache = []; 
                 
                 function populateAllUsers() {
                     allUsers = [];
@@ -1053,7 +1480,7 @@
 
                 function sendNotification(e) {
                     e.preventDefault();
-                    loaderOverlay.classList.remove('hidden'); // Show loader
+                    loaderOverlay.classList.remove('hidden'); 
                     const scheduleTime = document.getElementById('scheduleTime') ? document.getElementById('scheduleTime').value : null;
                     const notificationData = {
                         recipients: Array.from(selectedRecipients),
@@ -1064,12 +1491,12 @@
                     };
                     if (notificationData.recipients.length === 0) {
                         showToast("Please add at least one recipient.", true);
-                        loaderOverlay.classList.add('hidden'); // Hide loader on error
+                        loaderOverlay.classList.add('hidden'); 
                         return;
                     }
                     postData({ action: 'sendNotification', notificationData: notificationData }, (response) => {
                         showToast(response.message);
-                        loaderOverlay.classList.add('hidden'); // Hide loader after response
+                        loaderOverlay.classList.add('hidden'); 
                         if (response.status === 'success') {
                             notificationForm.reset();
                             selectedRecipients.clear();
@@ -1079,13 +1506,13 @@
                 }
                 
                 function fetchAdminNotifications() {
-                    loaderOverlay.classList.remove('hidden'); // Show loader
+                    loaderOverlay.classList.remove('hidden'); 
                     notificationList.innerHTML = '<p class="text-gray-500">Loading sent messages...</p>';
                     const adminDataUrl = `${API_URL}?action=getNotifications&token=${token}`;
                     fetch(adminDataUrl)
                         .then(res => res.json())
                         .then(data => {
-                            loaderOverlay.classList.add('hidden'); // Hide loader after response
+                            loaderOverlay.classList.add('hidden'); 
                             if (data.status === 'success') {
                                 sentMessagesCache = data.notifications;
                                 renderAdminInbox(sentMessagesCache);
@@ -1094,7 +1521,7 @@
                             }
                         })
                         .catch(err => {
-                            loaderOverlay.classList.add('hidden'); // Hide loader on error
+                            loaderOverlay.classList.add('hidden'); 
                             showToast('Error loading inbox: ' + err.message, true);
                         });
                 }
@@ -1180,7 +1607,6 @@
                     renderRecipientTags();
                 });
 
-                // --- Event Listeners ---
                 composeTab.addEventListener('click', (e) => { e.preventDefault(); composeSection.classList.remove('hidden'); inboxSection.classList.add('hidden'); composeTab.classList.add('border-indigo-500', 'text-indigo-600'); inboxTab.classList.remove('border-indigo-500', 'text-indigo-600'); });
                 inboxTab.addEventListener('click', (e) => { e.preventDefault(); inboxSection.classList.remove('hidden'); composeSection.classList.add('hidden'); inboxTab.classList.add('border-indigo-500', 'text-indigo-600'); composeTab.classList.remove('border-indigo-500', 'text-indigo-600'); fetchAdminNotifications(); });
                 closeModalBtn.addEventListener('click', () => conversationModal.classList.add('hidden'));
@@ -1190,15 +1616,12 @@
                 notificationForm.addEventListener('submit', sendNotification);
                 
                 populateAllUsers();
-                console.log("allUsers", allUsers); // Add after populateAllUsers()
 
-                // Helper to add a recipient by email
                 function addRecipient(email) {
                     selectedRecipients.add(email);
                     renderRecipientTags();
                 }
 
-                // Render recipient tags UI
                 function renderRecipientTags() {
                     if (!recipientTags) return;
                     recipientTags.innerHTML = '';
@@ -1217,7 +1640,6 @@
                     });
                 }
 
-                // Render recipient suggestions as you type
                 function renderSuggestions(query) {
                     if (!recipientSuggestions) return;
                     recipientSuggestions.innerHTML = '';
@@ -1238,8 +1660,8 @@
             }
 
             let notificationCenterInitialized = false;
-let notificationCenterHtmlLoaded = false;
-let adminDataLoaded = false;
+            let notificationCenterHtmlLoaded = false;
+            let adminDataLoaded = false;
 
             function tryInitNotificationCenter() {
                 if (
@@ -1252,6 +1674,118 @@ let adminDataLoaded = false;
                     notificationCenterInitialized = true;
                 }
             }
+
+            // --- Pagination and Bulk Actions Logic ---
+            function setupPagination(totalRows, currentPage, rowsPerPage, tableType) {
+                const paginationContainer = document.getElementById(`${tableType}s-pagination-container`);
+                if (!paginationContainer) return; 
+                paginationContainer.innerHTML = '';
+                const pageCount = Math.ceil(totalRows / rowsPerPage);
+
+                if (pageCount <= 1) return;
+
+                let paginationHTML = `<div class="text-sm text-gray-700">Showing ${Math.min((currentPage - 1) * rowsPerPage + 1, totalRows)} to ${Math.min(currentPage * rowsPerPage, totalRows)} of ${totalRows} results</div>`;
+                paginationHTML += '<div class="flex space-x-1">';
+
+                const prevDisabled = currentPage === 1 ? 'disabled' : '';
+                paginationHTML += `<button class="pagination-btn" data-page="${currentPage - 1}" ${prevDisabled}>&laquo;</button>`;
+
+                for (let i = 1; i <= pageCount; i++) {
+                    const activeClass = i === currentPage ? 'active' : '';
+                    paginationHTML += `<button class="pagination-btn ${activeClass}" data-page="${i}">${i}</button>`;
+                }
+
+                const nextDisabled = currentPage === pageCount ? 'disabled' : '';
+                paginationHTML += `<button class="pagination-btn" data-page="${currentPage + 1}" ${nextDisabled}>&raquo;</button>`;
+
+                paginationHTML += '</div>';
+                paginationContainer.innerHTML = paginationHTML;
+
+                paginationContainer.querySelectorAll('.pagination-btn').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const newPage = parseInt(e.currentTarget.dataset.page);
+                        if (tableType === 'task') {
+                            currentTasksPage = newPage;
+                            applyFiltersAndRender();
+                        } else if (tableType === 'user') {
+                            currentUsersPage = newPage;
+                            applyFiltersAndRender();
+                        }
+                    });
+                });
+            }
+
+            function setupBulkActions(tableType) {
+                const selectAllCheckbox = document.getElementById(`${tableType}-select-all`);
+                const rowCheckboxes = document.querySelectorAll(`.${tableType}-row-checkbox`);
+                const bulkActionsContainer = document.getElementById(`${tableType}s-bulk-actions-container`);
+                const bulkApplyBtn = document.getElementById(`${tableType}s-bulk-apply-btn`);
+                const bulkActionSelect = document.getElementById(`${tableType}s-bulk-action`);
+
+                if (!selectAllCheckbox) return; 
+
+                function toggleBulkActions() {
+                    const anyChecked = [...rowCheckboxes].some(cb => cb.checked);
+                    bulkActionsContainer.classList.toggle('hidden', !anyChecked);
+                }
+
+                selectAllCheckbox.addEventListener('change', (e) => {
+                    rowCheckboxes.forEach(checkbox => {
+                        checkbox.checked = e.target.checked;
+                    });
+                    toggleBulkActions();
+                });
+
+                rowCheckboxes.forEach(checkbox => {
+                    checkbox.addEventListener('change', () => {
+                        selectAllCheckbox.checked = [...rowCheckboxes].every(cb => cb.checked);
+                        toggleBulkActions();
+                    });
+                });
+
+                bulkApplyBtn.addEventListener('click', () => {
+                    const action = bulkActionSelect.value;
+                    const selectedIds = [...rowCheckboxes].filter(cb => cb.checked).map(cb => cb.value);
+
+                    if (!action || selectedIds.length === 0) {
+                        showToast("Please select an action and at least one item.", "warning");
+                        return;
+                    }
+
+                    if (action === 'delete') {
+                        showConfirmationModal(
+                            `Confirm Bulk Deletion`,
+                            `Are you sure you want to delete ${selectedIds.length} selected item(s)? This cannot be undone.`,
+                            () => {
+                                const actionType = (tableType === 'task') ? 'bulkDeleteTasks' : 'bulkDeleteUsers';
+                                const idKey = (tableType === 'task') ? 'taskIds' : 'emails';
+                                postData({ action: actionType, [idKey]: selectedIds }, (response) => {
+                                    showToast(response.message);
+                                    fetchAdminData();
+                                });
+                            }
+                        );
+                    }
+                });
+            }
+            
+            // --- Elegant Dashboard Filter Logic ---
+            const filterButtons = document.querySelectorAll('.dashboard-filter-btn');
+            filterButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => btn.classList.remove('filter-active'));
+                    // Add active class to the clicked button
+                    const clickedButton = e.currentTarget;
+                    clickedButton.classList.add('filter-active');
+                    
+                    // Get the filter value and update the dashboard
+                    const filter = clickedButton.dataset.filter;
+                    renderKPIs(allTasks, allVolunteers, filter);
+                    renderTaskStatusChart(allTasks, filter);
+                });
+            });
+
 
             displayMotivation();
             fetchAdminData();
