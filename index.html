@@ -1,131 +1,1862 @@
 <!DOCTYPE html>
+<!-- The `lang="en"` attribute declares the primary language of the document as English for accessibility and search engines. -->
 <html lang="en">
 <head>
+    <!-- Specifies the character encoding for the document. UTF-8 is standard and supports all international characters. -->
     <meta charset="UTF-8">
+    <!-- This meta tag is crucial for responsive design. It sets the width of the page to the device's width and the initial zoom level to 1.0. -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website Under Maintenance | Institute of Islamic Education</title>
+    <!-- A brief description of the page's content, used by search engines in search results. -->
+    <meta name="description" content="The Institute of Islamic Education is a non-profit institute in Beerwah dedicated to authentic Islamic knowledge, research, and community service based on the Qur'an and Sunnah.">
+    <!-- Keywords for search engines to help them understand the page's topic. -->
+    <meta name="keywords" content="Islamic education, Beerwah, Salafi, Quran, Sunnah, Dawrah, Islamic institute, Newsletter, Mirza font">
+    <!-- The title of the webpage, which appears in the browser tab or window title bar. -->
+    <title>Institute of Islamic Education | معهد التربية الاسلامية</title>
+    
+    <!-- This script tag loads the Tailwind CSS utility-first framework from a CDN (Content Delivery Network). -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- This link tag loads the Font Awesome icon library's stylesheet for using icons like those for social media. -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" xintegrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- These lines connect to the Google Fonts service to load custom web fonts. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- This specific link imports the 'Inter' font for English text and the 'Mirza' font for Arabic text. -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Mirza:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- This sets the small icon (favicon) that appears in the browser tab. -->
+    <link rel="icon" type="image/png" href="IMG-20230327-WA0002.jpg">
+    
+    <!-- This style block contains all the custom CSS rules that are not covered by Tailwind CSS. -->
     <style>
+        /* --- Default Styles --- */
+        /* Sets the default font for the entire page to 'Inter'. If Inter isn't available, it falls back to a generic sans-serif font. */
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(-45deg, #1e3a8a, #16a34a, #23a6d5, #23d5ab);
-            background-size: 400% 400%;
-            animation: gradient-animation 15s ease infinite;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            text-align: center;
-            overflow: hidden; /* Prevents scrollbars from the bubbles */
+            background-color: #f0f8ff; /* A fallback background color in case the gradient doesn't load. */
+            background-image: linear-gradient(to bottom, #f0f8ff, #ffffff); /* Creates a vertical gradient from light blue to white. */
+            background-attachment: fixed; /* The background image stays in place when the user scrolls. */
+        }
+        /* This is an attribute selector. It targets any HTML element with `lang="ar"` and applies the 'Mirza' font. */
+        [lang="ar"] {
+            font-family: 'Mirza', serif; /* Sets the font for Arabic text. Falls back to a generic serif font. */
+            color: #000000; /* Sets the text color to black. */
         }
 
-        @keyframes gradient-animation {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* --- Animation Keyframes --- */
+        /* Defines the 'pulse' animation. The element's opacity changes from 1 to 0.7 and back to 1. */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .7; }
         }
 
-        /* Bubble Animation Container */
-        .bubbles {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
+        /* Defines the 'gentle-shake' animation. The element moves up and down slightly. */
+        @keyframes gentle-shake {
+            0%, 100% { transform: translateY(0); } /* Start and end position */
+            25% { transform: translateY(-5px); } /* Moves 5px up */
+            75% { transform: translateY(5px); } /* Moves 5px down */
         }
 
-        .bubble {
-            position: absolute;
-            bottom: -100px;
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 50%;
-            opacity: 0.5;
-            animation: rise 10s infinite ease-in;
+        /* Defines the 'nudge-right' animation. The element moves slightly to the right and back. */
+        @keyframes nudge-right {
+            0%, 100% { transform: translateX(0); } /* Start and end position */
+            50% { transform: translateX(3px); } /* Moves 3px to the right */
+        }
+        
+        /* Defines the 'shake-horizontal' animation. The element moves slightly left and right. */
+        @keyframes shake-horizontal {
+            0%, 100% { transform: translateX(0); } /* Start and end position */
+            25% { transform: translateX(-2px); } /* Moves 2px left */
+            75% { transform: translateX(2px); } /* Moves 2px right */
         }
 
-        /* Vary bubble sizes and animations */
-        .bubble:nth-child(1) { left: 10%; animation-duration: 8s; }
-        .bubble:nth-child(2) { left: 20%; animation-duration: 5s; animation-delay: 1s; width: 20px; height: 20px; }
-        .bubble:nth-child(3) { left: 25%; animation-duration: 12s; animation-delay: 2s; }
-        .bubble:nth-child(4) { left: 40%; animation-duration: 6s; animation-delay: 3s; background: rgba(255, 255, 255, 0.2); }
-        .bubble:nth-child(5) { left: 50%; animation-duration: 9s; animation-delay: 1s; width: 15px; height: 15px; }
-        .bubble:nth-child(6) { left: 65%; animation-duration: 7s; }
-        .bubble:nth-child(7) { left: 75%; animation-duration: 8s; animation-delay: 2s; width: 30px; height: 30px; }
-        .bubble:nth-child(8) { left: 85%; animation-duration: 11s; animation-delay: 4s; }
-        .bubble:nth-child(9) { left: 55%; animation-duration: 6s; animation-delay: 2s; }
-        .bubble:nth-child(10) { left: 30%; animation-duration: 10s; animation-delay: 4s; width: 25px; height: 25px; }
+        /* Defines the 'pan-left' animation for the image gallery. */
+        @keyframes pan-left {
+            0% { transform: translateX(0%); } /* Starts at the beginning */
+            100% { transform: translateX(-75%); } /* Moves left by the width of 3 images (since there are 4 total). */
+        }
+
+        /* Defines the 'blink-alternative' animation for important notices. */
+        @keyframes blink-alternative {
+            50% {
+                color: #ff4400; /* Changes color to orange at the midpoint. */
+                opacity: 0.8; /* Becomes slightly transparent. */
+            }
+        }
+        /* Keyframe animation for the blinking event day */
+        @keyframes event-blink {
+            50% {
+                opacity: 0.7;
+            }
+        }
+        .event-day-blinking {
+            animation: event-blink 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        /* --- Animation Application Classes --- */
+        /* This class applies the 'pulse' animation to an element. */
+        .btn-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        /* This class applies the 'pulse' animation to a title. */
+        .title-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        /* This class applies the 'gentle-shake' animation. */
+        .card-shake { animation: gentle-shake 2.5s ease-in-out infinite; }
+        /* This class applies the 'shake-horizontal' animation. */
+        .icon-shake { display: inline-block; animation: shake-horizontal 1.2s ease-in-out infinite; }
+        /* This class applies the 'blink-alternative' animation. */
+        .blinking-dawrah { animation: blink-alternative 1.5s infinite alternate; }
 
 
-        @keyframes rise {
+        /* --- Keyframe for Final Call Blink --- */
+        @keyframes final-call {
+            50% {
+                color: #dc2626; /* A strong red color */
+                opacity: 0.7;
+                transform: scale(1.02); /* Makes the text pop slightly */
+            }
+        }
+
+        /* --- Class to apply the new animation --- */
+        .final-call-blink {
+            animation: final-call 1s infinite alternate; /* Faster animation */
+            display: inline-block; /* Needed for transform to work properly */
+        }
+
+        /* Add this to your <style> block */
+
+        /* --- Form Loader Styles --- */
+        #form-loader.visible {
+            display: flex; /* Use flex instead of toggling hidden to allow transitions */
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Keyframes for the flying animation */
+        @keyframes fly {
             0% {
-                transform: translateY(0);
-                opacity: 0.5;
+                transform: translateX(-100px) translateY(40px) rotate(-15deg);
+                opacity: 0;
+            }
+            20% {
+                opacity: 1;
+            }
+            80% {
+                opacity: 1;
             }
             100% {
-                transform: translateY(-1080px);
+                transform: translateX(100px) translateY(-60px) rotate(15deg);
                 opacity: 0;
             }
         }
 
-        /* Ensure main content is above the bubbles */
-        main {
+        /* Apply animation to the SVG inside the loader when visible */
+        #form-loader.visible svg {
+            animation: fly 1.8s ease-in-out infinite;
+        }
+
+        /* Optional: Add a subtle pulse to the text */
+        @keyframes pulse-text {
+            50% { opacity: 0.6; }
+        }
+
+        #form-loader.visible #loader-text {
+            animation: pulse-text 1.8s ease-in-out infinite;
+        }
+
+        /* --- Custom Color Classes --- */
+        /* These classes provide consistent branding colors throughout the site. */
+        .text-logo-blue { color: #1e3a8a; }
+        .bg-logo-blue { background-color: #1e3a8a;}
+        .text-logo-green { color: #16a34a; }
+        .bg-logo-green { background-color: #16a34a; } 
+        .border-logo-green { border-color: #16a34a; }
+        .bg-gradient-footer {
+            background-color: #16a34a; /* Fallback color. */
+            background-image: linear-gradient(to bottom right, #16a34a, #319a28); /* Green gradient for the footer. */
+        }
+
+        /* --- Hamburger Icon Animation (Corrected) --- */
+        .hamburger-top,
+        .hamburger-middle,
+        .hamburger-bottom {
+            transition: all 0.3s ease-in-out;
+            /* This ensures the lines rotate from their center */
+            transform-origin: center;
+        }
+
+        .open .hamburger-top {
+            /* Moves the line down to the middle, then rotates */
+            transform: translateY(5px) rotate(45deg);
+        }
+
+        .open .hamburger-middle {
+            /* Fades the middle line out */
+            opacity: 0;
+        }
+
+        .open .hamburger-bottom {
+            /* Moves the line up to the middle, then rotates */
+            transform: translateY(-5px) rotate(-45deg);
+        }
+
+        /* --- Active Navigation Link Style --- */
+        .nav-active {
+            color: #16a34a; /* This is your logo-green color */
+            font-weight: 700; /* This makes the text bold */
+        }
+
+        /* --- New Mobile Sidebar Styles --- */
+        /* Increase icon size in the mobile menu */
+        .menu-link i {
+            font-size: 1.3rem; /* This is like Tailwind's text-2xl. You can change it to 1.75rem if you want it even bigger. */
+        }
+        #mobile-menu {
+            width: 4.5rem; /* Initial width for icons only */
+            transition: width 0.3s ease-in-out;
+        }
+        #mobile-menu.menu-open {
+            width: 16rem; /* 256px */
+        }
+
+        /* Base style for all menu links */
+        .menu-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #4b5563; /* text-gray-600 */
+            width: 100%;
+            overflow: hidden;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+        }
+        .menu-link:hover {
+            background-color: #f3f4f6; /* bg-gray-100 */
+        }
+
+        /* Style for the text part of the link */
+        .menu-item-text {
+            white-space: nowrap;
+            transition: all 0.2s ease-in-out;
+            max-width: 0;
+            opacity: 0;
+            transform: translateX(-10px);
+            padding-left: 0.5rem;
+        }
+
+        /* When an item is expanded, show its text label */
+        .menu-item-container.expanded .menu-item-text {
+            max-width: 12rem;
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Style for the active/expanded link */
+        .menu-item-container.expanded .menu-link {
+            background-color: #e0f2fe; /* bg-sky-100 */
+            color: #1e3a8a; /* text-logo-blue */
+            font-weight: 600;
+        }
+
+        /* Style for the group titles */
+        .menu-group-title {
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #6b7280; /* text-gray-500 */
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Styles for the action buttons at the bottom */
+        .action-button-portal, .action-button-donate {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            text-align: center;
+            transition: background-color 0.2s;
+        }
+        .action-button-portal {
+            background-color: #334155; /* This is a dark slate color */
+            color: white;
+        }
+        .action-button-portal:hover {
+            background-color: #1e293b; /* A slightly darker slate for hover */
+        }
+        .action-button-donate {
+            background-color: #22c55e; /* bg-green-500 */
+            color: white;
+        }
+        .action-button-donate:hover {
+            background-color: #16a34a; /* bg-green-600 */
+        }
+        
+        /* --- New Carousel Gallery Styles --- */
+        .carousel-slide {
+            min-width: 100%;
+            height: 100%;
             position: relative;
-            z-index: 1;
+        }
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensures images fill the space without distortion */
+        }
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.4);
+            color: white;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-size: 1.5rem;
+            line-height: 1;
+            width: 3rem;
+            height: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .carousel-btn:hover {
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+        .carousel-dot {
+            width: 0.75rem;
+            height: 0.75rem;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .carousel-dot.active {
+            background-color: white;
+        }
+
+        /* --- Global Behavior --- */
+        /* This rule enables smooth scrolling when a user clicks on an anchor link (e.g., <a href="#about">). */
+        html {
+            scroll-behavior: smooth;
+            
+        }
+        /* --- Scroll Target Offset --- */
+        /* This adds space above a section when scrolling to it, preventing the sticky header from hiding the title. */
+        .scroll-target {
+            scroll-margin-top: 80px; /* Adjust this value to match your header's height */
         }
     </style>
 </head>
-<body>
-    <div class="bubbles">
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-        <div class="bubble"></div>
+<!-- The `body` tag contains all the visible content of the webpage. `text-gray-800` is a Tailwind class for default text color. -->
+<body class="text-gray-800">
+
+    <!-- Preloader Element: This div covers the screen and shows a loading spinner. It's hidden by JavaScript once the page loads. -->
+    <div id="preloader" class="fixed inset-0 z-[9999] flex items-center justify-center bg-white transition-opacity duration-500">
+        <div class="h-16 w-16 animate-spin rounded-full border-4 border-solid border-logo-blue border-t-transparent"></div>
     </div>
 
-    <main class="bg-white/10 backdrop-blur-md p-6 sm:p-8 rounded-2xl shadow-lg max-w-lg w-full mx-4">
-        <div class="mb-6">
-            <i class="fa-solid fa-gears fa-3x text-white/80"></i>
-        </div>
-        
-        <h1 class="text-3xl sm:text-4xl font-bold mb-3">We're Making Things Better</h1>
-        <p class="text-base sm:text-lg mb-6">Our website is temporarily unavailable as we're making some improvements. We'll be back online soon!</p>
-        
-        <div class="border-t border-white/20 pt-6">
-            <p class="mb-4 text-white/90">In the meantime, connect with us:</p>
-            <div class="flex justify-center space-x-6">
-                <a href="https://wa.me/+919419737927" target="_blank" aria-label="Contact us on WhatsApp" class="text-white hover:opacity-75 transform hover:scale-110 transition duration-300"><i class="fab fa-whatsapp fa-2x"></i></a>
-                <a href="https://youtube.com/@instituteofislamiceducation?feature=shared" target="_blank" aria-label="Visit our YouTube channel" class="text-white hover:opacity-75 transform hover:scale-110 transition duration-300"><i class="fab fa-youtube fa-2x"></i></a>
-                <a href="https://m.facebook.com/501487530283263/" target="_blank" aria-label="Visit our Facebook page" class="text-white hover:opacity-75 transform hover:scale-110 transition duration-300"><i class="fab fa-facebook-f fa-2x"></i></a>
+    <!-- Header Section: It's 'sticky' so it stays at the top of the viewport when the user scrolls. -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <!-- Navigation Bar -->
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <!-- Left side of the navbar: Logo and Institute Name -->
+            <a href="" class="flex items-center space-x-3">
+                <img src="IMG-20230327-WA0002.jpg" alt="Institute Logo" class="h-12 w-12 p-0.5 bg-white shadow-md rounded-md">
+                <div class="text-center">
+                    <h1 class="text-xl font-bold text-logo-blue">Institute of Islamic Education</h1>
+                    <p class="text-xl font-bold text-logo-green" lang="ar" dir="rtl">معهد التربية الاسلامية</p>
+                </div>
+            </a>
+            <!-- Desktop Navigation Links: This block is hidden on small screens (`lg:flex` means it's a flex container on large screens and up). -->
+            <div class="hidden items-center space-x-4">
+                <!-- Each `<a>` tag is a hyperlink to a different section of the page. -->
+                <a href="#about" class="text-gray-600 hover:text-logo-green">About Us</a>
+                <a href="#notices" class="text-gray-600 hover:text-logo-green">Notices</a>
+                <a href="#instructors" class="text-gray-600 hover:text-logo-green">Instructors</a>
+                <a href="#events" class="text-gray-600 hover:text-logo-green">Events</a>
+                <a href="#calendar" class="text-gray-600 hover:text-logo-green">Calendar</a>
+                <a href="#gallery" class="text-gray-600 hover:text-logo-green">Gallery</a>
+                <a href="#library" class="text-gray-600 hover:text-logo-green">Library</a>
+                <a href="#admissions" class="text-gray-600 hover:text-logo-green">Admissions</a>
+                <a href="#newsletter" class="text-gray-600 hover:text-logo-green">Al-Tarbiya</a>
+                <a href="#contact" class="text-gray-600 hover:text-logo-green">Contact</a>
+                <a href="#feedback" class="text-gray-600 hover:text-logo-green font-medium">Give Feedback</a>
+                <a href="login.html" class="bg-logo-blue text-white px-4 py-2 rounded-full">Workspace</a>
+                <!-- This link is styled as a button for emphasis. -->
+                <a href="#donate" class="bg-logo-green text-white px-4 py-2 rounded-full">Donate</a>
+            </div>
+            <!-- Mobile Menu Button (Hamburger Icon): This is only visible on small screens (`lg:hidden`). -->
+            <div>
+                <button id="mobile-menu-button" class="text-gray-600 hover:text-logo-green focus:outline-none">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path class="hamburger-top" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16"></path>
+                        <path class="hamburger-middle" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12h16"></path>
+                        <path class="hamburger-bottom" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </nav>
+        <!-- Mobile Menu Panel (Sidebar) -->
+        <div id="mobile-menu-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-[55] hidden transition-opacity duration-300 opacity-0"></div>
+        <div id="mobile-menu" class="fixed top-0 right-0 bottom-0 bg-white shadow-2xl z-[60] transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col">
+            
+            <!-- 1. NEW: Menu Header with Close Button -->
+            <div class="flex-shrink-0 p-4 flex items-center justify-between border-b bg-gray-50">
+                <span class="font-bold text-lg text-logo-blue">Menu</span>
+                <button id="mobile-menu-close-btn" class="text-gray-500 hover:text-logo-blue text-2xl leading-none">&times;</button>
+            </div>
+            
+            <!-- 2. Scrollable Nav Container -->
+            <nav class="flex-grow overflow-y-auto">
+                <!-- 3. NEW: Grouped Links -->
+                <div class="py-4 px-2">
+                    <h2 class="menu-group-title">Discover</h2>
+                    <ul id="mobile-nav-list-discover">
+                        <li class="menu-item-container"><a href="#about" class="menu-link"><i class="fa-solid fa-info-circle fa-fw w-6"></i><span class="menu-item-text">About Us</span></a></li>
+                        <li class="menu-item-container"><a href="#notices" class="menu-link"><i class="fa-solid fa-bullhorn fa-fw w-6"></i><span class="menu-item-text">Notices</span></a></li>
+                        <li class="menu-item-container"><a href="#instructors" class="menu-link"><i class="fa-solid fa-user-tie fa-fw w-6"></i><span class="menu-item-text">Instructors</span></a></li>
+                    </ul>
+                </div>
+                <div class="py-4 px-2">
+                    <h2 class="menu-group-title">Engage</h2>
+                    <ul id="mobile-nav-list-engage">
+                        <li class="menu-item-container"><a href="#events" class="menu-link"><i class="fa-solid fa-calendar-check fa-fw w-6"></i><span class="menu-item-text">Events</span></a></li>
+                        <li class="menu-item-container"><a href="#calendar" class="menu-link"><i class="fa-solid fa-calendar-days fa-fw w-6"></i><span class="menu-item-text">Calendar</span></a></li>
+                        <li class="menu-item-container"><a href="#gallery" class="menu-link"><i class="fa-solid fa-images fa-fw w-6"></i><span class="menu-item-text">Gallery</span></a></li>
+                        <li class="menu-item-container"><a href="#library" class="menu-link"><i class="fa-solid fa-book-open fa-fw w-6"></i><span class="menu-item-text">Library</span></a></li>
+                    </ul>
+                </div>
+                <div class="py-4 px-2">
+                    <h2 class="menu-group-title">Connect</h2>
+                    <ul id="mobile-nav-list-connect">
+                        <li class="menu-item-container"><a href="#admissions" class="menu-link"><i class="fa-solid fa-file-signature fa-fw w-6"></i><span class="menu-item-text">Admissions</span></a></li>
+                        <li class="menu-item-container"><a href="#newsletter" class="menu-link"><i class="fa-solid fa-newspaper fa-fw w-6"></i><span class="menu-item-text">Al-Tarbiya</span></a></li>
+                        <li class="menu-item-container"><a href="#contact" class="menu-link"><i class="fa-solid fa-comments fa-fw w-6"></i><span class="menu-item-text">Contact</span></a></li>
+                        <li class="menu-item-container"><a href="#feedback" class="menu-link"><i class="fa-solid fa-comment-dots fa-fw w-6"></i><span class="menu-item-text">Feedback</span></a></li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- 4. NEW: Pinned Action Buttons at the bottom -->
+            <div class="flex-shrink-0 p-4 border-t bg-gray-50 space-y-2">
+                <a href="login.html" class="action-button-portal"><i class="fa-solid fa-briefcase fa-fw mr-2"></i>Workspace</a>
+                <a href="#donate" class="action-button-donate"><i class="fa-solid fa-hand-holding-dollar fa-fw mr-2"></i>Donate</a>
             </div>
         </div>
+    </header>
+
+    <!-- The `<main>` tag represents the primary content of the page. -->
+    <main>
+        <!-- Hero Section: The main introductory block at the top of the page. -->
+         
+        <section class="bg-white py-20">
+            <div class="container mx-auto px-6 text-center">
+
+                <h2 class="text-2xl font-extrabold mb-2 text-logo-blue">Institute of Islamic Education</h2>
+                <p class="text-2xl text-logo-green mb-4 font-bold" lang="ar" dir="rtl">معهد التربية الاسلامية</p>
+                <p class="max-w-3xl mx-auto text-gray-500 mb-10">
+                    Dedicated to fostering a rich learning environment rooted in Islamic principles. We strive for excellence in education, character development, and community service.
+                </p>
+                
+                <div class="w-full max-w-3xl mx-auto rounded-xl shadow-lg overflow-hidden aspect-video">
+                    <iframe
+                        class="w-full h-full"
+                        src="https://www.youtube.com/embed/tgZgRG6ZPu8?si=0v-uYpUGQ9ZvXruF"
+                        title="YouTube video player"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+
+            </div>
+        </section>
+        <!-- About Us Section -->
+        <section id="about" class="py-16 scroll-target">
+            <div class="container mx-auto px-6">
+                <h3 class="text-3xl font-bold text-center mb-8 text-logo-blue">About Our Institute</h3>
+                <!-- A styled container for the about text. -->
+                <div class="bg-white p-8 rounded-lg shadow-lg">
+                    <p class="text-gray-600 leading-relaxed">
+                        The IIE is a non-profit institute committed to providing Islamic research, training, and solutions. Our primary objective is to assist individuals in acquiring a comprehensive understanding of the Quran and Sunnah, adhering to the methodology of the pious predecessors (Salaf-Us-Saaliheen).<br>
+
+                        Our mission is to invite humanity to the exclusive worship of Allah (Tawheed) and to follow the teachings of the Prophet Muhammad ﷺ. Our institutional framework is grounded in the principles of Ahlus Sunnah Wa Al Jamaah. This foundational methodology is rooted in the authentic interpretation of the Quran and Sunnah, as understood by the pious predecessors, and is supported by the divine guidance found in Surah At-Tawbah, Ayah 100.
+                    </p>
+                </div>
+            </div>
+        </section>
+        <!-- Notice Board Section: `id="notices"` allows it to be targeted by anchor links. -->
+        <section id="notices" class="py-16 scroll-target">
+            <div class="container mx-auto px-6">
+                <h3 class="text-3xl font-bold text-center mb-8 text-logo-blue">Notice Board</h3>
+                
+                <div class="bg-white p-6 rounded-lg shadow-lg border-l-4 border-logo-green mb-6">
+                    <h4 class="text-xl font-bold text-logo-green mb-2">Alhamdulillah! Our Dawrah Was a Success</h4>
+                    <p class="text-gray-600">
+                        The One Day Dawrah has successfully concluded. A heartfelt thank you to everyone who participated. We hope you found the session beneficial.
+                    </p>
+                    <p class="text-gray-600 mt-4">
+                        Your feedback is invaluable for our future programs. Please take a moment to share your experience with us in the 
+                        <a href="#feedback" class="text-logo-blue hover:underline font-semibold">Feedback Section</a>. Stay tuned for our next event!
+                    </p>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-lg border-l-4 border-yellow-400">
+                    <h4 class="text-xl font-bold text-yellow-500 mb-2">Website Updates</h4>
+                    <p class="text-gray-600">
+                        We are performing routine maintenance on our website. You may experience some intermittent issues. We apologize for any inconvenience this may cause.
+                    </p>
+                </div>
+                
+            </div>
+        </section>
+        <!-- Meet our instructors -->
+        <section id="instructors" class="py-16 scroll-target">
+            <div class="container mx-auto px-6">
+                
+                <h3 class="text-3xl font-bold text-center mb-12 text-logo-blue">Meet Our Instructors</h3>
+
+                <div class="max-w-3xl mx-auto bg-blue-50 border-l-4 border-logo-blue p-6 rounded-lg shadow-md">
+                    <div class="flex items-center">
+                        
+                        <div class="text-logo-blue pr-4">
+                            <i class="fa-solid fa-user-tie fa-3x"></i>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-xl font-bold text-gray-800 text-left">Profiles Coming Soon!</h4>
+                            <p class="text-gray-600 mt-1 text-left">
+                                We are currently preparing detailed profiles for our dedicated and knowledgeable instructors. Please check back soon to learn more about the instructors guiding our students.
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Events Section -->
+        <section id="events" class="bg-white py-16 scroll-target">
+            <div class="container mx-auto px-6">
+                <h3 class="text-3xl font-bold text-center mb-12 text-logo-blue title-pulse">Upcoming Events</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                    <div class="bg-white p-6 rounded-lg shadow-lg border-l-4 border-logo-blue flex flex-col items-center justify-center text-center">
+                        <i class="fa-solid fa-calendar-star fa-3x text-logo-blue mb-4"></i>
+                        <h4 class="text-xl font-bold text-logo-blue mb-2">Our Next Event is in the Works!</h4>
+                        <div class="flex-grow">
+                            <p class="text-gray-600 mb-4">
+                                JazakumAllahu Khairan for making our last event a success. We are currently planning our next enriching program. Stay tuned for announcements on the topic, date, and registration details.
+                            </p>
+                        </div>
+                        <div class="mt-4 w-full">
+                            <a href="#newsletter" class="bg-logo-green text-white font-bold py-2 px-4 rounded-full w-full text-center inline-flex items-center justify-center hover:bg-green-700 transition">
+                                <i class="fa-solid fa-envelope w-5 h-5 mr-2"></i>
+                                <span>Subscribe for Updates</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-center">
+                        <i class="fa-solid fa-calendar-days fa-2x text-gray-400 mb-3"></i>
+                        <h4 class="text-xl font-bold text-logo-blue mb-1">September Events</h4>
+                        <p class="text-gray-500 font-semibold">Details Coming Soon!</p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-center">
+                        <i class="fa-solid fa-calendar-days fa-2x text-gray-400 mb-3"></i>
+                        <h4 class="text-xl font-bold text-logo-blue mb-1">October Events</h4>
+                        <p class="text-gray-500 font-semibold">Details Coming Soon!</p>
+                    </div>
+                    
+                </div>
+            </div>
+        </section>
+
+        <!-- testimonials -->
+        <section id="testimonials" class="py-16 scroll-target bg-gray-50">
+            <div class="container mx-auto px-6">
+                
+                <h3 class="text-3xl font-bold text-center mb-12 text-logo-blue">What Our Students Say</h3>
+
+                <div class="max-w-3xl mx-auto bg-blue-50 border-l-4 border-logo-blue p-6 rounded-lg shadow-md">
+                    <div class="flex items-center">
+                        
+                        <div class="text-logo-blue pr-4">
+                            <i class="fa-solid fa-comments fa-3x"></i>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-xl font-bold text-gray-800 text-left">Coming Soon!</h4>
+                            <p class="text-gray-600 mt-1 text-left">
+                                We are currently gathering feedback and experiences from our valued students and event attendees. Please check back soon to read what they have to say about their journey with us.
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Events Calendar Section -->
+        <section id="calendar" class="py-16 scroll-target">
+            <div class="container mx-auto px-6">
+                <h3 class="text-3xl font-bold text-center mb-8 text-logo-blue">Events Calendar</h3>
+
+                <!-- Calendar Container -->
+                <div class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+                    <!-- Calendar Header -->
+                    <div class="flex justify-between items-center mb-4">
+                        <button id="prev-month-btn" class="p-2 rounded-full hover:bg-gray-200 transition">
+                            <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                        </button>
+                        <div class="flex items-center space-x-4">
+                            <h4 id="month-year-header" class="text-xl font-bold text-logo-blue text-center w-36"></h4>
+                            <button id="today-btn" class="text-sm font-semibold text-logo-blue bg-gray-100 px-3 py-1 rounded-full hover:bg-gray-200 transition">Today</button>
+                        </div>
+                        <button id="next-month-btn" class="p-2 rounded-full hover:bg-gray-200 transition">
+                            <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </button>
+                    </div>
+
+                    <!-- Days of the Week -->
+                    <div class="grid grid-cols-7 gap-2 text-center text-gray-500 font-semibold">
+                        <div>Sun</div>
+                        <div>Mon</div>
+                        <div>Tue</div>
+                        <div>Wed</div>
+                        <div>Thu</div>
+                        <div>Fri</div>
+                        <div>Sat</div>
+                    </div>
+
+                    <!-- Calendar Days Grid -->
+                    <div id="calendar-days-grid" class="grid grid-cols-7 gap-2 mt-2">
+                        <!-- Calendar days will be generated by JavaScript here -->
+                    </div>
+
+                    <!-- NEW: Calendar Legend -->
+                    <div class="flex flex-wrap justify-center items-center gap-x-4 gap-y-2 mt-4 pt-4 border-t">
+                        <div class="flex items-center">
+                            <div class="w-4 h-4 rounded-full bg-logo-blue mr-2"></div>
+                            <span class="text-sm text-gray-600">Current Day</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-4 h-4 rounded-full bg-logo-green mr-2"></div>
+                            <span class="text-sm text-gray-600">Event Day</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-4 h-4 rounded-full bg-gray-400 mr-2"></div>
+                            <span class="text-sm text-gray-600">Past Event Day</span>
+                        </div>
+                    </div>
+                    <!-- END: Calendar Legend -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Event Details Modal (Popup) -->
+        <div id="event-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+            <div class="bg-white p-6 rounded-lg shadow-2xl max-w-sm w-full">
+                <h3 id="event-modal-title" class="text-2xl font-bold text-logo-blue mb-2"></h3>
+                <p id="event-modal-time" class="text-sm font-semibold text-logo-green mb-4"></p>
+                <p id="event-modal-description" class="text-gray-600 mb-6"></p>
+                <button id="close-modal-btn" class="bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded-full w-full hover:bg-gray-400 transition">Close</button>
+            </div>
+        </div>
+
+        <!-- Daily Prayer Timings Section -->
+        <section id="meeqat" class="bg-gray-50 py-16">
+            <div class="container mx-auto px-6">
+                <h3 class="text-3xl font-bold text-center mb-8 text-logo-blue">Daily Prayer Timings (Meeqat)</h3>
+
+                <!-- Under Maintenance Notice -->
+                <div class="max-w-2xl mx-auto bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded-lg shadow-md">
+                    <div class="flex items-center">
+                        <!-- Icon for visual context -->
+                        <div class="text-yellow-500 pr-4">
+                            <i class="fa-solid fa-person-digging fa-2x"></i>
+                        </div>
+                        <!-- Text content of the notification -->
+                        <div>
+                            <h4 class="text-xl font-bold text-gray-800 text-left">Feature Coming Soon!</h4>
+                            <p class="text-gray-600 mt-1 text-left">
+                                Our new interactive prayer time tool is currently under development. Please check back later for updates!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section id="gallery" class="py-16 scroll-target">
+            <div class="container mx-auto px-6">
+                <h3 class="text-3xl font-bold text-center mb-12 text-logo-blue">Our Gallery</h3>
+
+                <!-- Carousel Container -->
+                <div id="gallery-carousel" class="relative max-w-4xl mx-auto shadow-2xl rounded-lg overflow-hidden bg-gray-100 aspect-video">
+                    
+                    <!-- Image Track: This div will slide left and right -->
+                    <div id="carousel-track" class="flex h-full transition-transform duration-500 ease-in-out">
+                        <!-- All images go inside a "carousel-slide" div -->
+                        <div class="carousel-slide"><img src="img1.jpg" alt="Students in a classroom session"></div>
+                        <div class="carousel-slide"><img src="img2.jpg" alt="Instructor at the podium"></div>
+                        <div class="carousel-slide"><img src="img3.jpg" alt="Close-up of Islamic calligraphy"></div>
+                        <div class="carousel-slide"><img src="img4.jpg" alt="Group photo of event attendees"></div>
+                        <div class="carousel-slide"><img src="img5.jpg" alt="Exterior view of the institute building"></div>
+                        <div class="carousel-slide"><img src="img6.jpg" alt="Library with shelves full of books"></div>
+                        <div class="carousel-slide"><img src="img7.jpg" alt="A community service event in progress"></div>
+                        <div class="carousel-slide"><img src="img8.jpg" alt="Students receiving certificates"></div>
+                    </div>
+
+                    <!-- Navigation Buttons -->
+                    <button id="carousel-prev" class="carousel-btn left-0 md:left-4">&#10094;</button>
+                    <button id="carousel-next" class="carousel-btn right-0 md:right-4">&#10095;</button>
+
+                    <!-- Navigation Dots -->
+                    <div id="carousel-dots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
+                        <!-- Dots will be generated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div id="lightbox" class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center p-4 z-[1000] hidden">
+            <button id="lightbox-close" class="absolute top-4 right-4 text-white text-3xl hover:text-gray-300">&times;</button>
+            
+            <button id="lightbox-prev" class="absolute left-4 text-white text-4xl hover:text-gray-300">&#10094;</button>
+            
+            <div class="relative">
+                <img id="lightbox-image" src="" alt="Full-size gallery image" class="max-w-[90vw] max-h-[85vh] rounded-lg shadow-2xl">
+            </div>
+            
+            <button id="lightbox-next" class="absolute right-4 text-white text-4xl hover:text-gray-300">&#10095;</button>
+        </div>
+
+        <!-- library section -->
+        <section id="library" class="py-16 scroll-target">
+            <div class="container mx-auto px-6">
+                <h3 class="text-3xl font-bold text-center mb-12 text-logo-blue">Our Library & Resources</h3>
+
+                <div class="max-w-3xl mx-auto space-y-4">
+
+                    <div class="accordion-item bg-white rounded-lg shadow-lg overflow-hidden">
+                        <button class="accordion-toggle w-full p-6 flex justify-between items-center text-left hover:bg-gray-50 transition focus:outline-none focus:ring-2 focus:ring-logo-blue">
+                            <span class="text-xl font-bold text-gray-800 flex items-center">
+                                <i class="fa-solid fa-book-open text-logo-green mr-4"></i>
+                                Explore Our Online Library
+                            </span>
+                            <i class="fa-solid fa-chevron-down text-gray-500 transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-panel" style="max-height: 0; overflow: hidden; transition: max-height 0.5s ease-in-out;">
+                            <div class="p-6 border-t border-gray-200">
+                                <div class="flex items-center">
+                                    <div class="text-yellow-500 pr-4">
+                                        <i class="fa-solid fa-person-digging fa-2x"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-lg font-bold text-gray-800">Section Under Maintenance</h4>
+                                        <p class="text-gray-600 mt-1">
+                                            Our online library is currently being updated with new resources. Please check back soon!
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item bg-white rounded-lg shadow-lg overflow-hidden">
+                        <button class="accordion-toggle w-full p-6 flex justify-between items-center text-left hover:bg-gray-50 transition focus:outline-none focus:ring-2 focus:ring-logo-blue">
+                            <span class="text-xl font-bold text-gray-800 flex items-center">
+                                <i class="fa-solid fa-hand-holding-hand text-logo-blue mr-4"></i>
+                                How to Borrow a Book
+                            </span>
+                            <i class="fa-solid fa-chevron-down text-gray-500 transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-panel" style="max-height: 0; overflow: hidden; transition: max-height 0.5s ease-in-out;">
+                            <div class="p-6 border-t border-gray-200">
+                                <div class="flex items-center mb-4">
+                                    <div class="text-yellow-500 pr-4">
+                                        <i class="fa-solid fa-person-digging fa-2x"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-lg font-bold text-gray-800">System Under Maintenance</h4>
+                                        <p class="text-gray-600 mt-1">Our new borrowing system is coming soon! The process is outlined below, but is not yet active.<br/>Until then, you are welcome to visit our library in person to borrow a book.</p>
+                                    </div>
+                                </div>
+                                <div class="border-t border-yellow-200 pt-6 space-y-4">
+                                    <div class="flex items-start">
+                                        <div class="flex-shrink-0 bg-yellow-400 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center mr-4">1</div>
+                                        <p class="text-gray-700"><strong>Register Online:</strong> Submit your application, official ID, and the name of the book you wish to borrow via our upcoming online form.</p>
+                                    </div>
+                                    <div class="flex items-start">
+                                        <div class="flex-shrink-0 bg-yellow-400 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center mr-4">2</div>
+                                        <p class="text-gray-700"><strong>Await Confirmation:</strong> We will check for the book's availability and send you a confirmation.</p>
+                                    </div>
+                                    <div class="flex items-start">
+                                        <div class="flex-shrink-0 bg-yellow-400 text-white font-bold rounded-full h-6 w-6 flex items-center justify-center mr-4">3</div>
+                                        <p class="text-gray-700"><strong>Collect from Office:</strong> Once confirmed, visit our office to collect your book.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Admission Section -->
+        <section id="admissions" class="py-16 scroll-target">
+            <div class="container mx-auto px-6 text-center">
+                <h3 class="text-3xl font-bold mb-8 text-logo-blue">Admissions & Applications</h3>
+                
+                <!-- A notification box indicating that applications are closed. -->
+                <div class="max-w-3xl mx-auto bg-blue-50 border-l-4 border-logo-blue p-6 rounded-lg shadow-md">
+                    <div class="flex items-center">
+                        <div class="text-logo-blue pr-4">
+                            <i class="fa-solid fa-circle-info fa-2x"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-bold text-gray-800 text-left">Applications Are Currently Closed</h4>
+                            <p class="text-gray-600 mt-1 text-left">
+                                We are not accepting applications at this time. Please check back later for future announcements.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter Section -->
+        <section id="newsletter" class="py-16 scroll-target bg-gray-50">
+            <div class="container mx-auto px-6 text-center">
+                <div class="max-w-2xl mx-auto">
+                    <h3 class="text-3xl font-bold mb-4 text-logo-blue">Subscribe to Our Al-Tarbiya</h3>
+                    <p class="text-gray-600 mb-8">
+                        Updates, Events, and Insights for Your Islamic Journey. This focuses on the practical benefits (updates, events) and also ties into the idea of a continuous journey of learning and self-improvement in Islam.
+                    </p>
+                    <!-- The form for newsletter subscription. -->
+                    <form id="newsletter-form" class="w-full">
+                        <!-- THIS HIDDEN INPUT IDENTIFIES THE FORM -->
+                        <input type="hidden" name="formType" value="newsletter">
+                        <!-- A container to stack the form fields vertically -->
+                        <div class="space-y-4">
+                            <!-- Name Input Field -->
+                            <div>
+                                <input type="text" id="newsletter-name" name="newsletter-name" class="w-full max-w-lg mx-auto px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-logo-green" placeholder="Enter your full name" required>
+                            </div>
+
+                            <!-- Phone Number Input Group -->
+                            <div class="w-full max-w-lg mx-auto">
+                                <!-- On small screens (sm and up), this will be a flex-row. On extra-small screens, it will stack. -->
+                                <div class="flex flex-col sm:flex-row items-center w-full">
+                                    <!-- Country Code Dropdown -->
+                                    <!-- Adjusts rounded corners for mobile vs. desktop -->
+                                    <select id="country-code" name="country-code" class="w-full sm:w-auto px-4 py-3 border border-gray-300 rounded-full sm:rounded-l-full sm:rounded-r-none focus:outline-none focus:ring-2 focus:ring-logo-green bg-white mb-2 sm:mb-0 sm:border-r-0">
+                                        <!-- Common countries are listed first for convenience -->
+                                        <option value="+91">India (+91)</option>
+                                        <option value="+1">USA (+1)</option>
+                                        <option value="+44">UK (+44)</option>
+                                        <option value="+61">Australia (+61)</option>
+                                        <option value="+971">UAE (+971)</option>
+                                        <option value="+966">Saudi Arabia (+966)</option>
+                                        <option disabled>──────────</option>
+                                        <!-- Alphabetical list of all countries -->
+                                        <option value="+93">Afghanistan (+93)</option>
+                                        <option value="+355">Albania (+355)</option>
+                                        <option value="+213">Algeria (+213)</option>
+                                        <option value="+376">Andorra (+376)</option>
+                                        <option value="+244">Angola (+244)</option>
+                                        <option value="+1-268">Antigua and Barbuda (+1-268)</option>
+                                        <option value="+54">Argentina (+54)</option>
+                                        <option value="+374">Armenia (+374)</option>
+                                        <option value="+297">Aruba (+297)</option>
+                                        <option value="+43">Austria (+43)</option>
+                                        <option value="+994">Azerbaijan (+994)</option>
+                                        <option value="+1-242">Bahamas (+1-242)</option>
+                                        <option value="+973">Bahrain (+973)</option>
+                                        <option value="+880">Bangladesh (+880)</option>
+                                        <option value="+1-246">Barbados (+1-246)</option>
+                                        <option value="+375">Belarus (+375)</option>
+                                        <option value="+32">Belgium (+32)</option>
+                                        <option value="+501">Belize (+501)</option>
+                                        <option value="+229">Benin (+229)</option>
+                                        <option value="+975">Bhutan (+975)</option>
+                                        <option value="+591">Bolivia (+591)</option>
+                                        <option value="+387">Bosnia and Herzegovina (+387)</option>
+                                        <option value="+267">Botswana (+267)</option>
+                                        <option value="+55">Brazil (+55)</option>
+                                        <option value="+673">Brunei (+673)</option>
+                                        <option value="+359">Bulgaria (+359)</option>
+                                        <option value="+226">Burkina Faso (+226)</option>
+                                        <option value="+257">Burundi (+257)</option>
+                                        <option value="+238">Cabo Verde (+238)</option>
+                                        <option value="+855">Cambodia (+855)</option>
+                                        <option value="+237">Cameroon (+237)</option>
+                                        <option value="+1">Canada (+1)</option>
+                                        <option value="+236">Central African Republic (+236)</option>
+                                        <option value="+235">Chad (+235)</option>
+                                        <option value="+56">Chile (+56)</option>
+                                        <option value="+86">China (+86)</option>
+                                        <option value="+57">Colombia (+57)</option>
+                                        <option value="+269">Comoros (+269)</option>
+                                        <option value="+243">Congo, Dem. Rep. of the (+243)</option>
+                                        <option value="+242">Congo, Republic of the (+242)</option>
+                                        <option value="+506">Costa Rica (+506)</option>
+                                        <option value="+225">Côte d'Ivoire (+225)</option>
+                                        <option value="+385">Croatia (+385)</option>
+                                        <option value="+53">Cuba (+53)</option>
+                                        <option value="+357">Cyprus (+357)</option>
+                                        <option value="+420">Czech Republic (+420)</option>
+                                        <option value="+45">Denmark (+45)</option>
+                                        <option value="+253">Djibouti (+253)</option>
+                                        <option value="+1-767">Dominica (+1-767)</option>
+                                        <option value="+1-809">Dominican Republic (+1-809)</option>
+                                        <option value="+593">Ecuador (+593)</option>
+                                        <option value="+20">Egypt (+20)</option>
+                                        <option value="+503">El Salvador (+503)</option>
+                                        <option value="+240">Equatorial Guinea (+240)</option>
+                                        <option value="+291">Eritrea (+291)</option>
+                                        <option value="+372">Estonia (+372)</option>
+                                        <option value="+268">Eswatini (+268)</option>
+                                        <option value="+251">Ethiopia (+251)</option>
+                                        <option value="+679">Fiji (+679)</option>
+                                        <option value="+358">Finland (+358)</option>
+                                        <option value="+33">France (+33)</option>
+                                        <option value="+241">Gabon (+241)</option>
+                                        <option value="+220">Gambia (+220)</option>
+                                        <option value="+995">Georgia (+995)</option>
+                                        <option value="+49">Germany (+49)</option>
+                                        <option value="+233">Ghana (+233)</option>
+                                        <option value="+30">Greece (+30)</option>
+                                        <option value="+1-473">Grenada (+1-473)</option>
+                                        <option value="+502">Guatemala (+502)</option>
+                                        <option value="+224">Guinea (+224)</option>
+                                        <option value="+245">Guinea-Bissau (+245)</option>
+                                        <option value="+592">Guyana (+592)</option>
+                                        <option value="+509">Haiti (+509)</option>
+                                        <option value="+504">Honduras (+504)</option>
+                                        <option value="+36">Hungary (+36)</option>
+                                        <option value="+354">Iceland (+354)</option>
+                                        <option value="+62">Indonesia (+62)</option>
+                                        <option value="+98">Iran (+98)</option>
+                                        <option value="+964">Iraq (+964)</option>
+                                        <option value="+353">Ireland (+353)</option>
+                                        <option value="+972">Israel (+972)</option>
+                                        <option value="+39">Italy (+39)</option>
+                                        <option value="+1-876">Jamaica (+1-876)</option>
+                                        <option value="+81">Japan (+81)</option>
+                                        <option value="+962">Jordan (+962)</option>
+                                        <option value="+7">Kazakhstan (+7)</option>
+                                        <option value="+254">Kenya (+254)</option>
+                                        <option value="+686">Kiribati (+686)</option>
+                                        <option value="+383">Kosovo (+383)</option>
+                                        <option value="+965">Kuwait (+965)</option>
+                                        <option value="+996">Kyrgyzstan (+996)</option>
+                                        <option value="+856">Laos (+856)</option>
+                                        <option value="+371">Latvia (+371)</option>
+                                        <option value="+961">Lebanon (+961)</option>
+                                        <option value="+266">Lesotho (+266)</option>
+                                        <option value="+231">Liberia (+231)</option>
+                                        <option value="+218">Libya (+218)</option>
+                                        <option value="+423">Liechtenstein (+423)</option>
+                                        <option value="+370">Lithuania (+370)</option>
+                                        <option value="+352">Luxembourg (+352)</option>
+                                        <option value="+261">Madagascar (+261)</option>
+                                        <option value="+265">Malawi (+265)</option>
+                                        <option value="+60">Malaysia (+60)</option>
+                                        <option value="+960">Maldives (+960)</option>
+                                        <option value="+223">Mali (+223)</option>
+                                        <option value="+356">Malta (+356)</option>
+                                        <option value="+692">Marshall Islands (+692)</option>
+                                        <option value="+222">Mauritania (+222)</option>
+                                        <option value="+230">Mauritius (+230)</option>
+                                        <option value="+52">Mexico (+52)</option>
+                                        <option value="+691">Micronesia (+691)</option>
+                                        <option value="+373">Moldova (+373)</option>
+                                        <option value="+377">Monaco (+377)</option>
+                                        <option value="+976">Mongolia (+976)</option>
+                                        <option value="+382">Montenegro (+382)</option>
+                                        <option value="+212">Morocco (+212)</option>
+                                        <option value="+258">Mozambique (+258)</option>
+                                        <option value="+95">Myanmar (+95)</option>
+                                        <option value="+264">Namibia (+264)</option>
+                                        <option value="+674">Nauru (+674)</option>
+                                        <option value="+977">Nepal (+977)</option>
+                                        <option value="+31">Netherlands (+31)</option>
+                                        <option value="+64">New Zealand (+64)</option>
+                                        <option value="+505">Nicaragua (+505)</option>
+                                        <option value="+227">Niger (+227)</option>
+                                        <option value="+234">Nigeria (+234)</option>
+                                        <option value="+850">North Korea (+850)</option>
+                                        <option value="+389">North Macedonia (+389)</option>
+                                        <option value="+47">Norway (+47)</option>
+                                        <option value="+968">Oman (+968)</option>
+                                        <option value="+680">Palau (+680)</option>
+                                        <option value="+970">Palestine (+970)</option>
+                                        <option value="+507">Panama (+507)</option>
+                                        <option value="+675">Papua New Guinea (+675)</option>
+                                        <option value="+595">Paraguay (+595)</option>
+                                        <option value="+51">Peru (+51)</option>
+                                        <option value="+63">Philippines (+63)</option>
+                                        <option value="+48">Poland (+48)</option>
+                                        <option value="+351">Portugal (+351)</option>
+                                        <option value="+974">Qatar (+974)</option>
+                                        <option value="+40">Romania (+40)</option>
+                                        <option value="+250">Rwanda (+250)</option>
+                                        <option value="+685">Samoa (+685)</option>
+                                        <option value="+378">San Marino (+378)</option>
+                                        <option value="+239">Sao Tome and Principe (+239)</option>
+                                        <option value="+221">Senegal (+221)</option>
+                                        <option value="+381">Serbia (+381)</option>
+                                        <option value="+248">Seychelles (+248)</option>
+                                        <option value="+232">Sierra Leone (+232)</option>
+                                        <option value="+65">Singapore (+65)</option>
+                                        <option value="+421">Slovakia (+421)</option>
+                                        <option value="+386">Slovenia (+386)</option>
+                                        <option value="+677">Solomon Islands (+677)</option>
+                                        <option value="+252">Somalia (+252)</option>
+                                        <option value="+27">South Africa (+27)</option>
+                                        <option value="+82">South Korea (+82)</option>
+                                        <option value="+211">South Sudan (+211)</option>
+                                        <option value="+34">Spain (+34)</option>
+                                        <option value="+249">Sudan (+249)</option>
+                                        <option value="+597">Suriname (+597)</option>
+                                        <option value="+46">Sweden (+46)</option>
+                                        <option value="+41">Switzerland (+41)</option>
+                                        <option value="+963">Syria (+963)</option>
+                                        <option value="+886">Taiwan (+886)</option>
+                                        <option value="+992">Tajikistan (+992)</option>
+                                        <option value="+255">Tanzania (+255)</option>
+                                        <option value="+66">Thailand (+66)</option>
+                                        <option value="+670">Timor-Leste (+670)</option>
+                                        <option value="+228">Togo (+228)</option>
+                                        <option value="+676">Tonga (+676)</option>
+                                        <option value="+1-868">Trinidad and Tobago (+1-868)</option>
+                                        <option value="+216">Tunisia (+216)</option>
+                                        <option value="+90">Turkey (+90)</option>
+                                        <option value="+993">Turkmenistan (+993)</option>
+                                        <option value="+688">Tuvalu (+688)</option>
+                                        <option value="+256">Uganda (+256)</option>
+                                        <option value="+380">Ukraine (+380)</option>
+                                        <option value="+44">United Kingdom (+44)</option>
+                                        <option value="+598">Uruguay (+598)</option>
+                                        <option value="+998">Uzbekistan (+998)</option>
+                                        <option value="+678">Vanuatu (+678)</option>
+                                        <option value="+379">Vatican City (+379)</option>
+                                        <option value="+58">Venezuela (+58)</option>
+                                        <option value="+84">Vietnam (+84)</option>
+                                        <option value="+967">Yemen (+967)</option>
+                                        <option value="+260">Zambia (+260)</option>
+                                        <option value="+263">Zimbabwe (+263)</option>
+                                    </select>
+                                    <!-- Phone Number Input Field -->
+                                    <!-- Adjusts rounded corners for mobile vs. desktop -->
+                                    <input type="tel" id="newsletter-phone" name="newsletter-phone" class="w-full px-4 py-3 border border-gray-300 rounded-full sm:rounded-r-full sm:rounded-l-none focus:outline-none focus:ring-2 focus:ring-logo-green" placeholder="Phone number" required pattern="[1-9][0-9]{9}" title="Please enter a 10-digit phone number that does not start with 0.">
+                                </div>
+                            </div>
+
+                            <!-- Email Input Field -->
+                            <div>
+                                <input type="email" id="newsletter-email" name="newsletter-email" class="w-full max-w-lg mx-auto px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-logo-green" placeholder="Enter your email address" required>
+                            </div>
+                        </div>
+                        <!-- Submit Button -->
+                        <div class="mt-6">
+                            <button type="submit" class="bg-logo-green text-white font-bold px-8 py-3 rounded-full hover:bg-green-700 transition duration-300 w-full sm:w-auto">
+                                Subscribe
+                            </button>
+                        </div>
+                        <!-- This paragraph will display status messages (e.g., "Subscribing...", "Thank you!"). -->
+                        <p id="newsletter-form-status" class="mt-4 text-sm"></p>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Feedback Form Section -->
+        <section id="feedback" class="py-16 scroll-target">
+            <div class="container mx-auto px-6">
+                <h3 class="text-3xl font-bold text-center mb-8 text-logo-blue">We Value Your Feedback</h3>
+                <!-- A styled card containing the feedback form. -->
+                <div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+                    <form id="feedback-form">
+                        <!-- THIS HIDDEN INPUT IDENTIFIES THE FORM -->
+                        <input type="hidden" name="formType" value="feedback">
+                        <!-- Full Name Field -->
+                        <div class="mb-4">
+                            <label for="name" class="block text-gray-700 font-medium mb-2">Full Name</label>
+                            <input type="text" id="name" name="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-logo-green" required>
+                        </div>
+                        <!-- Email Address Field -->
+                        <div class="mb-4">
+                            <label for="email" class="block text-gray-700 font-medium mb-2">Email Address</label>
+                            <input type="email" id="email" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-logo-green" required>
+                        </div>
+                        <!-- Message/Feedback Field -->
+                        <div class="mb-6">
+                            <label for="message" class="block text-gray-700 font-medium mb-2">Message or Feedback</label>
+                            <textarea id="message" name="message" rows="5" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-logo-green" required></textarea>
+                        </div>
+                        <!-- Submit Button and Status Message -->
+                        <div class="text-center">
+                            <button type="submit" class="bg-logo-blue text-white font-bold px-8 py-3 rounded-full hover:bg-blue-700 transition duration-300 disabled:opacity-50">Submit Feedback</button>
+                            <p id="form-status" class="mt-4 text-sm"></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Donation Section -->
+        <section id="donate" class="py-16 scroll-target bg-white">
+            <div class="container mx-auto px-6">
+                
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl font-bold text-logo-blue mb-4">Support Our Mission</h3>
+                    <p class="max-w-3xl mx-auto text-gray-600">
+                        Your generous contributions empower us to continue our work in education, community service, and dawah. By donating, you invest in a legacy of knowledge and faith for generations to come.
+                    </p>
+                    <blockquote class="mt-6 max-w-2xl mx-auto text-gray-500 italic border-l-4 border-logo-green pl-4">
+                        "When a person dies, his deeds come to an end except for three: Sadaqah Jariyah (a continuous charity), or knowledge from which benefit is gained, or a righteous child who prays for him."
+                        <cite class="block not-italic mt-2 font-semibold text-gray-600">- Prophet Muhammad ﷺ (Sahih Muslim)</cite>
+                    </blockquote>
+                </div>
+
+                <div class="max-w-3xl mx-auto space-y-4">
+
+                    <div class="accordion-item-donate bg-white rounded-lg shadow-lg overflow-hidden">
+                        <button class="accordion-toggle-donate w-full p-6 flex justify-between items-center text-left hover:bg-gray-50 transition focus:outline-none focus:ring-2 focus:ring-logo-blue">
+                            <span class="text-xl font-bold text-gray-800 flex items-center">
+                                <i class="fa-solid fa-landmark text-logo-blue mr-4"></i>
+                                Direct Bank Transfer
+                            </span>
+                            <i class="fa-solid fa-chevron-down text-logo-blue text-2xl transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-panel-donate overflow-hidden transition-all duration-300 ease-in-out" style="max-height: 0;">
+                            <div class="p-6 border-t border-gray-200">
+                                <div class="bg-gray-50 p-6 rounded-lg">
+                                    <div class="space-y-4 text-sm md:text-base">
+                                        <div class="flex justify-between items-center"><span class="text-gray-600">Account Name:</span><span class="font-semibold text-gray-800">Institute of Islamic Education</span></div><hr>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-gray-600">Account Number:</span>
+                                            <div class="flex items-center space-x-2">
+                                                <span class="font-semibold text-gray-800">0036040100037596</span>
+                                                <button data-copy="0036040100037596" class="copy-btn text-gray-500 hover:text-logo-blue transition"><i class="fa-regular fa-copy"></i></button>
+                                            </div>
+                                        </div><hr>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-gray-600">IFSC Code:</span>
+                                            <div class="flex items-center space-x-2">
+                                                <span class="font-semibold text-gray-800">JAKA0BEERWA</span>
+                                                <button data-copy="JAKA0BEERWA" class="copy-btn text-gray-500 hover:text-logo-blue transition"><i class="fa-regular fa-copy"></i></button>
+                                            </div>
+                                        </div><hr>
+                                        <div class="flex justify-between items-center"><span class="text-gray-600">Bank Name:</span><span class="font-semibold text-gray-800">J&K Bank</span></div><hr>
+                                        <div class="flex justify-between items-center"><span class="text-gray-600">Branch:</span><span class="font-semibold text-gray-800">Beerwah</span></div>
+                                    </div>
+                                    <div class="mt-4 pt-4 border-t border-gray-200 text-center">
+                                        <p class="text-sm text-gray-600">
+                                            <i class="fa-solid fa-headset mr-1 opacity-75"></i>
+                                            For assistance, please 
+                                            <a href="tel:+919419737927" class="font-semibold text-logo-blue hover:underline">
+                                                call us at +91 94197 37927
+                                            </a>.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item-donate bg-white rounded-lg shadow-lg overflow-hidden">
+                        <button class="accordion-toggle-donate w-full p-6 flex justify-between items-center text-left hover:bg-gray-50 transition focus:outline-none focus:ring-2 focus:ring-logo-green">
+                            <span class="text-xl font-bold text-gray-800 flex items-center">
+                                <i class="fa-solid fa-qrcode text-logo-green mr-4"></i>
+                                UPI / QR Code
+                            </span>
+                            <i class="fa-solid fa-chevron-down text-logo-blue text-2xl transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-panel-donate overflow-hidden transition-all duration-300 ease-in-out" style="max-height: 0;">
+                            <div class="p-6 border-t border-gray-200 text-center">
+                                <div class="flex-grow flex flex-col items-center justify-center">
+                                    <i class="fa-solid fa-hourglass-half fa-3x text-gray-400 mb-4"></i>
+                                    <h5 class="text-xl font-bold text-gray-700">Coming Soon</h5>
+                                    <p class="text-gray-500 mt-2">
+                                        Our secure UPI payment option is currently under setup. Please check back shortly!
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div id="request-receipt-section" class="mt-8">
+                    <div class="max-w-3xl mx-auto">
+                        <button id="toggle-receipt-form" class="w-full bg-gray-50 p-6 rounded-lg shadow-lg flex justify-between items-center text-left transition duration-300 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-logo-blue">
+                            <span class="flex items-center">
+                                <i class="fa-solid fa-receipt text-logo-blue text-2xl mr-4"></i>
+                                <span class="text-xl font-bold text-logo-blue">Request a Donation Receipt</span>
+                            </span>
+                            <i id="toggle-icon" class="fa-solid fa-chevron-down text-logo-blue text-2xl transition-transform duration-300"></i>
+                        </button>
+
+                        <div id="receipt-form-panel" class="overflow-hidden transition-all duration-300 ease-in-out" style="max-height: 0;">
+                            <div class="bg-white mt-2 p-8 rounded-b-lg shadow-lg border-t border-gray-200">
+                                <p class="text-center text-gray-600 mb-6">
+                                    Please fill out the details below. We will verify your transaction and send the receipt to your WhatsApp within 24 hours.
+                                </p>
+                                <form id="receipt-form" name="receipt-form" enctype="multipart/form-data">
+                                    <div class="space-y-6">
+                                        <div><label for="fullName" class="block text-sm font-medium text-gray-700">Full Name</label><input type="text" id="fullName" name="fullName" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-logo-green focus:border-logo-green" required></div>
+                                        <div><label for="whatsappNumber" class="block text-sm font-medium text-gray-700">WhatsApp Number (with country code)</label><input type="tel" id="whatsappNumber" name="whatsappNumber" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-logo-green focus:border-logo-green" required></div>
+                                        <div><label for="donationAmount" class="block text-sm font-medium text-gray-700">Donation Amount (e.g., 500 INR)</label><input type="text" id="donationAmount" name="donationAmount" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-logo-green focus:border-logo-green" required></div>
+                                        <div><label for="transactionId" class="block text-sm font-medium text-gray-700">Transaction ID / Reference Number</label><input type="text" id="transactionId" name="transactionId" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-logo-green focus:border-logo-green" required></div>
+                                        <div><label for="screenshot" class="block text-sm font-medium text-gray-700">Payment Screenshot</label><input type="file" id="screenshot" name="screenshot" accept="image/*,application/pdf" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-logo-blue hover:file:bg-blue-100" required></div>
+                                        <div class="text-center pt-4">
+                                            <button type="submit" id="submit-receipt-request" class="bg-logo-blue text-white font-bold px-8 py-3 rounded-full hover:bg-blue-800 transition duration-300 disabled:opacity-50">Send Request</button>
+                                            <p id="receipt-form-status" class="mt-4 text-sm"></p>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
     </main>
+    <div id="form-loader" class="fixed inset-0 bg-white/80 backdrop-blur-sm flex-col items-center justify-center z-[9999] opacity-0 pointer-events-none transition-opacity duration-300 hidden">
+        <svg class="w-20 h-20 text-logo-blue" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="transform-origin: center;">
+            <path d="M21.5,11.1l-17.9-9C2.9,1.8,2.2,2.4,2.1,3.2c-0.1,0.8,0.3,1.6,1,2l5.1,5.1l-5.1,5.1c-0.7,0.4-1.1,1.2-1,2c0.1,0.8,0.8,1.4,1.5,1.1l17.9-9c0.8-0.4,1.2-1.2,1.2-2S22.3,11.5,21.5,11.1z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <p id="loader-text" class="mt-4 text-lg font-semibold text-logo-blue">Sending...</p>
+    </div>
 
+    <!-- Footer Section -->
+    <footer class="bg-gradient-footer text-white py-12">
+        <div class="container mx-auto px-6 text-center">
+            <div class="mb-8" id="contact">
+                <h4 class="text-lg font-bold mb-4 flex items-center justify-center">
+                    <i class="fa-regular fa-comments mr-3"></i>
+                    <span>Get in Touch</span>
+                </h4>
+                
+                <div class="flex justify-center space-x-6">
+                    <a href="tel:+919419737927" aria-label="Call us" class="text-white hover:opacity-75 transform hover:scale-110 transition duration-300"><i class="fa-solid fa-phone fa-2x"></i></a>
+                    <a href="https://wa.me/+919419737927" target="_blank" aria-label="Contact us on WhatsApp" class="text-white hover:opacity-75 transform hover:scale-110 transition duration-300"><i class="fab fa-whatsapp fa-2x"></i></a>
+                    <a href="mailto:iiecheckpora@gmail.com" aria-label="Email us" class="text-white hover:opacity-75 transform hover:scale-110 transition duration-300"><i class="fa-solid fa-envelope fa-2x"></i></a>
+                    <a href="https://youtube.com/@instituteofislamiceducation?feature=shared" target="_blank" aria-label="Visit our YouTube channel" class="text-white hover:opacity-75 transform hover:scale-110 transition duration-300"><i class="fab fa-youtube fa-2x"></i></a>
+                    <a href="https://m.facebook.com/501487530283263/" target="_blank" aria-label="Visit our Facebook page" class="text-white hover:opacity-75 transform hover:scale-110 transition duration-300"><i class="fab fa-facebook-f fa-2x"></i></a>
+                </div>
+            </div>
+            <div class="mb-8">
+                <h4 class="text-lg font-bold mb-2 flex items-center justify-center">
+                    <i class="fa-solid fa-landmark mr-3"></i>
+                    <span>Head Office</span>
+                </h4>
+                <div class="bg-logo-blue p-1 rounded-full shadow-2xl inline-block">
+                    <a href="https://maps.app.goo.gl/yaZa531xtGu3nXMn9" target="_blank" class="inline-flex items-center bg-gray-100 rounded-full py-1 pl-2 pr-3 text-logo-green font-semibold">
+                        <i class="fa-solid fa-location-dot text-2xl mr-2 icon-bob"></i>
+                        <span>Chanthan Chak Pora, Beerwah</span>
+                        <span class="ml-2 h-7 w-7 rounded-full bg-logo-blue text-white flex items-center justify-center">
+                            <i class="fa-solid fa-arrow-left icon-shake text-sm"></i>
+                        </span>
+                    </a>
+                </div>
+            </div>
+            <div class="border-t border-green-300 pt-6">
+                <p>© 2025 Institute of Islamic Education. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Welcome Popup Modal: Hidden by default, shown by JavaScript. -->
+    <div id="welcome-popup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white p-8 rounded-lg shadow-2xl max-w-sm w-full text-center">
+            <h3 class="text-2xl font-bold text-logo-blue mb-4">A Quick Note</h3>
+            <p class="text-gray-600 mb-6">
+                For the best viewing experience, Please 
+                <strong class="text-logo-green">Refresh</strong> 
+                the page and ensure your browser is 
+                <strong class="text-logo-green">Up to Date</strong>.
+            </p>
+            <!-- Buttons to control the popup. -->
+            <div class="flex justify-center space-x-4">
+                <button id="refresh-btn" class="bg-logo-blue text-white font-bold py-2 px-6 rounded-full hover:bg-blue-800 transition">Refresh</button>
+                <button id="close-popup-btn" class="bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded-full hover:bg-gray-400 transition">Close</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Back to Top Button: Fixed position at the bottom-right of the screen. -->
+    <button id="back-to-top-btn" class="fixed bottom-5 right-5 z-50 p-3 bg-logo-blue text-white rounded-full shadow-lg hover:bg-blue-800 transition-all duration-300 opacity-0 pointer-events-none">
+        <i class="fa-solid fa-arrow-up h-6 w-6"></i>
+    </button>
+ 
+    <!-- youtube ap -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+
+    <!-- This script tag contains all the JavaScript for the page's interactive features. -->
     <script>
+        // This single event listener ensures all JavaScript runs only after the HTML document has been loaded.
         document.addEventListener('DOMContentLoaded', function() {
-            // Set the date for when the maintenance period ends.
-            // The format is YYYY, Month (0-11), Day
-            const maintenanceEndDate = new Date(2025, 8, 6); // September 6th, to include all of the 5th.
 
-            const currentDate = new Date();
+            // loader function
+            const formLoader = document.getElementById('form-loader');
 
-            // Check if the current date is past the maintenance end date
-            if (currentDate >= maintenanceEndDate) {
-                // If it is, redirect to the main website page
-                window.location.href = "main.html";
+            // Helper function to show the loader
+            const showLoader = () => {
+                if (formLoader) formLoader.classList.add('visible');
+            };
+
+            // Helper function to hide the loader
+            const hideLoader = () => {
+                if (formLoader) formLoader.classList.remove('visible');
+            };
+
+
+            // --- Active Navigation State Logic ---
+            const navLinks = document.querySelectorAll('header nav a[href^="#"]');
+            const sections = [];
+
+            navLinks.forEach(link => {
+                const section = document.querySelector(link.getAttribute('href'));
+                if (section) {
+                    sections.push(section);
+                }
+            });
+
+            function onScroll() {
+                const scrollPosition = window.scrollY + 150; 
+                let activeSectionFound = false;
+                for (let i = sections.length - 1; i >= 0; i--) {
+                    const section = sections[i];
+                    if (section.offsetTop <= scrollPosition) {
+                        navLinks.forEach(link => link.classList.remove('nav-active'));
+                        const activeLink = document.querySelector(`header nav a[href="#${section.id}"]`);
+                        if (activeLink) {
+                            activeLink.classList.add('nav-active');
+                        }
+                        activeSectionFound = true;
+                        break; 
+                    }
+                }
+                if (!activeSectionFound) {
+                    navLinks.forEach(link => link.classList.remove('nav-active'));
+                }
             }
-        });
+            window.addEventListener('scroll', onScroll);
+            // --- New Mobile Sidebar Logic (Final Version) ---
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+            const mobileMenuCloseButton = document.getElementById('mobile-menu-close-btn');
+            const menuItems = document.querySelectorAll('.menu-item-container');
+            const donateButton = document.querySelector('.action-button-donate');
+
+            // Function to open or close the menu
+            const toggleMenu = () => {
+                if (!mobileMenuButton || !mobileMenu || !mobileMenuOverlay) return;
+                mobileMenuButton.classList.toggle('open');
+                mobileMenu.classList.toggle('translate-x-full');
+                if (mobileMenuOverlay.classList.contains('hidden')) {
+                    mobileMenuOverlay.classList.remove('hidden');
+                    setTimeout(() => mobileMenuOverlay.classList.remove('opacity-0'), 10);
+                } else {
+                    mobileMenuOverlay.classList.add('opacity-0');
+                    setTimeout(() => mobileMenuOverlay.classList.add('hidden'), 300);
+                }
+                if (mobileMenu.classList.contains('translate-x-full')) {
+                    // --- MENU IS CLOSING ---
+                    document.body.classList.remove('overflow-hidden'); // <-- ADD THIS LINE
+                    if (menuItems) menuItems.forEach(item => item.classList.remove('expanded'));
+                    mobileMenu.classList.remove('menu-open');
+                } else {
+                    // --- MENU IS OPENING ---
+                    document.body.classList.add('overflow-hidden'); // <-- ADD THIS LINE
+                    mobileMenu.classList.add('menu-open');
+                }
+            };
+
+            // --- Event Listeners ---
+            if (mobileMenuButton) mobileMenuButton.addEventListener('click', toggleMenu);
+            if (mobileMenuOverlay) mobileMenuOverlay.addEventListener('click', toggleMenu);
+            if (mobileMenuCloseButton) mobileMenuCloseButton.addEventListener('click', toggleMenu);
+
+            // Logic for clicking on a menu item
+            if (menuItems.length > 0) {
+                menuItems.forEach(item => {
+                    item.addEventListener('click', function(e) {
+                        const isExpanded = this.classList.contains('expanded');
+                        const link = this.querySelector('a');
+                        if (!link) return;
+                        const targetUrl = link.getAttribute('href');
+                        if (isExpanded) {
+                            if (targetUrl.startsWith('#')) {
+                                e.preventDefault();
+                                document.querySelector(targetUrl)?.scrollIntoView({ behavior: 'smooth' });
+                                toggleMenu();
+                            } else {
+                                window.location.href = targetUrl;
+                            }
+                        } else {
+                            e.preventDefault();
+                            menuItems.forEach(otherItem => otherItem.classList.remove('expanded'));
+                            this.classList.add('expanded');
+                        }
+                    });
+                });
+            }
+
+            // Logic for the donate button
+            if (donateButton) {
+                donateButton.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetUrl = donateButton.getAttribute('href');
+                    document.querySelector(targetUrl)?.scrollIntoView({ behavior: 'smooth' });
+                    toggleMenu();
+                });
+            }
+
+
+            // --- Popup Logic ---
+            const welcomePopup = document.getElementById('welcome-popup');
+            const closePopupButton = document.getElementById('close-popup-btn');
+            const refreshButton = document.getElementById('refresh-btn');
+            if (welcomePopup && closePopupButton && refreshButton) {
+                closePopupButton.addEventListener('click', () => welcomePopup.classList.add('hidden'));
+                refreshButton.addEventListener('click', () => location.reload());
+                if (!sessionStorage.getItem('popupShown')) {
+                    setTimeout(() => {
+                        welcomePopup.classList.remove('hidden');
+                    }, 1000);
+                    sessionStorage.setItem('popupShown', 'true');
+                }
+            }
+
+            // --- Shared Google Script URL for Newsletter/Feedback ---
+            const googleScriptURL = 'https://script.google.com/macros/s/AKfycbzpOLHQ7rOhOnhoVjbiBNcoWfPQ1xjTtVkgmgB9M0qtKtQyOy30pPer2nKHc13h1sqW/exec';
+
+            // --- Newsletter Form Submission Logic ---
+            const newsletterForm = document.getElementById('newsletter-form');
+            if (newsletterForm) {
+                const formStatus = document.getElementById('newsletter-form-status');
+                const submitButton = newsletterForm.querySelector('button[type="submit"]');
+                newsletterForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    showLoader();
+                    submitButton.disabled = true;
+                    formStatus.textContent = 'Subscribing...';
+                    formStatus.className = 'mt-4 text-sm text-gray-600';
+                    const formData = new FormData(newsletterForm);
+                    const data = Object.fromEntries(formData.entries());
+                    fetch(googleScriptURL, {
+                            method: 'POST',
+                            body: JSON.stringify(data)
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.result === 'success') {
+                                formStatus.textContent = 'Thank you for subscribing! Please check your email.';
+                                formStatus.className = 'mt-4 text-sm text-green-500 font-semibold';
+                                newsletterForm.reset();
+                            } else {
+                                throw new Error(data.error || 'An unknown error occurred.');
+                            }
+                        }).catch(error => {
+                            console.error('Error:', error);
+                            formStatus.textContent = 'Submission failed. Please try again.';
+                            formStatus.className = 'mt-4 text-sm text-red-500 font-semibold';
+                        }).finally(() => {
+                            submitButton.disabled = false;
+                            hideLoader();
+                        });
+                });
+            }
+
+            // --- New Carousel Gallery Logic ---
+            const carousel = document.getElementById('gallery-carousel');
+            if (carousel) {
+                const track = document.getElementById('carousel-track');
+                const slides = Array.from(track.children);
+                const nextButton = document.getElementById('carousel-next');
+                const prevButton = document.getElementById('carousel-prev');
+                const dotsNav = document.getElementById('carousel-dots');
+
+                // Create dots for navigation
+                slides.forEach((slide, index) => {
+                    const dot = document.createElement('button');
+                    dot.classList.add('carousel-dot');
+                    if (index === 0) dot.classList.add('active');
+                    dotsNav.appendChild(dot);
+                });
+
+                const dots = Array.from(dotsNav.children);
+                let currentIndex = 0;
+
+                const moveToSlide = (targetIndex) => {
+                    const currentSlide = track.querySelector('.current-slide');
+                    if(currentSlide) currentSlide.classList.remove('current-slide');
+                    
+                    slides[targetIndex].classList.add('current-slide');
+                    track.style.transform = 'translateX(-' + targetIndex * 100 + '%)';
+                    
+                    // Update dots
+                    const currentDot = dotsNav.querySelector('.active');
+                    if(currentDot) currentDot.classList.remove('active');
+                    dots[targetIndex].classList.add('active');
+
+                    currentIndex = targetIndex;
+                };
+
+                // When next button is clicked
+                nextButton.addEventListener('click', e => {
+                    const nextIndex = (currentIndex + 1) % slides.length;
+                    moveToSlide(nextIndex);
+                });
+
+                // When prev button is clicked
+                prevButton.addEventListener('click', e => {
+                    const prevIndex = (currentIndex - 1 + slides.length) % slides.length;
+                    moveToSlide(prevIndex);
+                });
+
+                // When a dot is clicked
+                dotsNav.addEventListener('click', e => {
+                    const targetDot = e.target.closest('button');
+                    if (!targetDot) return;
+                    
+                    const targetIndex = dots.findIndex(dot => dot === targetDot);
+                    moveToSlide(targetIndex);
+                });
+
+                // Initialize the first slide
+                slides[0].classList.add('current-slide');
+            }
+
+            // --- Feedback Form Submission Logic ---
+            const feedbackForm = document.getElementById('feedback-form');
+            if (feedbackForm) {
+                const formStatus = document.getElementById('form-status');
+                const submitButton = feedbackForm.querySelector('button[type="submit"]');
+                feedbackForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    showLoader();
+                    submitButton.disabled = true;
+                    formStatus.textContent = 'Submitting...';
+                    formStatus.className = 'mt-4 text-sm text-gray-600';
+                    const formData = new FormData(feedbackForm);
+                    const data = Object.fromEntries(formData.entries());
+                    fetch(googleScriptURL, {
+                            method: 'POST',
+                            body: JSON.stringify(data)
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.result === 'success') {
+                                formStatus.textContent = 'Thank you for your feedback!';
+                                formStatus.className = 'mt-4 text-sm text-green-500 font-semibold';
+                                feedbackForm.reset();
+                            } else {
+                                throw new Error(data.error || 'An unknown error occurred.');
+                            }
+                        }).catch(error => {
+                            console.error('Error:', error);
+                            formStatus.textContent = 'Submission failed. Please try again.';
+                            formStatus.className = 'mt-4 text-sm text-red-500 font-semibold';
+                        }).finally(() => {
+                            submitButton.disabled = false;
+                            hideLoader();
+                        });
+                });
+            }
+
+            // --- Back to Top Button Logic ---
+            const backToTopButton = document.getElementById('back-to-top-btn');
+            if (backToTopButton) {
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 300) {
+                        backToTopButton.classList.remove('opacity-0', 'pointer-events-none');
+                    } else {
+                        backToTopButton.classList.add('opacity-0', 'pointer-events-none');
+                    }
+                });
+                backToTopButton.addEventListener('click', () => {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            }
+
+            // --- Preloader Logic ---
+            const preloader = document.getElementById('preloader');
+            window.addEventListener('load', () => {
+                if (preloader) {
+                    preloader.classList.add('opacity-0');
+                    setTimeout(() => preloader.remove(), 500);
+                }
+            });
+
+            // --- Copy to Clipboard Logic for Donation Section ---
+            const donationSection = document.getElementById('donate');
+            if (donationSection) {
+                donationSection.addEventListener('click', function(e) {
+                    const copyButton = e.target.closest('.copy-btn');
+                    if (copyButton) {
+                        const textToCopy = copyButton.dataset.copy;
+                        navigator.clipboard.writeText(textToCopy).then(() => {
+                            const originalIcon = copyButton.innerHTML;
+                            copyButton.innerHTML = `<i class="fa-solid fa-check text-green-500"></i>`;
+                            setTimeout(() => {
+                                copyButton.innerHTML = originalIcon;
+                            }, 2000);
+                        }).catch(err => console.error('Failed to copy text: ', err));
+                    }
+                });
+            }
+
+            // --- Calendar Logic ---
+            const monthYearHeader = document.getElementById('month-year-header');
+            if (monthYearHeader) {
+                const calendarDaysGrid = document.getElementById('calendar-days-grid');
+                const prevMonthBtn = document.getElementById('prev-month-btn');
+                const nextMonthBtn = document.getElementById('next-month-btn');
+                const todayBtn = document.getElementById('today-btn');
+                const eventModal = document.getElementById('event-modal');
+                const closeModalBtn = document.getElementById('close-modal-btn');
+                const eventDates = {
+                    '2025-8-16': {
+                        title: 'One Day Dawrah',
+                        time: '9:30 AM - 6:30 PM',
+                        description: 'Join us for our One Day Dawrah Series. We will cover, تائية الإلبيري في الزهد والحكم'
+                    }
+                };
+                let currentDate = new Date();
+                currentDate.setDate(1);
+
+                function renderCalendar() {
+                    const year = currentDate.getFullYear();
+                    const month = currentDate.getMonth();
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    monthYearHeader.textContent = new Intl.DateTimeFormat('en-US', {
+                        year: 'numeric',
+                        month: 'long'
+                    }).format(currentDate);
+                    calendarDaysGrid.innerHTML = '';
+                    const firstDayOfMonth = new Date(year, month, 1).getDay();
+                    const daysInMonth = new Date(year, month + 1, 0).getDate();
+                    for (let i = 0; i < firstDayOfMonth; i++) {
+                        calendarDaysGrid.innerHTML += `<div></div>`;
+                    }
+                    for (let day = 1; day <= daysInMonth; day++) {
+                        const dayCell = document.createElement('div');
+                        dayCell.className = 'p-2 text-center rounded-full cursor-pointer hover:bg-gray-100 transition';
+                        dayCell.textContent = day;
+                        const cellDate = new Date(year, month, day);
+                        const isCurrentDay = day === new Date().getDate() && month === new Date().getMonth() && year === new Date().getFullYear();
+                        const dateString = `${year}-${month + 1}-${day}`;
+                        const event = eventDates[dateString];
+                        if (event) {
+                            if (cellDate < today) {
+                                dayCell.classList.add('bg-gray-400', 'text-white', 'font-bold', 'opacity-75');
+                            } else {
+                                dayCell.classList.add('bg-logo-green', 'text-white', 'font-bold', 'event-day-blinking');
+                            }
+                            dayCell.addEventListener('click', () => showEventModal(event));
+                        } else if (isCurrentDay) {
+                            dayCell.classList.add('bg-logo-blue', 'text-white', 'font-bold');
+                        }
+                        calendarDaysGrid.appendChild(dayCell);
+                    }
+                }
+
+                function showEventModal(event) {
+                    if (eventModal) {
+                        document.getElementById('event-modal-title').textContent = event.title;
+                        document.getElementById('event-modal-time').textContent = event.time;
+                        document.getElementById('event-modal-description').textContent = event.description;
+                        eventModal.classList.remove('hidden');
+                    }
+                }
+                if (prevMonthBtn) prevMonthBtn.addEventListener('click', () => {
+                    currentDate.setMonth(currentDate.getMonth() - 1);
+                    renderCalendar();
+                });
+                if (nextMonthBtn) nextMonthBtn.addEventListener('click', () => {
+                    currentDate.setMonth(currentDate.getMonth() + 1);
+                    renderCalendar();
+                });
+                if (todayBtn) todayBtn.addEventListener('click', () => {
+                    currentDate = new Date();
+                    currentDate.setDate(1);
+                    renderCalendar();
+                });
+                if (closeModalBtn) closeModalBtn.addEventListener('click', () => eventModal.classList.add('hidden'));
+                if (eventModal) eventModal.addEventListener('click', (e) => {
+                    if (e.target === eventModal) eventModal.classList.add('hidden');
+                });
+                renderCalendar();
+            }
+
+            // --- Integrated Receipt Form Logic ---
+            const toggleBtn = document.getElementById('toggle-receipt-form');
+            if (toggleBtn) {
+                const formPanel = document.getElementById('receipt-form-panel');
+                const toggleIcon = document.getElementById('toggle-icon');
+                toggleBtn.addEventListener('click', () => {
+                    if (formPanel && toggleIcon) {
+                        const isClosed = formPanel.style.maxHeight === '0px' || !formPanel.style.maxHeight;
+                        formPanel.style.maxHeight = isClosed ? formPanel.scrollHeight + 'px' : '0px';
+                        toggleIcon.classList.toggle('fa-chevron-down', !isClosed);
+                        toggleIcon.classList.toggle('fa-chevron-up', isClosed);
+                    }
+                });
+            }
+
+            const receiptForm = document.getElementById('receipt-form');
+            if (receiptForm) {
+                const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby39h5_YPF6or9VrE_m-K2-pjr3AMzkR8G24jvgF_Kro_DEqWybkLMlROMJit05HFAM/exec";
+                const submitBtn = document.getElementById('submit-receipt-request');
+                const statusMsg = document.getElementById('receipt-form-status');
+                const fileInput = document.getElementById('screenshot');
+                const whatsappInput = document.getElementById('whatsappNumber');
+                receiptForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    statusMsg.textContent = '';
+                    whatsappInput.classList.remove('border-red-500');
+                    const whatsappNumberValue = whatsappInput.value.trim();
+                    if (whatsappNumberValue.startsWith('+92') || whatsappNumberValue.startsWith('92')) {
+                        statusMsg.textContent = 'Sorry, submissions from country code +92 are not accepted.';
+                        statusMsg.className = 'mt-4 text-sm text-red-600 font-semibold';
+                        whatsappInput.classList.add('border-red-500');
+                        whatsappInput.focus();
+                        return;
+                    }
+                    showLoader('Sending Request...');
+                    submitBtn.disabled = true;
+                    const file = fileInput.files[0];
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = (event) => {
+                        statusMsg.textContent = 'Submitting your request...';
+                        const formData = new FormData(receiptForm);
+                        const data = Object.fromEntries(formData.entries());
+                        data.base64Data = event.target.result;
+                        data.fileName = file.name;
+                        data.mimeType = file.type;
+                        fetch(SCRIPT_URL, {
+                                method: 'POST',
+                                body: JSON.stringify(data),
+                                headers: {
+                                    'Content-Type': 'text/plain;charset=utf-8',
+                                },
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.status === 'success') {
+                                    statusMsg.textContent = 'Thank you! Your request has been submitted successfully.';
+                                    statusMsg.className = 'mt-4 text-sm text-green-600 font-semibold';
+                                    receiptForm.reset();
+                                } else {
+                                    throw new Error(data.message);
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                statusMsg.textContent = 'Something went wrong. ' + error.message;
+                                statusMsg.className = 'mt-4 text-sm text-red-600 font-semibold';
+                            })
+                            .finally(() => {
+                                submitBtn.disabled = false;
+                                hideLoader();
+                            });
+                    };
+                    reader.onerror = (error) => {
+                        console.error("File reading error:", error);
+                        statusMsg.textContent = 'Could not read the file. Please try a different image.';
+                        statusMsg.className = 'mt-4 text-sm text-red-600 font-semibold';
+                        submitBtn.disabled = false;
+                        hideLoader();
+                    };
+                });
+            }
+
+            // --- Accordion Logic for Library Section (Safer Version) ---
+            const accordionItems = document.querySelectorAll('.accordion-item');
+            if (accordionItems.length > 0) {
+                accordionItems.forEach(item => {
+                    const toggle = item.querySelector('.accordion-toggle');
+                    const panel = item.querySelector('.accordion-panel');
+                    if (toggle && panel) {
+                        const icon = toggle.querySelector('.fa-chevron-down');
+                        toggle.addEventListener('click', () => {
+                            accordionItems.forEach(otherItem => {
+                                if (otherItem !== item) {
+                                    const otherPanel = otherItem.querySelector('.accordion-panel');
+                                    const otherIcon = otherItem.querySelector('.fa-chevron-down');
+                                    if (otherPanel) otherPanel.style.maxHeight = '0';
+                                    if (otherIcon) otherIcon.classList.remove('rotate-180');
+                                }
+                            });
+                            if (panel.style.maxHeight !== '0px' && panel.style.maxHeight) {
+                                panel.style.maxHeight = '0';
+                                if (icon) icon.classList.remove('rotate-180');
+                            } else {
+                                panel.style.maxHeight = panel.scrollHeight + 'px';
+                                if (icon) icon.classList.add('rotate-180');
+                            }
+                        });
+                    }
+                });
+            }
+
+            // --- Accordion Logic for Donation Section (Safer Version) ---
+            const accordionItemsDonate = document.querySelectorAll('.accordion-item-donate');
+            if (accordionItemsDonate.length > 0) {
+                accordionItemsDonate.forEach(item => {
+                    const toggle = item.querySelector('.accordion-toggle-donate');
+                    const panel = item.querySelector('.accordion-panel-donate');
+                    if (toggle && panel) {
+                        const icon = toggle.querySelector('.fa-chevron-down');
+                        toggle.addEventListener('click', () => {
+                            accordionItemsDonate.forEach(otherItem => {
+                                if (otherItem !== item) {
+                                    const otherPanel = otherItem.querySelector('.accordion-panel-donate');
+                                    const otherIcon = otherItem.querySelector('.fa-chevron-down');
+                                    if (otherPanel) otherPanel.style.maxHeight = '0';
+                                    if (otherIcon) otherIcon.classList.remove('rotate-180');
+                                }
+                            });
+                            if (panel.style.maxHeight !== '0px' && panel.style.maxHeight) {
+                                panel.style.maxHeight = '0';
+                                if (icon) icon.classList.remove('rotate-180');
+                            } else {
+                                panel.style.maxHeight = panel.scrollHeight + 'px';
+                                if (icon) icon.classList.add('rotate-180');
+                            }
+                        });
+                    }
+                });
+            }
+
+        }); // End of the single DOMContentLoaded listener
     </script>
 </body>
 </html>
